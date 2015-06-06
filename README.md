@@ -1,2 +1,1 @@
-# ladjzero.github.io
-ladjzero's blog
+http://ladjzero.me/blog
