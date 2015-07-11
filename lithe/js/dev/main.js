@@ -4,7 +4,7 @@
 
 init();
 
-define(['ko', 'jquery', './sdk'], function (ko, $, sdk) {
+define(['gallery', 'ko', 'jquery', './sdk'], function (galleryVM, ko, $, sdk) {
     var Lithe = ko._lithe = {
         sinceId: 0,
         maxId: 0,
@@ -91,7 +91,7 @@ define(['ko', 'jquery', './sdk'], function (ko, $, sdk) {
                 })
                 .then(function (data, success) {
                     console.log(data);
-                    ko.applyBindings(data, document.getElementById('profile'));
+                    //ko.applyBindings(data, document.getElementById('profile'));
                 });
 
             load();
@@ -104,7 +104,16 @@ function init() {
         paths: {
             jssdk: 'http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=3942605728&debug=true',
             ko: 'lib/knockout',
-            jquery: 'lib/jquery'
+            jquery: 'lib/jquery',
+            text: 'lib/text'
+        },
+        shim: {
+            'lib/blueimp-gallery-indicator': {
+                deps: ['lib/blueimp-gallery']
+            },
+            'lib/blueimp-gallery': {
+                deps: ['lib/blueimp-helper']
+            }
         }
     });
 }

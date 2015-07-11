@@ -2,10 +2,11 @@
 <html lang="en" xmlns:wb="http://open.weibo.com/wb">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <title>Lithe</title>
     <link href="css/base.css" rel="stylesheet"/>
     <link href="css/default-theme.css" rel="stylesheet"/>
+    <link href="css/blueimp-gallery.css" rel="stylesheet"/>
     <script data-main="js/dev/main" src="js/dev/lib/require.js"></script>
 </head>
 <body class="unstyled">
@@ -17,10 +18,7 @@
         </a>
     </div>
     <p class="weibo-text" data-bind="text: text"></p>
-    <div class="weibo-images" data-bind="foreach: pic_urls">
-        <div class="weibo-thumbnail-wapper" data-bind="click: click, css: {'image-large': isLarge()}"><img class="weibo-thumbnail"
-                                                                          data-bind="attr: {src: url}"></div>
-    </div>
+    <div class="blueimp-gallery blueimp-gallery-carousel no-shadow" data-bind="gallery: $data.pic_urls"></div>
     <div class="weibo-operations">
         <a class="btn btn-default" href="#">收藏</a>
         <a class="btn btn-default" href="#">转发<span data-bind="text: reposts_count || ''"></span></a>

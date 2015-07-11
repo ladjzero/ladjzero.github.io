@@ -192,6 +192,35 @@ nav {
     border-radius: 0 0 6px 6px;
 }
 
+.no-shadow {
+    box-shadow: none!important;
+}
+
+ol.indicator {
+    width: 100%;
+    line-height: 0;
+    background: rgba(38, 50, 56, 0.44);
+    padding: 0;
+}
+
+.indicator > li {
+    padding-bottom: 8%;
+    width: 8%;
+    margin: 1%;
+    background-position: center;
+    background-size: contain;
+    display: inline-block;
+    background-repeat: no-repeat; 
+}
+
+.indicator > li.active {
+    outline: 1px solid white;
+}
+
+.blueimp-gallery-carousel > .slides {
+    position: relative!important;
+}
+
 @media (max-width: 720px) {
     #weibos {
         margin-left: 0;
