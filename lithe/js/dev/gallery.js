@@ -2,12 +2,12 @@
  * Created by chenzhuo on 15-7-7.
  */
 
-define(['ko', '_', 'text!gallery.html', 'lib/blueimp-gallery', 'lib/blueimp-gallery-indicator'], function(ko, _, template, Gallery) {
+define(['ko', 'text!gallery.html', 'lib/blueimp-gallery', 'lib/blueimp-gallery-indicator'], function(ko, template, Gallery) {
     ko.bindingHandlers.gallery = {
         init: function (element, valueAccessor) {
             var urls = valueAccessor();
 
-            if (urls.length) {
+            if (urls && urls.length) {
                 $(element).append(template);
 
                 Gallery(urls.map(function (url) {
