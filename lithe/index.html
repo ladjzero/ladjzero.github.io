@@ -22,10 +22,16 @@
     <p class="weibo-text" data-bind="text: text"></p>
     <div class="blueimp-gallery blueimp-gallery-carousel no-shadow" data-bind="if: !$data.deleted, gallery: $data.pic_urls"></div>
     <div class="weibo-operations" data-bind="if: !$data.deleted">
-        <a class="btn btn-default" href="#">收藏</a>
-        <a class="btn btn-default" href="#">转发<span data-bind="text: reposts_count || ''"></span></a>
-        <a class="btn btn-default" href="#">评论<span data-bind="text: comments_count || ''"></span></a>
-        <a class="btn btn-default" href="#">赞<span data-bind="text: attitudes_count || ''"></span></a>
+        <a class="btn btn-default" href="#" data-bind="click: $root.onSave">收藏</a>
+        <a class="btn btn-default" href="#" data-bind="click: $root.onRepo">转发<span data-bind="text: reposts_count || ''"></span></a>
+        <a class="btn btn-default" href="#" data-bind="click: $root.onComment">评论<span data-bind="text: comments_count || ''"></span></a>
+        <a class="btn btn-default" href="#" data-bind="click: $root.onLike">赞<span data-bind="text: attitudes_count || ''"></span></a>
+    </div>
+    <div class="comments" data-bind="if: $data.comments && $data.comments().length">
+        <ul class="unstyled" data-bind="foreach: comments">
+            <li><a href="#" data-bind="text: user && user.name"></a>: <span data-bind="text: text"></span></li>
+        </ul>
+
     </div>
     <div data-bind="if: $data.retweeted_status">
         <div class="nested-weibo"
@@ -34,16 +40,17 @@
 </script>
 
 <script type="text/html" id="weibo-template">
-    <li class="weibo-container" data-bind="template: {name: 'weibo-body-template', data: status}"></li>
+    <li class="weibo-container" data-bind="template: {name: 'weibo-body-template', data: status}, attr: {id: 'wb' + id}"></li>
 </script>
 
 <nav>
+    <span id="progress" data-bind="style: {width: width}"></span>
     <a id="home" href="#">Lithe</a>
 </nav>
 <div id="main-container">
     <ul id="weibos" class="unstyled"
         data-bind="template: {name: 'weibo-template', foreach: statuses, as: 'status'}"></ul>
-    <button id="load-more" class="unstyled">Loading ...</button>
+    <button id="load-more" class="unstyled">加载更多</button>
 
 </div>
 </div>
