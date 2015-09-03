@@ -74,7 +74,7 @@ var scrollHandler2 = debounce(function () {
 
 var dispatchScrollEvent = function (state) {
   console.log('scrollState:' + state);
-  window.dispatchEvent(new CustomEvent('scrollState', {detail: state}));
+  window.onScrollStateChange && window.onScrollStateChange(state);
 }
 
 window.addEventListener('touchstart', touchHandler);
