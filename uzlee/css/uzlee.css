@@ -27,7 +27,8 @@ body {
 }
 
 .logs {
-    padding: 80px;
+    max-width: 600px;
+    margin: 80px auto;
 }
 
 .version {
