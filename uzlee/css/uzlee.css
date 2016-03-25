@@ -17,6 +17,9 @@ body {
 }
 
 .btn {
+    margin: 6px 0;
+    display: inline-block;
+    white-space: nowrap;
     background-color: #4E505C;
     color: white;
     font-size: 1.6em;
