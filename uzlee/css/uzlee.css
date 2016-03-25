@@ -1,0 +1,47 @@
+body {
+    padding: 24px;
+}
+
+.logo {
+    height: 160px;
+    background-image: url('../img/icon.png');
+    width: 160px;
+    border-radius: 80px;
+    background-color: #4E505C;
+    background-size: cover;
+    margin: 36px auto 72px;
+}
+
+.links {
+    text-align: center;
+}
+
+.btn {
+    background-color: #4E505C;
+    color: white;
+    font-size: 1.6em;
+    padding: 0.4em 1em;
+    text-decoration: none;
+    font-family: monospace;
+    border-radius: 4px;
+}
+
+.logs {
+    padding: 80px;
+}
+
+.version {
+    color: #4E505C;
+    font-size: larger;
+}
+
+.log {
+    margin-top: 40px
+}
+
+.log ol {
+    color: #737373;
+    list-style: none;
+    font-size: smaller;
+    padding-left: 24px;
+}
