@@ -29,12 +29,16 @@ body {
     border-radius: 4px;
 }
 
+.btn:visited {
+    color: white;
+}
+
 .logs {
     max-width: 600px;
     margin: 80px auto;
 }
 
-.version {
+.version, .version:visited {
     color: #4E505C;
     font-size: larger;
 }
