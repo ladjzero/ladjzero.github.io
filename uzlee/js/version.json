@@ -1,4 +1,10 @@
 [{
+  "v": "0.8.2",
+  "logs": [
+    "修复了图片不能用图片浏览器打开的问题"
+  ],
+  "url": "http://m.pp.cn/detail.html?appid=7606162&ch_src=pp_dev&ch=default"
+}, {
   "v": "0.8.1",
   "logs": [
     "可以隐藏主题列表顶部的分类 tab",
