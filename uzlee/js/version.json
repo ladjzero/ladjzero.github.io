@@ -1,4 +1,11 @@
 [{
+  "v": "0.8.4",
+  "logs": [
+    "修复 Android N 上不显示论坛导航 tab 的问题",
+    "修复“快速回复”可能消失的问题"
+  ]，
+  "url": "http://m.pp.cn/detail.html?appid=7606162&ch_src=pp_dev&ch=default"
+}, {
   "v": "0.8.3",
   "logs": [
     "修复了图片有时很模糊的问题",
