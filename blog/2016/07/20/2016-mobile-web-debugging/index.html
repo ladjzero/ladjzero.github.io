@@ -1,609 +1,178 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
   
-  
-  <link href="/blog/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/blog/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/blog/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/blog/favicon.ico?v=5.0.1" />
-
-
-
-
-
-
-<meta name="description" content="图片来自网络
-背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。
-  在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
+  <title>2016 移动 web 调试漫游 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="图片来自网络 背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。   在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2016 移动 web 调试漫游">
 <meta property="og:url" content="http://ladjzero.me/2016/07/20/2016-mobile-web-debugging/index.html">
-<meta property="og:site_name" content="ladjzero's blog">
-<meta property="og:description" content="图片来自网络
-背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。
-  在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
-<meta property="og:image" content="http://ladjzero.me/1.png">
-<meta property="og:image" content="http://ladjzero.me/2.png">
-<meta property="og:image" content="http://ladjzero.me/3.png">
-<meta property="og:image" content="http://ladjzero.me/4.png">
-<meta property="og:image" content="http://ladjzero.me/5.png">
-<meta property="og:image" content="http://ladjzero.me/6.png">
-<meta property="og:image" content="http://ladjzero.me/7.png">
-<meta property="og:updated_time" content="2016-07-20T10:03:08.912Z">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="图片来自网络 背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。   在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/1.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/2.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/3.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/4.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/5.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/6.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/7.png">
+<meta property="og:updated_time" content="2018-04-25T15:21:36.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2016 移动 web 调试漫游">
-<meta name="twitter:description" content="图片来自网络
-背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。
-  在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
-<meta name="twitter:image" content="http://ladjzero.me/1.png">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 0,
-      author: 'Author'
-    }
-  };
-</script>
-
-  <title> 2016 移动 web 调试漫游 | ladjzero's blog </title>
+<meta name="twitter:description" content="图片来自网络 背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。   在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
+<meta name="twitter:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
 </head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/blog/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">ladjzero's blog</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle"></p>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
 </div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/">Home</a></li><li><a href="/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-2016-mobile-web-debugging" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2016/07/20/2016-mobile-web-debugging/" class="article-date">
+  <time datetime="2016-07-20T06:27:03.000Z" itemprop="datePublished">2016-07-20</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      2016 移动 web 调试漫游
+    </h1>
   
 
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/blog/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Startseite
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/blog/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archiv
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/blog/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                2016 移动 web 调试漫游
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Veröffentlicht am</span>
-            <time itemprop="dateCreated" datetime="2016-07-20T14:27:03+08:00" content="2016-07-20">
-              2016-07-20
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/blog/2016/07/20/2016-mobile-web-debugging/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/20/2016-mobile-web-debugging/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="1.png" alt="题图"></p>
+	</header>
+	<div class="entry-content">
+		
+    	<img src="/blog/2016/07/20/2016-mobile-web-debugging/1.png" title="题图">
 <p><small>图片来自网络</small></p>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。</p>
 <p>  在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。不仅费时，由于 webapp 往往要覆盖多个平台，需要在多种设备上进行调试，这还让调试工作变得非常地琐碎，难以形成通用的方案。</p>
 <p>  前端开发者在 PC 平台上如鱼得水，然而切换到移动平台，则受到掣肘。本文尝试总结一些简单有效的调试方案，以满足不同场景下调试的需求。</p>
-<h2 id="缩小调试范围"><a href="#缩小调试范围" class="headerlink" title="缩小调试范围"></a>缩小调试范围</h2><p>  笔者认为移动设备上调试的需求主要来自于两点，一是 webapp 使用了（或需要适配）移动平台上独有的特性，例如触摸事件、虚拟键盘遮盖、移动平台独有的 <a href="http://javascript.ruanyifeng.com/bom/mobile.html" target="_blank" rel="external">BOM API</a> 等，二是 webapp 出现 PC 浏览器上不可复现的错误。对于前者，我们似乎是只能迎难而上，但对于后者，则可以尽量避免。</p>
+<h2 id="缩小调试范围"><a href="#缩小调试范围" class="headerlink" title="缩小调试范围"></a>缩小调试范围</h2><p>  笔者认为移动设备上调试的需求主要来自于两点，一是 webapp 使用了（或需要适配）移动平台上独有的特性，例如触摸事件、虚拟键盘遮盖、移动平台独有的 <a href="http://javascript.ruanyifeng.com/bom/mobile.html" target="_blank" rel="noopener">BOM API</a> 等，二是 webapp 出现 PC 浏览器上不可复现的错误。对于前者，我们似乎是只能迎难而上，但对于后者，则可以尽量避免。</p>
 <p>  出现在 PC 上不可复现的错误的主要原因是浏览器的兼容性问题，其中渲染的问题更加突出。得益于 JavaScript 的语言特性和 ES5 广泛实现，借助 babel 等工具，我们可以将由 ES6 ES7 语法编写的代码编译为 ES5 的，从而避免 JavaScript 上的兼容性问题。</p>
-<p><img src="2.png" alt=""></p>
+<img src="/blog/2016/07/20/2016-mobile-web-debugging/2.png">
 <p><small>ES5 support table （来自于 caniuse）</small></p>
 <p>  不过 CSS 很难甚至是不能被通过打补丁（polyfill）和编译的方式来达到完美的兼容性。开发者要对各目标平台的 CSS 支持度充分了解，从中选取广泛支持的特性来进行开发。好在 WebKit 以及衍生品已占据了移动浏览器渲染引擎（WebKit 包括用于布局渲染的 WebCore 和执行 JavaScript 的 JavaScriptCore 两个引擎，本文只取其渲染引擎的含义）的主要份额，使 CSS 特性确定的工作减轻不少。</p>
-<h2 id="主要的移动平台"><a href="#主要的移动平台" class="headerlink" title="主要的移动平台"></a>主要的移动平台</h2><p>  不可否认，现如今 iOS 和 Android 系统统治了智能手机和平板电脑设备，本文所介绍的调试方法也仅针对于这两个系统。iOS 上，浏览器核心随系统一直平滑稳定地升级，<a href="http://moduscreate.com/enable-remote-web-inspector-in-ios-6/" target="_blank" rel="external">iOS 6 以后支持使用 Mac Safari 来进行调试</a>。<a href="https://developer.chrome.com/multidevice/webview/overview" target="_blank" rel="external">Android 从 4.4 开始，其 WebView 基于 Chromium 开发，这不仅带来了 v8 JavaScript 引擎，还带来了可用桌面 Chrome 来调试的能力</a>。</p>
-<p>  除此之外，微信的巨大成功，也让针对于微信的 webapp 开发备受重视。在 iOS 上，微信浏览器与 Safari 表现一致。在 Android 上，它采用的是腾讯浏览服务（TBS），并非系统提供的 WebView 组件。TBS 的初衷也许是解决在官方版本和衍生版本众多的 Android 系统上，WebView 表现一致性的问题。由于不随 Android 系统一起升级，在很长一段时间里，TBS 的 Webkit 版本都落后于系统的 WebView，导致微信常被调侃为“移动端的IE 6”。好在今年 3 月基于 Blink 打造的 <a href="http://bbs.mb.qq.com/thread-1128359-1-1.html" target="_blank" rel="external">TBS 2.0 终于发布</a>，使其支持更新的 CSS 特性。</p>
-<p><img src="3.png" alt=""></p>
-<p><small>渲染引擎和一些 CSS 特性的支持情况（iOS8 搭载 Webkit2 出自 <a href="http://asciiwwdc.com/2014/sessions/206）" target="_blank" rel="external">http://asciiwwdc.com/2014/sessions/206）</a></small></p>
+<h2 id="主要的移动平台"><a href="#主要的移动平台" class="headerlink" title="主要的移动平台"></a>主要的移动平台</h2><p>  不可否认，现如今 iOS 和 Android 系统统治了智能手机和平板电脑设备，本文所介绍的调试方法也仅针对于这两个系统。iOS 上，浏览器核心随系统一直平滑稳定地升级，<a href="http://moduscreate.com/enable-remote-web-inspector-in-ios-6/" target="_blank" rel="noopener">iOS 6 以后支持使用 Mac Safari 来进行调试</a>。<a href="https://developer.chrome.com/multidevice/webview/overview" target="_blank" rel="noopener">Android 从 4.4 开始，其 WebView 基于 Chromium 开发，这不仅带来了 v8 JavaScript 引擎，还带来了可用桌面 Chrome 来调试的能力</a>。</p>
+<p>  除此之外，微信的巨大成功，也让针对于微信的 webapp 开发备受重视。在 iOS 上，微信浏览器与 Safari 表现一致。在 Android 上，它采用的是腾讯浏览服务（TBS），并非系统提供的 WebView 组件。TBS 的初衷也许是解决在官方版本和衍生版本众多的 Android 系统上，WebView 表现一致性的问题。由于不随 Android 系统一起升级，在很长一段时间里，TBS 的 Webkit 版本都落后于系统的 WebView，导致微信常被调侃为“移动端的IE 6”。好在今年 3 月基于 Blink 打造的 <a href="http://bbs.mb.qq.com/thread-1128359-1-1.html" target="_blank" rel="noopener">TBS 2.0 终于发布</a>，使其支持更新的 CSS 特性。</p>
+<img src="/blog/2016/07/20/2016-mobile-web-debugging/3.png">
+<p><small>渲染引擎和一些 CSS 特性的支持情况（iOS8 搭载 Webkit2 出自 <a href="http://asciiwwdc.com/2014/sessions/206）" target="_blank" rel="noopener">http://asciiwwdc.com/2014/sessions/206）</a></small></p>
 <h2 id="调试工具"><a href="#调试工具" class="headerlink" title="调试工具"></a>调试工具</h2><p>  本文仅介绍可以免费下载和使用的工具。</p>
-<p><img src="4.png" alt=""></p>
+<img src="/blog/2016/07/20/2016-mobile-web-debugging/4.png">
 <p><small>调试工具总览</small></p>
-<h3 id="weinre-与-jsconsole"><a href="#weinre-与-jsconsole" class="headerlink" title="weinre 与 jsconsole"></a>weinre 与 jsconsole</h3><p>  <a href="http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html" target="_blank" rel="external">weinre</a> (WEb INspector REmote) 与 <a href="https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging" target="_blank" rel="external">jsconsole</a> 是原理上相似的工具。weinre 复用了 WebKit 的 Web Inspector 的界面代码，有 Safari 和 Chrome 调试器经验的开发者会对此非常熟悉。jsconsole 是一个 JavaScript 的 web 控制台，它能接管控制台的日志输出，也能响应调试服务器发出的求值命令（通过 Server-Send Event 发出），将日志和求值结果通过 xhr 发送到服务器。jsconsole 功能虽然更少，但官方提供了一个开箱即用的线上应用，<a href="http://jsconsole.com/，无需安装任何软件即可开始调试。两者的调试功能都是由" target="_blank" rel="external">http://jsconsole.com/，无需安装任何软件即可开始调试。两者的调试功能都是由</a> JavaScript 编写，都必须把调试服务脚本插入目标页面，使其难以用于线上产品的调试。并且由于运行在浏览器沙盒中，其提供调试能力受到了较大的限制，例如无法查看 httponly 属性的 cookie，和非 xhr 的请求。</p>
-<h3 id="微信-Web-调试工具与-spy-debugger"><a href="#微信-Web-调试工具与-spy-debugger" class="headerlink" title="微信 Web 调试工具与 spy-debugger"></a>微信 Web 调试工具与 spy-debugger</h3><p>  这两者也是类似的工具，都是基于 weinre 开发的。设备连接调试工具提供的代理后访问目标网页，weinre 的调试脚本会被自动注入到 HTML 页面，从而免除了手动注入的麻烦。相比于 weinre 仅能查看 HTTP xhr 请求，利用代理，微信 Web 调试工具提供了查看所有 HTTP 请求的能力。不过由于没有实现 HTTPS 中间人，无法查看 HTTPS 请求。 <a href="https://github.com/wuchangming/spy-debugger" target="_blank" rel="external">spy-debugger</a> 在这些功能之上提供了查看 HTTPS 请求的功能。值得一提的是，微信 Web 调试工具额外提供了调试微信 JSSDK 的能力，不过调试对象并不是真机，需是其提供的浏览器窗口。</p>
+<h3 id="weinre-与-jsconsole"><a href="#weinre-与-jsconsole" class="headerlink" title="weinre 与 jsconsole"></a>weinre 与 jsconsole</h3><p>  <a href="http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html" target="_blank" rel="noopener">weinre</a> (WEb INspector REmote) 与 <a href="https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging" target="_blank" rel="noopener">jsconsole</a> 是原理上相似的工具。weinre 复用了 WebKit 的 Web Inspector 的界面代码，有 Safari 和 Chrome 调试器经验的开发者会对此非常熟悉。jsconsole 是一个 JavaScript 的 web 控制台，它能接管控制台的日志输出，也能响应调试服务器发出的求值命令（通过 Server-Send Event 发出），将日志和求值结果通过 xhr 发送到服务器。jsconsole 功能虽然更少，但官方提供了一个开箱即用的线上应用，<a href="http://jsconsole.com/，无需安装任何软件即可开始调试。两者的调试功能都是由" target="_blank" rel="noopener">http://jsconsole.com/，无需安装任何软件即可开始调试。两者的调试功能都是由</a> JavaScript 编写，都必须把调试服务脚本插入目标页面，使其难以用于线上产品的调试。并且由于运行在浏览器沙盒中，其提供调试能力受到了较大的限制，例如无法查看 httponly 属性的 cookie，和非 xhr 的请求。</p>
+<h3 id="微信-Web-调试工具与-spy-debugger"><a href="#微信-Web-调试工具与-spy-debugger" class="headerlink" title="微信 Web 调试工具与 spy-debugger"></a>微信 Web 调试工具与 spy-debugger</h3><p>  这两者也是类似的工具，都是基于 weinre 开发的。设备连接调试工具提供的代理后访问目标网页，weinre 的调试脚本会被自动注入到 HTML 页面，从而免除了手动注入的麻烦。相比于 weinre 仅能查看 HTTP xhr 请求，利用代理，微信 Web 调试工具提供了查看所有 HTTP 请求的能力。不过由于没有实现 HTTPS 中间人，无法查看 HTTPS 请求。 <a href="https://github.com/wuchangming/spy-debugger" target="_blank" rel="noopener">spy-debugger</a> 在这些功能之上提供了查看 HTTPS 请求的功能。值得一提的是，微信 Web 调试工具额外提供了调试微信 JSSDK 的能力，不过调试对象并不是真机，需是其提供的浏览器窗口。</p>
 <h3 id="Safari-与-Chrome"><a href="#Safari-与-Chrome" class="headerlink" title="Safari 与 Chrome"></a>Safari 与 Chrome</h3><p>  使用 PC 浏览器来调试对应的移动浏览器，你将拥有最佳的调试体验。WebKit 家族的 PC 浏览器都有非常强大的调试工具，其调试移动设备的体验几乎与调试桌面网页无异。Opera 自从将渲染核心从 Presto 切换到 Blink 之后，自家用于调试 Opera Mobile 的 Dragonfly 也被移除了，可见 Opera 对 Webkit 调试工具也是满意的（汗）。</p>
 <p>  Mac Safari 调试 iOS Safari 和 UIWebView 只需经过简单的设置。首先在 iOS 设备上启用 Safari 的 Web 检查器功能（设置&gt;Safari&gt;高级&gt;Web 检查器），再通过 USB 线缆连接到 Mac，然后就能在 Mac Safari 的“开发”菜单中选中该设备来进行调试。如果没有找到“开发”菜单，则需要在 Safari 偏好设置中启用调试功能。调试 UIWebView 的步骤是一样的，但是要求 app 在该 Mac 设备上能被调试，也就是说第三方开发者是不能直接调试微信的 UIWebView 的。</p>
-<p><img src="5.png" alt=""></p>
+<img src="/blog/2016/07/20/2016-mobile-web-debugging/5.png">
 <p><small>Mac Safari 调试 iOS Safari</small></p>
-<p>  Chrome 调试 Chrome for Android 和基于 Chromium 的 WebView 的详情可以在<a href="https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging" target="_blank" rel="external">这里</a>找到。值得一提的是，Chrome 调试支持 Screencast 功能，能够将移动设备上的 Web 视图投射到 Chrome 调试工具中，不过这回降低 webapp 的性能表现。</p>
-<p><img src="6.png" alt=""></p>
+<p>  Chrome 调试 Chrome for Android 和基于 Chromium 的 WebView 的详情可以在<a href="https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging" target="_blank" rel="noopener">这里</a>找到。值得一提的是，Chrome 调试支持 Screencast 功能，能够将移动设备上的 Web 视图投射到 Chrome 调试工具中，不过这回降低 webapp 的性能表现。</p>
+<img src="/blog/2016/07/20/2016-mobile-web-debugging/6.png">
 <p><small>Chrome 调试 Chrome for Android</small></p>
-<p>  使用 Chrome 来调试 iOS 设备也是可行的。利用 google 开发的 <a href="https://github.com/google/ios-webkit-debug-proxy" target="_blank" rel="external">ios-webkit-debug-proxy</a>，把 Safari 的远程调试协议代理到 Chrome DevTools 上，可以由 DevTools 接管几乎所有的调试功能。</p>
-<p><img src="7.png" alt=""></p>
+<p>  使用 Chrome 来调试 iOS 设备也是可行的。利用 google 开发的 <a href="https://github.com/google/ios-webkit-debug-proxy" target="_blank" rel="noopener">ios-webkit-debug-proxy</a>，把 Safari 的远程调试协议代理到 Chrome DevTools 上，可以由 DevTools 接管几乎所有的调试功能。</p>
+<img src="/blog/2016/07/20/2016-mobile-web-debugging/7.png">
 <p><small>Chrome 调试 iOS Safari</small></p>
-<h4 id="Webkit-远程调试协议"><a href="#Webkit-远程调试协议" class="headerlink" title="Webkit 远程调试协议"></a>Webkit 远程调试协议</h4><p>  Safari 和 Chrome 在移动平台上强大的调试能力源自 Webkit 的远程调试协议（remote debugging protocol）。<a href="http://taobaofed.org/blog/2015/11/20/webkit-remote-debug-test/" target="_blank" rel="external">Webkit 的远程调试协议是 Webkit 在 2012 年引入的，目前所有 Webkit 内核的浏览器都支持这一特性</a>。DevTools 通过远程调试协议与目标页面相连，可以获取到 Webkit 内核提供的调试信息，这些信息远比 weinre 等在浏览器沙盒中获取的要准确和丰富。Webkit 远程调试协议与 Chrome DevTools 都是开放的，这让 ios-webkit-debug-proxy， <a href="https://facebook.github.io/react/blog/2014/01/02/react-chrome-developer-tools.html" target="_blank" rel="external">React DevTools</a> 和 <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="external">vue-devtools</a> 等强大且富有想象力的调试工具能成为现实。得益于协议的开放性，其他厂商也对 Webkit 调试表现出积极的兴趣。Firefox 宣布了用于调试 Webkit 内核浏览器的 <a href="https://developer.mozilla.org/en-US/docs/Tools/Valence" target="_blank" rel="external">Valence</a>，不过目前仍处于技术预览版。</p>
-<h3 id="Fiddler"><a href="#Fiddler" class="headerlink" title="Fiddler"></a>Fiddler</h3><p>  Fiddler 是可以运行在 Mac，Linux 和 Windows 上的一个用于 web 调试的代理软件。可以用来查看 HTTP API 访问，AMD 脚本加载，缓存命中等。Fiddler 有丰富的调试功能，其中支持 HTTPS 捕获和篡改请求响应对移动端调试十分有用。使用 HTTPS 捕获功能需要在移动设备上安装 Fiddler 提供的证书，各移动平台的设置方法可在<a href="http://docs.telerik.com/fiddler/configure-fiddler/tasks/configurefiddler" target="_blank" rel="external">这里</a>找到。有时我们需要替换线上产品的某个 js 文件来定位问题，或者伪造 session 来模拟使用场景，Fiddler 的篡改功能就能派上用场，具体的使用细节可以在<a href="http://docs.telerik.com/fiddler/KnowledgeBase/FiddlerScript/ModifyRequestOrResponse" target="_blank" rel="external">这里</a>找到。</p>
+<h4 id="Webkit-远程调试协议"><a href="#Webkit-远程调试协议" class="headerlink" title="Webkit 远程调试协议"></a>Webkit 远程调试协议</h4><p>  Safari 和 Chrome 在移动平台上强大的调试能力源自 Webkit 的远程调试协议（remote debugging protocol）。<a href="http://taobaofed.org/blog/2015/11/20/webkit-remote-debug-test/" target="_blank" rel="noopener">Webkit 的远程调试协议是 Webkit 在 2012 年引入的，目前所有 Webkit 内核的浏览器都支持这一特性</a>。DevTools 通过远程调试协议与目标页面相连，可以获取到 Webkit 内核提供的调试信息，这些信息远比 weinre 等在浏览器沙盒中获取的要准确和丰富。Webkit 远程调试协议与 Chrome DevTools 都是开放的，这让 ios-webkit-debug-proxy， <a href="https://facebook.github.io/react/blog/2014/01/02/react-chrome-developer-tools.html" target="_blank" rel="noopener">React DevTools</a> 和 <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="noopener">vue-devtools</a> 等强大且富有想象力的调试工具能成为现实。得益于协议的开放性，其他厂商也对 Webkit 调试表现出积极的兴趣。Firefox 宣布了用于调试 Webkit 内核浏览器的 <a href="https://developer.mozilla.org/en-US/docs/Tools/Valence" target="_blank" rel="noopener">Valence</a>，不过目前仍处于技术预览版。</p>
+<h3 id="Fiddler"><a href="#Fiddler" class="headerlink" title="Fiddler"></a>Fiddler</h3><p>  Fiddler 是可以运行在 Mac，Linux 和 Windows 上的一个用于 web 调试的代理软件。可以用来查看 HTTP API 访问，AMD 脚本加载，缓存命中等。Fiddler 有丰富的调试功能，其中支持 HTTPS 捕获和篡改请求响应对移动端调试十分有用。使用 HTTPS 捕获功能需要在移动设备上安装 Fiddler 提供的证书，各移动平台的设置方法可在<a href="http://docs.telerik.com/fiddler/configure-fiddler/tasks/configurefiddler" target="_blank" rel="noopener">这里</a>找到。有时我们需要替换线上产品的某个 js 文件来定位问题，或者伪造 session 来模拟使用场景，Fiddler 的篡改功能就能派上用场，具体的使用细节可以在<a href="http://docs.telerik.com/fiddler/KnowledgeBase/FiddlerScript/ModifyRequestOrResponse" target="_blank" rel="noopener">这里</a>找到。</p>
 <h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>  调试运行 iOS &gt;= 6 和 Android &gt;= 4.4 的设备，优先采用 Safari 或 Chrome 进行调试。其余情况，可采用 weinre 及其衍生工具和 jsconsole。Fiddler 可作为这些方案的有效补充。</p>
 
-      
-    </div>
-
-    <div>
-      
-        
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/blog/2015/04/24/async-io-of-nodejs/" rel="next" title="Async IO of Node.js">
-                <i class="fa fa-chevron-left"></i> Async IO of Node.js
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/20/2016-mobile-web-debugging/"
-           data-title="2016 移动 web 调试漫游" data-url="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/">
-      </div>
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
     
-  </div>
-
-
-        </div>
-        
-          
+<nav id="article-nav">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/blog/images/avatar.gif"
-               alt="ladjzero" />
-          <p class="site-author-name" itemprop="name">ladjzero</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/blog/archives">
-              <span class="site-state-item-count">2</span>
-              <span class="site-state-item-name">Artikel</span>
-            </a>
-          </div>
-
-          
-
-          
-
-        </nav>
-
+  
+    <a href="/blog/2015/04/24/async-io-of-nodejs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
         
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缩小调试范围"><span class="nav-number">2.</span> <span class="nav-text">缩小调试范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要的移动平台"><span class="nav-number">3.</span> <span class="nav-text">主要的移动平台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试工具"><span class="nav-number">4.</span> <span class="nav-text">调试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#weinre-与-jsconsole"><span class="nav-number">4.1.</span> <span class="nav-text">weinre 与 jsconsole</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微信-Web-调试工具与-spy-debugger"><span class="nav-number">4.2.</span> <span class="nav-text">微信 Web 调试工具与 spy-debugger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Safari-与-Chrome"><span class="nav-number">4.3.</span> <span class="nav-text">Safari 与 Chrome</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Webkit-远程调试协议"><span class="nav-number">4.3.1.</span> <span class="nav-text">Webkit 远程调试协议</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiddler"><span class="nav-number">4.4.</span> <span class="nav-text">Fiddler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">5.</span> <span class="nav-text">结论</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
+          Async IO of Node.js
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
+    </a>
   
-  &copy; 
-  <span itemprop="copyrightYear">2016</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">ladjzero</span>
-</div>
+</nav>
 
-<div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
-</div>
+  
+</article>
 
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
 
-        
 
-        
-      </div>
-    </footer>
 
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2018 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
   </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/blog/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/blog/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/blog/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/blog/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/blog/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/blog/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/blog/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/blog/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/blog/js/src/post-details.js?v=5.0.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=5.0.1"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"ladjzero"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-  
-
-
-
-
-
-  
-  
-  
-
-  
-
-  
-
 </body>
 </html>

@@ -3,7 +3,7 @@ title: "2016 移动 web 调试漫游"
 date: 2016-07-20 14:27:03
 tags:
 ---
-![题图](1.png)
+{% asset_img 1.png 题图 %}
 
 <small>图片来自网络</small>
 
@@ -21,7 +21,7 @@ tags:
 
   出现在 PC 上不可复现的错误的主要原因是浏览器的兼容性问题，其中渲染的问题更加突出。得益于 JavaScript 的语言特性和 ES5 广泛实现，借助 babel 等工具，我们可以将由 ES6 ES7 语法编写的代码编译为 ES5 的，从而避免 JavaScript 上的兼容性问题。
 
-![](2.png)
+{% asset_img 2.png %}
 
 <small>ES5 support table （来自于 caniuse）</small>
 
@@ -33,7 +33,7 @@ tags:
 
   除此之外，微信的巨大成功，也让针对于微信的 webapp 开发备受重视。在 iOS 上，微信浏览器与 Safari 表现一致。在 Android 上，它采用的是腾讯浏览服务（TBS），并非系统提供的 WebView 组件。TBS 的初衷也许是解决在官方版本和衍生版本众多的 Android 系统上，WebView 表现一致性的问题。由于不随 Android 系统一起升级，在很长一段时间里，TBS 的 Webkit 版本都落后于系统的 WebView，导致微信常被调侃为“移动端的IE 6”。好在今年 3 月基于 Blink 打造的 [TBS 2.0 终于发布][3]，使其支持更新的 CSS 特性。
 
-![](3.png)
+{% asset_img 3.png %}
 
 <small>渲染引擎和一些 CSS 特性的支持情况（iOS8 搭载 Webkit2 出自 http://asciiwwdc.com/2014/sessions/206）</small>
 
@@ -41,7 +41,7 @@ tags:
 
   本文仅介绍可以免费下载和使用的工具。
 
-![](4.png)
+{% asset_img 4.png %}
 
 <small>调试工具总览</small>
   
@@ -59,19 +59,19 @@ tags:
 
   Mac Safari 调试 iOS Safari 和 UIWebView 只需经过简单的设置。首先在 iOS 设备上启用 Safari 的 Web 检查器功能（设置>Safari>高级>Web 检查器），再通过 USB 线缆连接到 Mac，然后就能在 Mac Safari 的“开发”菜单中选中该设备来进行调试。如果没有找到“开发”菜单，则需要在 Safari 偏好设置中启用调试功能。调试 UIWebView 的步骤是一样的，但是要求 app 在该 Mac 设备上能被调试，也就是说第三方开发者是不能直接调试微信的 UIWebView 的。
 
-![](5.png)
+{% asset_img 5.png %}
 
 <small>Mac Safari 调试 iOS Safari</small>
 
   Chrome 调试 Chrome for Android 和基于 Chromium 的 WebView 的详情可以在[这里][7]找到。值得一提的是，Chrome 调试支持 Screencast 功能，能够将移动设备上的 Web 视图投射到 Chrome 调试工具中，不过这回降低 webapp 的性能表现。
 
-![](6.png)
+{% asset_img 6.png %}
 
 <small>Chrome 调试 Chrome for Android</small>
 
   使用 Chrome 来调试 iOS 设备也是可行的。利用 google 开发的 [ios-webkit-debug-proxy][5]，把 Safari 的远程调试协议代理到 Chrome DevTools 上，可以由 DevTools 接管几乎所有的调试功能。
 
-![](7.png)
+{% asset_img 7.png %}
 
 <small>Chrome 调试 iOS Safari</small>
 
