@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/5.png">
 <meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/6.png">
 <meta property="og:image" content="http://ladjzero.me/blog/2016/07/20/2016-mobile-web-debugging/7.png">
-<meta property="og:updated_time" content="2018-06-12T16:12:19.554Z">
+<meta property="og:updated_time" content="2018-06-12T16:47:24.345Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2016 移动 web 调试漫游">
 <meta name="twitter:description" content="图片来自网络 背景  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。   在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。">
@@ -84,6 +84,7 @@
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。</p>
 <p>  在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。不仅费时，由于 webapp 往往要覆盖多个平台，需要在多种设备上进行调试，这还让调试工作变得非常地琐碎，难以形成通用的方案。</p>
 <p>  前端开发者在 PC 平台上如鱼得水，然而切换到移动平台，则受到掣肘。本文尝试总结一些简单有效的调试方案，以满足不同场景下调试的需求。</p>
+<a id="more"></a>
 <h2 id="缩小调试范围"><a href="#缩小调试范围" class="headerlink" title="缩小调试范围"></a>缩小调试范围</h2><p>  笔者认为移动设备上调试的需求主要来自于两点，一是 webapp 使用了（或需要适配）移动平台上独有的特性，例如触摸事件、虚拟键盘遮盖、移动平台独有的 <a href="http://javascript.ruanyifeng.com/bom/mobile.html" target="_blank" rel="noopener">BOM API</a> 等，二是 webapp 出现 PC 浏览器上不可复现的错误。对于前者，我们似乎是只能迎难而上，但对于后者，则可以尽量避免。</p>
 <p>  出现在 PC 上不可复现的错误的主要原因是浏览器的兼容性问题，其中渲染的问题更加突出。得益于 JavaScript 的语言特性和 ES5 广泛实现，借助 babel 等工具，我们可以将由 ES6 ES7 语法编写的代码编译为 ES5 的，从而避免 JavaScript 上的兼容性问题。</p>
 <img src="/blog/2016/07/20/2016-mobile-web-debugging/2.png">

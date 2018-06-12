@@ -12,6 +12,7 @@ Node是一个Javascript运行环境，它实现了全异步的IO，使Javascript
 chrono = time
 synchronous = existing or happening at the same time
 
+<!--more-->
 ## 不同语境下的“同步”是什么意思？
 
 手机联系人同步，同步电路，同步编程语言，同步IO，同步锁，“画面和字幕不同步啊！”，这些“同步”究竟到底是什么意思？

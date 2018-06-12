@@ -69,7 +69,7 @@
 	</header>
 	<div class="entry-content">
 		
-    	<p>这是一个团队内部的分享，介绍了热更新/热插拔的优点以及所需的成本。主要通过分析 Node.js 和 Webpack 的热更新机制，总结出实现热更新/热插拔架构需要这些特性</p>
+			<p>这是一个团队内部的分享，介绍了热更新/热插拔的优点以及所需的成本。主要通过分析 Node.js 和 Webpack 的热更新机制，总结出实现热更新/热插拔架构需要这些特性</p>
 <ol>
 <li>组件系统，组件作为热更新的最小单位</li>
 <li>管理热更新的运行时程序，用于检测更新，加载新组件，替换和释放旧组件</li>
@@ -81,14 +81,11 @@
 <li>组件需要有“纯”或“无状态”或“副作用可撤销”的特性</li>
 <li>合理的组件编排模型（怎样才算合理？没有深入讨论）</li>
 </ol>
-
-
-	<div class="row">
-    <embed src="/assets/hotswapping.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+			
+				<p class="article-more-link">
+					<a href="/blog/2018/01/09/hot-swapping/#more">Read More</a>
+				</p>
+      
     
 	</div>
 	<footer class="entry-footer">
@@ -134,15 +131,12 @@
 	</header>
 	<div class="entry-content">
 		
-    	<p>这是一个团队内部的分享，主要回顾了 CSS 的诞生和成长的历史，以及应对更加复杂的 webapp，CSS 及相关工具和语言的发展。<br>聊到了当前较为热门的 CSS in JS 技术，为团队提供了新的技术选择。</p>
-
-
-	<div class="row">
-    <embed src="/assets/a_brief_history_of_css.pdf" width="100%" height="550" type="application/pdf">
-	</div>
-
-
-
+			<p>这是一个团队内部的分享，主要回顾了 CSS 的诞生和成长的历史，以及应对更加复杂的 webapp，CSS 及相关工具和语言的发展。<br>聊到了当前较为热门的 CSS in JS 技术，为团队提供了新的技术选择。</p>
+			
+				<p class="article-more-link">
+					<a href="/blog/2017/12/05/a-brief-history-of-css/#more">Read More</a>
+				</p>
+      
     
 	</div>
 	<footer class="entry-footer">
@@ -188,39 +182,16 @@
 	</header>
 	<div class="entry-content">
 		
-    	<img src="/blog/2016/07/20/2016-mobile-web-debugging/1.png" title="题图">
+			<img src="/blog/2016/07/20/2016-mobile-web-debugging/1.png" title="题图">
 <p><small>图片来自网络</small></p>
 <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>  如今在移动平台上，web/hybrid app 不断向 native app 发起挑战。出于解放生产力和降低成本的考量，越来越多的团队开始尝试以 web 技术来开发应用。</p>
 <p>  在各移动平台上，native app 开发都得到了官方的最大支持，工具链非常成熟。尽管如此，native app 开发者往往都不喜欢真机调试，因为它非常费时。在 webapp 开发这边，情况更加糟糕。不仅费时，由于 webapp 往往要覆盖多个平台，需要在多种设备上进行调试，这还让调试工作变得非常地琐碎，难以形成通用的方案。</p>
 <p>  前端开发者在 PC 平台上如鱼得水，然而切换到移动平台，则受到掣肘。本文尝试总结一些简单有效的调试方案，以满足不同场景下调试的需求。</p>
-<h2 id="缩小调试范围"><a href="#缩小调试范围" class="headerlink" title="缩小调试范围"></a>缩小调试范围</h2><p>  笔者认为移动设备上调试的需求主要来自于两点，一是 webapp 使用了（或需要适配）移动平台上独有的特性，例如触摸事件、虚拟键盘遮盖、移动平台独有的 <a href="http://javascript.ruanyifeng.com/bom/mobile.html" target="_blank" rel="noopener">BOM API</a> 等，二是 webapp 出现 PC 浏览器上不可复现的错误。对于前者，我们似乎是只能迎难而上，但对于后者，则可以尽量避免。</p>
-<p>  出现在 PC 上不可复现的错误的主要原因是浏览器的兼容性问题，其中渲染的问题更加突出。得益于 JavaScript 的语言特性和 ES5 广泛实现，借助 babel 等工具，我们可以将由 ES6 ES7 语法编写的代码编译为 ES5 的，从而避免 JavaScript 上的兼容性问题。</p>
-<img src="/blog/2016/07/20/2016-mobile-web-debugging/2.png">
-<p><small>ES5 support table （来自于 caniuse）</small></p>
-<p>  不过 CSS 很难甚至是不能被通过打补丁（polyfill）和编译的方式来达到完美的兼容性。开发者要对各目标平台的 CSS 支持度充分了解，从中选取广泛支持的特性来进行开发。好在 WebKit 以及衍生品已占据了移动浏览器渲染引擎（WebKit 包括用于布局渲染的 WebCore 和执行 JavaScript 的 JavaScriptCore 两个引擎，本文只取其渲染引擎的含义）的主要份额，使 CSS 特性确定的工作减轻不少。</p>
-<h2 id="主要的移动平台"><a href="#主要的移动平台" class="headerlink" title="主要的移动平台"></a>主要的移动平台</h2><p>  不可否认，现如今 iOS 和 Android 系统统治了智能手机和平板电脑设备，本文所介绍的调试方法也仅针对于这两个系统。iOS 上，浏览器核心随系统一直平滑稳定地升级，<a href="http://moduscreate.com/enable-remote-web-inspector-in-ios-6/" target="_blank" rel="noopener">iOS 6 以后支持使用 Mac Safari 来进行调试</a>。<a href="https://developer.chrome.com/multidevice/webview/overview" target="_blank" rel="noopener">Android 从 4.4 开始，其 WebView 基于 Chromium 开发，这不仅带来了 v8 JavaScript 引擎，还带来了可用桌面 Chrome 来调试的能力</a>。</p>
-<p>  除此之外，微信的巨大成功，也让针对于微信的 webapp 开发备受重视。在 iOS 上，微信浏览器与 Safari 表现一致。在 Android 上，它采用的是腾讯浏览服务（TBS），并非系统提供的 WebView 组件。TBS 的初衷也许是解决在官方版本和衍生版本众多的 Android 系统上，WebView 表现一致性的问题。由于不随 Android 系统一起升级，在很长一段时间里，TBS 的 Webkit 版本都落后于系统的 WebView，导致微信常被调侃为“移动端的IE 6”。好在今年 3 月基于 Blink 打造的 <a href="http://bbs.mb.qq.com/thread-1128359-1-1.html" target="_blank" rel="noopener">TBS 2.0 终于发布</a>，使其支持更新的 CSS 特性。</p>
-<img src="/blog/2016/07/20/2016-mobile-web-debugging/3.png">
-<p><small>渲染引擎和一些 CSS 特性的支持情况（iOS8 搭载 Webkit2 出自 <a href="http://asciiwwdc.com/2014/sessions/206）" target="_blank" rel="noopener">http://asciiwwdc.com/2014/sessions/206）</a></small></p>
-<h2 id="调试工具"><a href="#调试工具" class="headerlink" title="调试工具"></a>调试工具</h2><p>  本文仅介绍可以免费下载和使用的工具。</p>
-<img src="/blog/2016/07/20/2016-mobile-web-debugging/4.png">
-<p><small>调试工具总览</small></p>
-<h3 id="weinre-与-jsconsole"><a href="#weinre-与-jsconsole" class="headerlink" title="weinre 与 jsconsole"></a>weinre 与 jsconsole</h3><p>  <a href="http://people.apache.org/~pmuellr/weinre/docs/latest/Home.html" target="_blank" rel="noopener">weinre</a> (WEb INspector REmote) 与 <a href="https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging" target="_blank" rel="noopener">jsconsole</a> 是原理上相似的工具。weinre 复用了 WebKit 的 Web Inspector 的界面代码，有 Safari 和 Chrome 调试器经验的开发者会对此非常熟悉。jsconsole 是一个 JavaScript 的 web 控制台，它能接管控制台的日志输出，也能响应调试服务器发出的求值命令（通过 Server-Send Event 发出），将日志和求值结果通过 xhr 发送到服务器。jsconsole 功能虽然更少，但官方提供了一个开箱即用的线上应用，<a href="http://jsconsole.com/，无需安装任何软件即可开始调试。两者的调试功能都是由" target="_blank" rel="noopener">http://jsconsole.com/，无需安装任何软件即可开始调试。两者的调试功能都是由</a> JavaScript 编写，都必须把调试服务脚本插入目标页面，使其难以用于线上产品的调试。并且由于运行在浏览器沙盒中，其提供调试能力受到了较大的限制，例如无法查看 httponly 属性的 cookie，和非 xhr 的请求。</p>
-<h3 id="微信-Web-调试工具与-spy-debugger"><a href="#微信-Web-调试工具与-spy-debugger" class="headerlink" title="微信 Web 调试工具与 spy-debugger"></a>微信 Web 调试工具与 spy-debugger</h3><p>  这两者也是类似的工具，都是基于 weinre 开发的。设备连接调试工具提供的代理后访问目标网页，weinre 的调试脚本会被自动注入到 HTML 页面，从而免除了手动注入的麻烦。相比于 weinre 仅能查看 HTTP xhr 请求，利用代理，微信 Web 调试工具提供了查看所有 HTTP 请求的能力。不过由于没有实现 HTTPS 中间人，无法查看 HTTPS 请求。 <a href="https://github.com/wuchangming/spy-debugger" target="_blank" rel="noopener">spy-debugger</a> 在这些功能之上提供了查看 HTTPS 请求的功能。值得一提的是，微信 Web 调试工具额外提供了调试微信 JSSDK 的能力，不过调试对象并不是真机，需是其提供的浏览器窗口。</p>
-<h3 id="Safari-与-Chrome"><a href="#Safari-与-Chrome" class="headerlink" title="Safari 与 Chrome"></a>Safari 与 Chrome</h3><p>  使用 PC 浏览器来调试对应的移动浏览器，你将拥有最佳的调试体验。WebKit 家族的 PC 浏览器都有非常强大的调试工具，其调试移动设备的体验几乎与调试桌面网页无异。Opera 自从将渲染核心从 Presto 切换到 Blink 之后，自家用于调试 Opera Mobile 的 Dragonfly 也被移除了，可见 Opera 对 Webkit 调试工具也是满意的（汗）。</p>
-<p>  Mac Safari 调试 iOS Safari 和 UIWebView 只需经过简单的设置。首先在 iOS 设备上启用 Safari 的 Web 检查器功能（设置&gt;Safari&gt;高级&gt;Web 检查器），再通过 USB 线缆连接到 Mac，然后就能在 Mac Safari 的“开发”菜单中选中该设备来进行调试。如果没有找到“开发”菜单，则需要在 Safari 偏好设置中启用调试功能。调试 UIWebView 的步骤是一样的，但是要求 app 在该 Mac 设备上能被调试，也就是说第三方开发者是不能直接调试微信的 UIWebView 的。</p>
-<img src="/blog/2016/07/20/2016-mobile-web-debugging/5.png">
-<p><small>Mac Safari 调试 iOS Safari</small></p>
-<p>  Chrome 调试 Chrome for Android 和基于 Chromium 的 WebView 的详情可以在<a href="https://developers.google.com/web/tools/chrome-devtools/debug/remote-debugging/remote-debugging" target="_blank" rel="noopener">这里</a>找到。值得一提的是，Chrome 调试支持 Screencast 功能，能够将移动设备上的 Web 视图投射到 Chrome 调试工具中，不过这回降低 webapp 的性能表现。</p>
-<img src="/blog/2016/07/20/2016-mobile-web-debugging/6.png">
-<p><small>Chrome 调试 Chrome for Android</small></p>
-<p>  使用 Chrome 来调试 iOS 设备也是可行的。利用 google 开发的 <a href="https://github.com/google/ios-webkit-debug-proxy" target="_blank" rel="noopener">ios-webkit-debug-proxy</a>，把 Safari 的远程调试协议代理到 Chrome DevTools 上，可以由 DevTools 接管几乎所有的调试功能。</p>
-<img src="/blog/2016/07/20/2016-mobile-web-debugging/7.png">
-<p><small>Chrome 调试 iOS Safari</small></p>
-<h4 id="Webkit-远程调试协议"><a href="#Webkit-远程调试协议" class="headerlink" title="Webkit 远程调试协议"></a>Webkit 远程调试协议</h4><p>  Safari 和 Chrome 在移动平台上强大的调试能力源自 Webkit 的远程调试协议（remote debugging protocol）。<a href="http://taobaofed.org/blog/2015/11/20/webkit-remote-debug-test/" target="_blank" rel="noopener">Webkit 的远程调试协议是 Webkit 在 2012 年引入的，目前所有 Webkit 内核的浏览器都支持这一特性</a>。DevTools 通过远程调试协议与目标页面相连，可以获取到 Webkit 内核提供的调试信息，这些信息远比 weinre 等在浏览器沙盒中获取的要准确和丰富。Webkit 远程调试协议与 Chrome DevTools 都是开放的，这让 ios-webkit-debug-proxy， <a href="https://facebook.github.io/react/blog/2014/01/02/react-chrome-developer-tools.html" target="_blank" rel="noopener">React DevTools</a> 和 <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="noopener">vue-devtools</a> 等强大且富有想象力的调试工具能成为现实。得益于协议的开放性，其他厂商也对 Webkit 调试表现出积极的兴趣。Firefox 宣布了用于调试 Webkit 内核浏览器的 <a href="https://developer.mozilla.org/en-US/docs/Tools/Valence" target="_blank" rel="noopener">Valence</a>，不过目前仍处于技术预览版。</p>
-<h3 id="Fiddler"><a href="#Fiddler" class="headerlink" title="Fiddler"></a>Fiddler</h3><p>  Fiddler 是可以运行在 Mac，Linux 和 Windows 上的一个用于 web 调试的代理软件。可以用来查看 HTTP API 访问，AMD 脚本加载，缓存命中等。Fiddler 有丰富的调试功能，其中支持 HTTPS 捕获和篡改请求响应对移动端调试十分有用。使用 HTTPS 捕获功能需要在移动设备上安装 Fiddler 提供的证书，各移动平台的设置方法可在<a href="http://docs.telerik.com/fiddler/configure-fiddler/tasks/configurefiddler" target="_blank" rel="noopener">这里</a>找到。有时我们需要替换线上产品的某个 js 文件来定位问题，或者伪造 session 来模拟使用场景，Fiddler 的篡改功能就能派上用场，具体的使用细节可以在<a href="http://docs.telerik.com/fiddler/KnowledgeBase/FiddlerScript/ModifyRequestOrResponse" target="_blank" rel="noopener">这里</a>找到。</p>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>  调试运行 iOS &gt;= 6 和 Android &gt;= 4.4 的设备，优先采用 Safari 或 Chrome 进行调试。其余情况，可采用 weinre 及其衍生工具和 jsconsole。Fiddler 可作为这些方案的有效补充。</p>
-
+			
+				<p class="article-more-link">
+					<a href="/blog/2016/07/20/2016-mobile-web-debugging/#more">Read More</a>
+				</p>
+      
     
 	</div>
 	<footer class="entry-footer">
@@ -266,74 +237,15 @@
 	</header>
 	<div class="entry-content">
 		
-    	<h1 id="Node和异步IO是什么？"><a href="#Node和异步IO是什么？" class="headerlink" title="Node和异步IO是什么？"></a>Node和异步IO是什么？</h1><h2 id="什么是Node"><a href="#什么是Node" class="headerlink" title="什么是Node"></a>什么是Node</h2><p>Node是一个Javascript运行环境，它实现了全异步的IO，使Javascript成为了一个通用编程语言。</p>
+			<h1 id="Node和异步IO是什么？"><a href="#Node和异步IO是什么？" class="headerlink" title="Node和异步IO是什么？"></a>Node和异步IO是什么？</h1><h2 id="什么是Node"><a href="#什么是Node" class="headerlink" title="什么是Node"></a>什么是Node</h2><p>Node是一个Javascript运行环境，它实现了全异步的IO，使Javascript成为了一个通用编程语言。</p>
 <h2 id="同步-synchronous"><a href="#同步-synchronous" class="headerlink" title="同步 synchronous"></a>同步 synchronous</h2><blockquote>
 <p>syn = together (syndrome 综合症，syntax 语法：放到一起并保持顺序排列和文法)<br>chrono = time<br>synchronous = existing or happening at the same time</p>
 </blockquote>
-<h2 id="不同语境下的“同步”是什么意思？"><a href="#不同语境下的“同步”是什么意思？" class="headerlink" title="不同语境下的“同步”是什么意思？"></a>不同语境下的“同步”是什么意思？</h2><p>手机联系人同步，同步电路，同步编程语言，同步IO，同步锁，“画面和字幕不同步啊！”，这些“同步”究竟到底是什么意思？</p>
-<p>名，形容词 -&gt; 动词，使…变得同时存在，使…同时发生</p>
-<ul>
-<li>要理解同步要有时间轴的概念，就如视频的时间轴，画面和字幕播放同时进行，在某一时刻，画面和字幕的表达一致，就是同步的。</li>
-<li>联系人同步，让同一时刻不一样的两处的联系人变得一样。</li>
-<li>交响乐演奏中，指挥家协调所有演奏者的演奏步调，不能有人过快和过慢。</li>
-<li>同步电路，在时钟控制下，同时更新所有路径状态的电路。</li>
-</ul>
-<p><strong>异步 = !同步</strong></p>
-<h2 id="什么是IO"><a href="#什么是IO" class="headerlink" title="什么是IO"></a>什么是IO</h2><p>程序员面对的IO设备只是一些软件接口，可以简单把IO过程看作</p>
-<blockquote>
-<p>IO控制器Buffer <--> 内核Buffer <--> 用户Buffer</--></--></p>
-</blockquote>
-<p>之间的数据流动过程。</p>
-<h2 id="不同的角色对于IO的感觉是不一样的"><a href="#不同的角色对于IO的感觉是不一样的" class="headerlink" title="不同的角色对于IO的感觉是不一样的"></a>不同的角色对于IO的感觉是不一样的</h2><ul>
-<li>对于IO控制器开发者，面对的是逻辑电路、IC接口。</li>
-<li>对于在内核态编程的开发者（IO驱动开发者），面对的是IO控制器接口。</li>
-<li>对于在用户态编程的开发者，只需要面对OS的IO接口，open，read，epoll，file system，socket。</li>
-<li>对于在虚拟机上编程的开发者，面对的是虚拟机提供的IO接口，更加抽象的stream等。</li>
-<li>Node提供了全异步的IO接口。</li>
-</ul>
-<h2 id="同步与异步IO"><a href="#同步与异步IO" class="headerlink" title="同步与异步IO"></a>同步与异步IO</h2><ul>
-<li>是否立即响应？<blockquote>
-<p>阻塞、非阻塞IO。<br>非阻塞IO不配合多路复用的话，不如不用。</p>
-</blockquote>
-</li>
-<li>同步IO，IO请求到响应这段时间，IO调用代码和IO接口都为此次IO操作负责，就像打电话一样，双方同时维持会话，直到通话结束。</li>
-<li>异步IO，IO请求到响应这段时间，IO调用代码已经不为此次IO操作负责了，就像发短信一样，会话并没有保持。</li>
-<li>异步IO都是指异步非阻塞IO，不存在异步阻塞IO。<blockquote>
-<p>POSIX定义的异步IO要求不能有任何阻塞，但具体实现上都免不了内核空间到用户空间数据拷贝的阻塞，Direct IO还存在实践上的问题，较少使用。</p>
-</blockquote>
-</li>
-<li>异步IO在<strong>内核</strong>上的实现有Linux 2.6.22+的AIO（应该是最理想的IO，最native的），Windows的IOCP（由内核线程模拟的异步IO，支持socket，文件，pipe）。</li>
-<li>异步IO在<strong>用户态</strong>上的实现有Glibc AIO，libeio（由libev作者开发）。<blockquote>
-<p>libeio对于sokect，采用的是OS提供的非阻塞IO，对于文件，采用的是阻塞IO，多路复用（epoll等）是不能用于文件的，Linux AIO只适用于文件。<br>Node使用的libuv是建造在libeio和IOCP之上的，没有使用Linux AIO。</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="为什么要把Node和异步IO一起谈？"><a href="#为什么要把Node和异步IO一起谈？" class="headerlink" title="为什么要把Node和异步IO一起谈？"></a>为什么要把Node和异步IO一起谈？</h1><p>Node强制使用异步IO，使用Node就无法回避异步IO的问题。异步编程具有感染性，会导致关联调用的代码都会变成异步（电路上也是），异步IO的调用会导致几乎所有逻辑都会变成异步逻辑。</p>
-<h2 id="事件循环-Event-Loop"><a href="#事件循环-Event-Loop" class="headerlink" title="事件循环 Event Loop"></a>事件循环 Event Loop</h2><p>在同步系统中，事件驱动的实现<strong>必然</strong>是通过 工作线程 + 事件循环。<br>可以简单把事件循环看作</p>
-<pre><code>while (true) {
-/* scan and handle events */
-}
-</code></pre><p>的结构，为了保证新产生的事件尽早被发现，handle代码往往会在 工作线程 中异步执行。</p>
-<p>可以通过CPU的中断处理来理解事件循环。</p>
-<blockquote>
-<p>外部事件在什么时候都可以设置中断标志<br>CPU指令周期开始<br>CPU检查中断标志<br>如果有中断，进入对应的处理方法<br>如果没有，CPU继续之前的工作</p>
-</blockquote>
-<h2 id="单线程"><a href="#单线程" class="headerlink" title="单线程"></a>单线程</h2><p>Node本身是多线程的</p>
-<blockquote>
-<p>libuv的event loop可以视为主线程<br>所有的IO请求会被放到线程池执行<br>Javascript代码会在V8线程中执行</p>
-</blockquote>
-<p>所谓的单线程是指，所有JavaScript永远是在<strong>单线程</strong>中运行的。</p>
-<h2 id="多线程-同步IO-的问题"><a href="#多线程-同步IO-的问题" class="headerlink" title="多线程+同步IO 的问题"></a>多线程+同步IO 的问题</h2><p>线程由OS来调度，调度时机不受控制，访问临界资源需要同步控制（前提是多个任务有共享状态的需求）。<br>就是线程越多，进度状态越多越复杂，同步控制越来越难，加锁越来越难，调试也越来越难。（漏水的桶，补也补不玩）<br>多线程可能不是应对并发足够好的抽象。<br>Twisted的作者最初用这种模型来开发游戏（Java），放弃后创造了Twisted。</p>
-<p>事件驱动模型能将开发者从处理线程同步维护中解放出来，专注于程序逻辑的开发。</p>
-<h2 id="如何调度"><a href="#如何调度" class="headerlink" title="如何调度"></a>如何调度</h2><p>JavaScript部分的代码在单线程中运行，只能<strong>协作调度</strong>，阻塞的js代码会冻结event loop，必须由开发者来控制是否应该让出event loop（nextTick）。<br>IO调用完全由OS提供的抢占式的调度。保证event loop不会被冻结。<br>Node一个比较大的问题就在这里，重计算会导致event loop效率底下，并发能力下降。（今后貌似会有协程的加入）</p>
-<h2 id="语言特性"><a href="#语言特性" class="headerlink" title="语言特性"></a>语言特性</h2><p>JavaScript在语言本身上非常适合异步编程，因为它诞生就为UI编程。<br>闭包使异步编程体验非常愉悦。<strong>stackless</strong></p>
-<h2 id="一些有关联的项目的诞生点"><a href="#一些有关联的项目的诞生点" class="headerlink" title="一些有关联的项目的诞生点"></a>一些有关联的项目的诞生点</h2><p>1997年，Netscape打算使用Java构建新的浏览器，最终这个项目失败了，Javascript引擎Rhino作为项目遗产而诞生。<br>2002年，Linux 2.5.44 epoll。<br>2002年，Java NIO。<br>2002年，Python Twisted诞生。<br>2004年，Nginx诞生，C编写的事件驱动的服务器。<br>2009年，Node诞生。<br>2011年，Netty诞生，Java NIO + 事件驱动。<br>2012年，基于Rhino，提供BIO和AIO的Javascript运行环境Ringo诞生。</p>
-<h1 id="Node-js的异步IO对我们有什么用？应该如何使用？"><a href="#Node-js的异步IO对我们有什么用？应该如何使用？" class="headerlink" title="Node.js的异步IO对我们有什么用？应该如何使用？"></a>Node.js的异步IO对我们有什么用？应该如何使用？</h1><h2 id="我们的目标，快！快！快！"><a href="#我们的目标，快！快！快！" class="headerlink" title="我们的目标，快！快！快！"></a>我们的目标，快！快！快！</h2><p>缩短运算时间，增大系统吞吐量，高并发！</p>
-<h2 id="调度模型的变化"><a href="#调度模型的变化" class="headerlink" title="调度模型的变化"></a>调度模型的变化</h2><p>不再是抢占调度，所以开发者必须注意任务的执行时间不宜太长。别使用阻塞IO</p>
-<h2 id="为什么不是一开始就是异步编程"><a href="#为什么不是一开始就是异步编程" class="headerlink" title="为什么不是一开始就是异步编程"></a>为什么不是一开始就是异步编程</h2><p>大家在生活中能够轻易处理同步和异步的事情，但是在编程中，往往觉得异步编程更难。<br>我觉得主要原因是编程学习一开始就是采取同步思维的，汇编，C，Java，多是如此。事件驱动的异步也都是模拟出来的，都是建立在同步编程的基础之上。归根结底还是因为计算机系统一开始就是同步的系统，逻辑电路一开始就是同步时钟驱动的电路。同步编程是根深蒂固的。<br>如果CPU一开始就是构建在异步电路之上的，或许就是另一番景象了。<br>异步电路更加难设计。<br>异步CPU也在设计开发中。</p>
-<h2 id="事件驱动难以调试"><a href="#事件驱动难以调试" class="headerlink" title="事件驱动难以调试"></a>事件驱动难以调试</h2><p>事件本身就是系统解耦的方式。</p>
-<h2 id="一切（绝大部分？）IO都是流"><a href="#一切（绝大部分？）IO都是流" class="headerlink" title="一切（绝大部分？）IO都是流"></a>一切（绝大部分？）IO都是流</h2><p>Node对IO做了非常好的stream抽象，stream都可以pipe，stream里可以流buffer，string，object。</p>
-
+			
+				<p class="article-more-link">
+					<a href="/blog/2015/04/24/async-io-of-nodejs/#more">Read More</a>
+				</p>
+      
     
 	</div>
 	<footer class="entry-footer">
