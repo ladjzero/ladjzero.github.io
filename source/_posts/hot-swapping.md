@@ -16,5 +16,4 @@ tags:
   2. 组件需要有“纯”或“无状态”或“副作用可撤销”的特性
   3. 合理的组件编排模型（怎样才算合理？没有深入讨论）
 
-<!--more-->
-{% pdf /assets/hotswapping.pdf %}
+[hotswapping.pdf](/assets/hotswapping.pdf)
