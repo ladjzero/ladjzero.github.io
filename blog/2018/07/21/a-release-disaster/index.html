@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>墨菲定律与混沌理论与线上事故 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="“代码中错误的气味”与“环境一致性”与“发布灾难”，记录一次严重的线上事故。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="墨菲定律与混沌理论与线上事故">
+<meta property="og:url" content="http://ladjzero.me/2018/07/21/a-release-disaster/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="“代码中错误的气味”与“环境一致性”与“发布灾难”，记录一次严重的线上事故。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-07-21T05:51:55.882Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="墨菲定律与混沌理论与线上事故">
+<meta name="twitter:description" content="“代码中错误的气味”与“环境一致性”与“发布灾难”，记录一次严重的线上事故。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-a-release-disaster" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2018/07/21/a-release-disaster/" class="article-date">
+  <time datetime="2018-07-20T16:00:00.000Z" itemprop="datePublished">2018-07-21</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      墨菲定律与混沌理论与线上事故
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>“代码中错误的气味”与“环境一致性”与“发布灾难”，记录一次严重的线上事故。</p>
+<a id="more"></a>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>主导的项目在最近一次发布中，接连出现线上的灾难性问题。导致急忙回退和重新发布。由于回退和发布又带来一系列连锁反应。<br>发布当日，线上出现了两个在测试环境无法复现的严重问题。一是一个核心接口有概率报错，二是 login 无法正常工作。形势非常严峻。<br>在当日和次日紧急处理后，重新发布了几次，有导致部分用户打开页面白屏。形势更加严峻了。<br>一系列问题发生在整个行业寒冬中（P2P 各种爆雷跑路），用户笼罩在各种猜疑的乌云中，这些线上问题更是加重了他们的顾虑。形势实在是到了最危急的时刻。</p>
+<h2 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h2><h3 id="case-1"><a href="#case-1" class="headerlink" title="#case 1"></a>#case 1</h3><p>第一个问题比较容易排查，能从日志定位到代码基本上就能解决问题。原因是接口代码为了提升在生产环境中的性能，使用的应用内缓存。接口代码根据新的需求进行了一些重构，破坏了原有的缓存逻辑，但这个错误在单元测试和测试环境中都没有暴露出来，而是推迟到生产环境才暴露。</p>
+<p>这个问题反映了一个深刻的道理，即环境一致性。固然，开发环境和线上环境有很多的差异，其中一些差异是超出开发人员控制的，比如网络环境。但是开发人员应当在自己的控制范围内，就是在代码中，去除这些差异，否则这些差异可能带来灾难的后果。</p>
+<h3 id="case-2"><a href="#case-2" class="headerlink" title="#case 2"></a>#case 2</h3><p>第二个问题更麻烦些，虽然有对 login 相关代码进行过修改，单代码逻辑没有问题，测试环境中能正确工作。经排查发现是相关的第三方接口在测试环境和生产环境的行为不一致，其在生产环境增加入了 HTTP Referer 头检查，导致我们在生产环境无法 login。</p>
+<p>这个问题固然反应了环境一致性的重要性，但也给我们一个教训，“敬畏每一行代码”。实际上，之前负责该项目的同事已经踩过坑了，但是我们本着不破不立的思想，对代码进行了重构，却没能发现旧代码中的奥秘，导致最终严重的生产事故。</p>
+<h3 id="case-3"><a href="#case-3" class="headerlink" title="#case 3"></a>#case 3</h3><p>第三个问题就比较麻烦些，因为只发生在某些用户上，开发人员无法复现。先说下吸取的教训，一是前端监控没做，导致客户端对于开发人员就是一个黑盒；二是不够敬畏老代码；三仍然是环境一致性的问题。</p>
+<p>谈谈一，我们最终还是发布一个 debug 版，让遇到故障的一位内部用户进行测试，才基本排查到表象问题，是一个 js 文件内容变成了 html。很幸运有这个一位内部用户，否则排查难度难以想象。这一点给我们的教训是，赶紧上一个前端错误监控的功能。</p>
+<p>再谈二，在我重构老代码的同时，我已经闻到了错误的气味，因为将 404 页面的 HTTP code 改为 200 是一个不符合语义和规范的做法。抱着侥幸的心理，以及观察到老代码将 500 403 页面都是以 HTTP code 200 返回的一种“从众”心态，冒险将代码提交到了测试环境。很幸运，在测试环境并未发现异样。但是很不辛，生产环境故障了。</p>
+<p>三，环境不一致，这是将问题暴露和放大的原因。</p>
+<h4 id="case-3-1-部署方式不一致"><a href="#case-3-1-部署方式不一致" class="headerlink" title="#case 3.1 部署方式不一致"></a>#case 3.1 部署方式不一致</h4><p>我们的 Node 应用在线上是多实例部署，测试环境是单实例部署，即测试环境是停服发布。生产环境的多实例可以保证单个实例在升级部署的时候，整体仍然可用。</p>
+<p>问题就出在多实例的逐个部署上。这种部署过程中，多个实例在一段时间内运行的代码版本不一致，网关 nginx 在轮询的时候，可能将 html 请求转发到新实例上，html 上引用的 js 文件的请求转发到旧实例上。旧实例在没有新版 js 文件的情况下会返回 HTTP code 为 200 的 404 页面，从而让客户端出错显示白屏。</p>
+<h4 id="case-3-2-CDN"><a href="#case-3-2-CDN" class="headerlink" title="#case 3.2 CDN"></a>#case 3.2 CDN</h4><p>按理说，部署结束后，各实例的版本最终会一致，但是问题的现象是，用户在长时间内都是白屏。这里就是网络环境不同，线上环境加入了 CDN 造成的。我们采用的网络加速产品，会把未做缓存控制的静态文件（通过请求文件名后缀判断）加上 3 小时的缓存时间，这导致客户端会缓存错误的 js 长达 3 小时。而且由于加速产品有 CDN 的功能，如果 CDN 缓存了错误的 js，甚至导致局部地区的用户都会出现白屏。相比测试环境的停服发布，生产环境的新旧版本灰度发布的用户体验会更好，但是也更复杂，也更容易产生问题。另外加速产品还是应当遵循 HTTP 的 cache 相关规范，切勿私自增加 cache 控制头。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>软件开发是一个很复杂工作，尤其是在一个现有软件上进行开发维护。软件的复杂程度大多已经超出开发人员的掌控，甚至出现了一种混沌的状态，即相差无几的初始状态，会导致结果差异巨大。从这次事故中，我总结出这三点：</p>
+<ol>
+<li><p>闻到错误的气味，一定不要存在侥幸心理，会出错的事总会出错</p>
+</li>
+<li><p>尽力保证初始状态的一致性，尽管如此结果仍可能谬以千里</p>
+</li>
+<li><p>对现有代码保持敬畏之心</p>
+</li>
+</ol>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2018/06/12/split-and-combine-component-code/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          webpack 按组件进行代码分割和合并
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2018 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
