@@ -1,0 +1,145 @@
+layout: post
+title: "Chrome 的 GPU 进程的背后"
+date: 2018-9-12
+tags:
+---
+
+{% asset_img gpu-process.png %}
+
+打开 Chrome/Chromium （下面只称 Chrome）的任务管理器，能看到一个 GPU Process。这意味着 Chrome 启用了 GPU，并从中获得了性能的提升。
+
+<!--more-->
+
+# 1. 为什么需要 GPU
+
+驱动 Chrome 利用 GPU 的最初的动力是 3D CSS。在 3D CSS 实现之前，浏览器上几乎不能表现自然的 3D 效果，相比精美的本地应用，web 应用的表现能力相形见绌。
+
+{% asset_img cover_flow_view_01.png %}
+<figure>Finder 中的 cover flow 效果</figure>
+
+计算 3D 图像变换和渲染 3D 模型是 GPU 所擅长的，这也正式 GPU 的主要设计目标。GPU 与 CPU 有很大不同，其中具体细节的差异比较复杂，但可以总结为两点：
+
+  1. GPU 主频更低但是计算单元更多，运算流水线多且长，非常适合吞吐量大的并行计算，相比于 CPU 的单个数值运算，GPU 进行的是向量或者矩阵的运算
+  2. GPU 舍弃了很多的控制单元，指令集也更加精简，执行同等规模的计算，其能耗并不比 CPU 高，甚至更低
+
+利用 GPU，Chrome 可以渲染流畅的 3D 动画效果，而且不会让 CPU 占用率和能耗升高。
+
+{% raw %}
+  <div class="card">
+    <div class="face">❤️</div>
+    <div class="back"></div>
+    <style>
+      @keyframes rotate {
+        0% { transform: rotateY(0) rotate(24deg)}
+        100% { transform: rotateY(360deg) rotate(24deg) }
+      }
+      .card {
+        position: relative;
+        perspective: 500px;
+        transform-style: preserve-3d;
+        animation: rotate 4000ms linear infinite;
+        width: 120px;
+        height: 160px;
+        text-align: center;
+        line-height: 160px;
+        font-size: 72px;
+        color: red;
+      }
+      .card-surface {
+        transform-style: preserve-3d;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: rotate(0.635);
+      }
+      .face {
+        background-color: #eaeaea;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: translateZ(0.1px);
+        border-radius: 6px;
+      }
+      .face::before {
+        content: 'A';
+        display: 'block';
+        position: absolute;
+        font-size: 24px;
+        top: 8px;
+        right: 8px;
+        line-height: 1;
+      }
+      .back {
+        background: radial-gradient(#612828, #353535);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: translateZ(0);
+        border-radius: 6px;
+      }
+    </style>
+  </div>
+
+{% endraw %}
+<figure>使用 3D CSS 实现的旋转效果</figure>
+
+# 2. GPU 进程
+
+## 2.1 GPU 红利
+
+除了给 3D CSS 带来加速，GPU 同样可以用于提升普通的页面的渲染。这个理念在 Chrome 中得到了实现。首先 Chrome 将 GPU 加速运用到了 video canvas 等标签的渲染上，另外为高效合成 z 轴方向重叠元素，引入了[图像合成](https://dev.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome)的概念。图像合成简单来说是，通过把渲染物料（DOM Node 的一种更接近图像渲染的表达）在 z 轴方向归集为不同的层，每个层可以不依赖其它层独立地渲染为位图，最终将所有层的位图合并为页面的位图的过程。
+
+Chrome 利用 GPU 解决了这几个影响性能的问题
+
+  1. 把部分光栅化的任务交给 GPU，降低绘制使用的时间（[每帧从 100ms 降低到 4-5ms](https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization)），为 JavaScript 的执行争取了更多的时间
+  2. 利用合成器，可以让一些 CSS 动画完全在 GPU 中绘制（Compositor Thread），不需要 CPU 的干预（Main Thread），即便被 JavaScript 阻塞也能保持动画流畅
+  3. 图层之间互不影响，减少了发生 reflow repaint 时所要遍历的元素数量
+
+## 2.2 隔离的 GPU 进程
+
+当页面渲染使用 GPU 加速成为一种普遍的需求，Chrome 在其多进程架构上引入了 GPU 进程。这个模型是可以伸缩的，在一些性能较低的平台上，GPU 进程可能会降为 GPU 线程。渲染进程对 GPU 的访问，会以指令的形式发送到 CommandBuffer（它是渲染进程和 GPU 进程共享的内存区域），然后通过 IPC 告知 GPU 进程。大体来说，比起 IPC 带来的损耗，这个架构带来的收益更加突出。因为绝大部分指令不需要返回值，这让渲染进程可以立即返回，并继续处理其他渲染任务。另外，将渲染进程隔离在不能直接访问 GPU 的安全沙盒中，这对 Chrome 提供 native 扩展的场景显得尤其重要。
+
+# 3. 面向 GPU 的页面编程
+
+除了 Chrome 静默地利用 GPU 进行渲染加速，开发人员可能主动地面向 GPU 进行编程。
+
+## 3.1 图像编程
+
+在浏览器平台上与 GPU 最直接的沟通方式就是通过 WebGL。WebGL 是 OpenGL 的子集。利用 WebGL 可以实现复杂的图像处理，例如边缘查找、裁剪、滤镜等。利用 canvas 元素，通过 `canvas.getContext('webgl')` 可以获取到 WebGL 渲染上下文，访问丰富的 WebGL 功能。这里有些有趣的例子：
+
+  [从前端工程师到AR工程师](https://zhuanlan.zhihu.com/p/26563316)
+  [如何使用JavaScript生成lowpoly风格图像？](https://www.zhihu.com/question/29856775)
+
+## 3.2 GPU Computing
+
+现代的 GPU 性能强劲，在应用上早已不限于“Graphics”这个领域了。GPU 强大的浮点运算和并行运算的能力，可以分担一些以前需要 CPU 来完成的大规模的计算问题，比如密码破解、数据压缩、以及比特币挖矿。OpenCL 是 OpenGL 规范小组 Khronos 的作品，主要针对于异构平台（包括 GPU 平台）上并行计算的问题。WebCL 是 OpenCL 在 web 平台上对应的版本，不过目前还未被浏览器很好地支持。变通地使用 WebGL，同样可以获得 WebCL 的部分能力。
+
+TensorFlow 是一个非常流行的机器学习框架。机器学习需要进行大量的矩阵运算，这正是 GPU 擅长的。TensorFlow 提供了 JavaScript 的库，[tfjs](https://github.com/tensorflow/tfjs)，利用 WebGL 技术，让其算法可以在浏览器上高效运行。
+
+## 3.3 动画优化
+
+Chrome 是一个很消耗内存的浏览器，它会缓存渲染流水线上的大量中间状态，提高重绘的效率。
+
+{% asset_img ram-animation.gif %}
+<figure>Chrome vs RAM</figure>
+
+渲染过程中有一个计算量很大的阶段，光栅化 Rasterization，即绘制位图的阶段。Compositor Thread 除了负责多个图层的位图的合成工作，还会尽量缓存这些位图。如果一个动画实现，可以复用缓存的位图，仅在合成时调整图层之间的位置关系，那么这会特别高效。
+
+{% asset_img frame.jpg %}
+<figure>触发更新的过程</figure>
+
+要高效命中位图缓存不是一件简单的事情，如果动画会导致 reflow 或者 repaint，这不仅需要额外的 reflow repaint 计算，还会让位图缓存失效。所以在实现一个动画效果需要着重考虑 reflow repaint 的影响。例如在 animation 中使用 transform-translate，而不是 left top，来进行位移，会有更好的性能。因为 transform 中使用的相对长度，是向对于元素自身的宽高，不需要考虑外界对的影响，也不会对外界有影响。Chrome 自动将 animation 属性为 transform-translate 的元素提升到单独的图层，在更新动画时跳过 reflow repaint，直接使用缓存的位图，更新图层之间的位置关系后再进行合成，从而提高了动画更新的效率。[CSS GPU Animation: Doing It Right](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/) 中详细剖析了哪些因素会导致创建图层，以及如何合理地手动触发图层生成来提升渲染性能。
+
+动画从实现上分为两种，使用 CSS 来定义关键帧的方式，包括 animation 和 transition，其中使用 transition 来实现的过渡效果可以认为是只有起止关键帧的动画，以及使用 JavaScript 来实时更新样式的方式。使用 JavaScript 可以响应用户的输入，能够实现更有趣的交互效果。
+
+使用 JavaScript 来实现动画的问题是，Chrome 无法知道当前处于“动画”的场景，则无法智能地为动画元素创建新图层。早些时候，需要通过 translateZ(0) 这些“诡计”来强制触发图层创建。现在可以使用 will-change: transform, opacity 来显式地告诉浏览器当前处于”动画“场景，而且动画不会带来 reflow，可以创建图层来进行动画优化。如果动画本身会导致 reflow repaint，这种“优化”不会有太大效果，反而占用了更多的内存。
+
+# 总结
+
+Chrome 的 GPU 进程是 Chrome 利用 GPU 的一个表象，在此之下，为了提高页面性能，Chrome 做了非常多复杂的工作。作为 web 开发者，熟悉并利用 Chrome GPU 渲染的过程，有助于实现高效的动画交互效果。另外 GPU 还为 web 平台带来了进行复杂运算的能力，配合另一项提速 web 的项目 [WebAssembly](https://webassembly.org/)，以及 HTML5 丰富的多媒体 API 等等技术，web 平台的未来充满无限的可能，有巨大的想象空间。
