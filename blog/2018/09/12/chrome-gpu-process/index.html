@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://ladjzero.me/blog/2018/09/12/chrome-gpu-process/cover_flow_view_01.png">
 <meta property="og:image" content="http://ladjzero.me/blog/2018/09/12/chrome-gpu-process/ram-animation.gif">
 <meta property="og:image" content="http://ladjzero.me/blog/2018/09/12/chrome-gpu-process/frame.jpg">
-<meta property="og:updated_time" content="2018-09-14T14:32:46.296Z">
+<meta property="og:updated_time" content="2018-09-15T15:56:32.255Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chrome 的 GPU 进程的背后">
 <meta name="twitter:description" content="打开 Chrome/Chromium （下面只称 Chrome）的任务管理器，能看到一个 GPU Process。这意味着 Chrome 启用了 GPU，并从中获得了性能的提升。">
@@ -154,7 +154,7 @@
 
 <figure>使用 3D CSS 实现的旋转效果</figure>
 
-<h1 id="2-GPU-进程"><a href="#2-GPU-进程" class="headerlink" title="2. GPU 进程"></a>2. GPU 进程</h1><h2 id="2-1-GPU-红利"><a href="#2-1-GPU-红利" class="headerlink" title="2.1 GPU 红利"></a>2.1 GPU 红利</h2><p>除了给 3D CSS 带来加速，GPU 同样可以用于提升普通的页面的渲染。这个理念在 Chrome 中得到了实现。首先 Chrome 将 GPU 加速运用到了 video canvas 等标签的渲染上，另外为高效合成 z 轴方向重叠元素，引入了<a href="https://dev.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome" target="_blank" rel="noopener">图像合成</a>的概念。图像合成简单来说是，通过把渲染物料（DOM Node 的一种更接近图像渲染的表达）在 z 轴方向归集为不同的层，每个层可以不依赖其它层独立地渲染为位图，最终将所有层的位图合并为页面的位图的过程。<br><br>Chrome 利用 GPU 解决了这几个影响性能的问题</p>
+<h1 id="2-GPU-进程"><a href="#2-GPU-进程" class="headerlink" title="2. GPU 进程"></a>2. GPU 进程</h1><h2 id="2-1-GPU-红利"><a href="#2-1-GPU-红利" class="headerlink" title="2.1 GPU 红利"></a>2.1 GPU 红利</h2><p>除了给 3D CSS 带来加速，GPU 同样可以用于提升普通的页面的渲染。这个理念在 Chrome 中得到了实现。首先 Chrome 将 GPU 加速运用到了 video canvas 等标签的渲染上，另外为高效合成 z 轴方向重叠元素，引入了<a href="https://dev.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome" target="_blank" rel="noopener">图像合成</a>的概念。<a href="https://hacks.mozilla.org/2017/10/the-whole-web-at-maximum-fps-how-webrender-gets-rid-of-jank/" target="_blank" rel="noopener">这里</a>有一篇非常形象的文章，讲述图像合成的概念，以及 Compositor Thread 和 Main Thread 架构。<br><br>Chrome 利用 GPU 解决了这几个影响性能的问题</p>
 <ol>
 <li>把部分光栅化的任务交给 GPU，降低绘制使用的时间（<a href="https://www.chromium.org/developers/design-documents/chromium-graphics/how-to-get-gpu-rasterization" target="_blank" rel="noopener">每帧从 100ms 降低到 4-5ms</a>），为 JavaScript 的执行争取了更多的时间</li>
 <li>利用合成器，可以让一些 CSS 动画完全在 GPU 中绘制（Compositor Thread），不需要 CPU 的干预（Main Thread），即便被 JavaScript 阻塞也能保持动画流畅</li>

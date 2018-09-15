@@ -93,7 +93,7 @@ tags:
 
 ## 2.1 GPU 红利
 
-除了给 3D CSS 带来加速，GPU 同样可以用于提升普通的页面的渲染。这个理念在 Chrome 中得到了实现。首先 Chrome 将 GPU 加速运用到了 video canvas 等标签的渲染上，另外为高效合成 z 轴方向重叠元素，引入了[图像合成](https://dev.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome)的概念。图像合成简单来说是，通过把渲染物料（DOM Node 的一种更接近图像渲染的表达）在 z 轴方向归集为不同的层，每个层可以不依赖其它层独立地渲染为位图，最终将所有层的位图合并为页面的位图的过程。
+除了给 3D CSS 带来加速，GPU 同样可以用于提升普通的页面的渲染。这个理念在 Chrome 中得到了实现。首先 Chrome 将 GPU 加速运用到了 video canvas 等标签的渲染上，另外为高效合成 z 轴方向重叠元素，引入了[图像合成](https://dev.chromium.org/developers/design-documents/gpu-accelerated-compositing-in-chrome)的概念。[这里](https://hacks.mozilla.org/2017/10/the-whole-web-at-maximum-fps-how-webrender-gets-rid-of-jank/)有一篇非常形象的文章，讲述图像合成的概念，以及 Compositor Thread 和 Main Thread 架构。
 
 Chrome 利用 GPU 解决了这几个影响性能的问题
 
