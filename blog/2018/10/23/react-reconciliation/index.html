@@ -12,12 +12,10 @@
 <meta property="og:site_name" content="ladjzero&#39;s blog">
 <meta property="og:description" content="Reconcile 是个含义丰富的动词，有调和的意思，在 React 中其含义应当是 to make consistent，即”使一致“。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://ladjzero.me/blog/2018/10/23/react-reconciliation/how-to-reconcile-broken-relationships-series-link.png">
-<meta property="og:updated_time" content="2018-10-24T07:49:38.911Z">
+<meta property="og:updated_time" content="2018-12-08T14:35:58.290Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React 的”调和“过程">
 <meta name="twitter:description" content="Reconcile 是个含义丰富的动词，有调和的意思，在 React 中其含义应当是 to make consistent，即”使一致“。">
-<meta name="twitter:image" content="http://ladjzero.me/blog/2018/10/23/react-reconciliation/how-to-reconcile-broken-relationships-series-link.png">
   
     <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
   
@@ -73,8 +71,7 @@
 	</header>
 	<div class="entry-content">
 		
-    	<img src="/blog/2018/10/23/react-reconciliation/how-to-reconcile-broken-relationships-series-link.png">
-<p>Reconcile 是个含义丰富的动词，有调和的意思，在 React 中其含义应当是 <code>to make consistent</code>，即”使一致“。</p>
+    	<p>Reconcile 是个含义丰富的动词，有调和的意思，在 React 中其含义应当是 <code>to make consistent</code>，即”使一致“。</p>
 <a id="more"></a>
 <h1 id="1-Virtual-DOM"><a href="#1-Virtual-DOM" class="headerlink" title="1. Virtual DOM"></a>1. Virtual DOM</h1><p>Virtual DOM 是与真实 DOM 时刻同步的，用于描述 UI 的数据结构。</p>
 <p>除了 React，仅仅针对于 Virtual DOM 存在许多其他实现，例如 <a href="https://github.com/Matt-Esch/virtual-dom" target="_blank" rel="noopener">virtual-dom</a>，<a href="https://github.com/snabbdom/snabbdom" target="_blank" rel="noopener">Snabbdom</a>，<a href="https://github.com/livoras/simple-virtual-dom" target="_blank" rel="noopener">simple-virtual-dom</a>。其他 React 兼容/模拟库，也有自己的 Virtual DOM 实现，例如 <a href="https://github.com/developit/preact" target="_blank" rel="noopener">preact</a>, <a href="https://github.com/infernojs/inferno" target="_blank" rel="noopener">inferno</a>。</p>
@@ -91,7 +88,7 @@
 <p>React 内部有 ReactDOMComponent（通用名称是 ReactHostComponent）和 ReactCompositeComponent 类型，它们实现了 ReactElement 的渲染（挂载、更新和卸载）。其中 ReactDOMComponent 负责平台原生的简单节点的渲染，ReactCompositeComponent 则是负责折叠后的复合节点的渲染。</p>
 <h1 id="4-调和-Virtual-DOM-与-DOM"><a href="#4-调和-Virtual-DOM-与-DOM" class="headerlink" title="4. 调和 Virtual DOM 与 DOM"></a>4. 调和 Virtual DOM 与 DOM</h1><p>这里将 ReactDOMComponent 与 ReactCompositeComponent 统称做 ReactComponent。ReactComponent 内部维护了渲染的 DOM 节点的引用，_hostNode，以及子组件的引用，_renderedChildren 和 _renderedComponent。</p>
 <p>ReactComponent 的 mountComponent，unmountComponent 和 updateComponent 方法实现了从 Virtual DOM 到 DOM 的同步。其中 mountComponent，unmountComponent 是相对较简单的递归过程，updateComponent 则复杂得多。</p>
-<p>ReactDOMComponent 的 updateComponent 首先是要对 _hostNode 进行更新，然后对 _renderedChildren 中的节点进行更新。对于其中 key 和类型都相同的节点，进行递归调用其 updateComponent 完成更新；其他情况，需要使用 mountComponent 和 unmountComponent 来完成节点的增加、删除、替换和移动。</p>
+<p>ReactDOMComponent 的 updateComponent 首先是要对 _hostNode 进行更新，然后对 _renderedChildren 中的节点进行更新。对于更新前后 key 和类型都相同的节点，递归调用其 updateComponent 完成更新；其他情况，要对 _hostNode 使用 mountComponent 和 unmountComponent 来完成节点的增加、删除、替换和移动。</p>
 <p>ReactCompositeComponent 的 updateComponent 则有些差异。若 key 和节点类型没有变化，则递归调用 _renderedComponent 的 updateComponent 完成更新，否则对 _hostNode 使用 unmountComponent 和 mountComponent 完成替换。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>React 并没有明确的 diff 和 patch 阶段。开发者利用 ReactComponent，可以把 Virtual DOM Tree 封装折叠起来。渲染时，Reconcile 过程将一边展开 ReactComponent，一边依据节点类型和 key 进行比较（diff），一边进行更新（patch），以保证 Virtual DOM 与 DOM 一致。</p>
 
@@ -110,6 +107,15 @@
 	
     
 <nav id="article-nav">
+  
+    <a href="/blog/2019/01/01/im-consistency-problem/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          IM 中的一致性问题
+        
+      </div>
+    </a>
   
   
     <a href="/blog/2018/09/12/chrome-gpu-process/" id="article-nav-older" class="article-nav-link-wrap">
@@ -141,7 +147,7 @@
 		<a href="/blog/">ladjzero&#39;s blog</a>
 	</h1>
 	<span class="copyright">
-		&copy; 2018 ladjzero<br>
+		&copy; 2019 ladjzero<br>
 		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
 		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
 	</span>

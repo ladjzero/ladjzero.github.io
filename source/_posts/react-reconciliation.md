@@ -4,8 +4,6 @@ date: 2018-10-23
 tags:
 ---
 
-{% asset_img how-to-reconcile-broken-relationships-series-link.png %}
-
 Reconcile 是个含义丰富的动词，有调和的意思，在 React 中其含义应当是 `to make consistent`，即”使一致“。
 
 <!--more-->
@@ -77,7 +75,7 @@ React 内部有 ReactDOMComponent（通用名称是 ReactHostComponent）和 Rea
 
 ReactComponent 的 mountComponent，unmountComponent 和 updateComponent 方法实现了从 Virtual DOM 到 DOM 的同步。其中 mountComponent，unmountComponent 是相对较简单的递归过程，updateComponent 则复杂得多。
 
-ReactDOMComponent 的 updateComponent 首先是要对 _hostNode 进行更新，然后对 _renderedChildren 中的节点进行更新。对于其中 key 和类型都相同的节点，进行递归调用其 updateComponent 完成更新；其他情况，需要使用 mountComponent 和 unmountComponent 来完成节点的增加、删除、替换和移动。
+ReactDOMComponent 的 updateComponent 首先是要对 _hostNode 进行更新，然后对 _renderedChildren 中的节点进行更新。对于更新前后 key 和类型都相同的节点，递归调用其 updateComponent 完成更新；其他情况，要对 _hostNode 使用 mountComponent 和 unmountComponent 来完成节点的增加、删除、替换和移动。
 
 ReactCompositeComponent 的 updateComponent 则有些差异。若 key 和节点类型没有变化，则递归调用 _renderedComponent 的 updateComponent 完成更新，否则对 _hostNode 使用 unmountComponent 和 mountComponent 完成替换。
 
