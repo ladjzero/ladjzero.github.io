@@ -69,8 +69,7 @@
 	</header>
 	<div class="entry-content">
 		
-			<img src="/blog/2019/02/24/why-can-websocket-and-http-share-same-port/ws.png" title="题图">
-<p>大部分网站会把 WebSocket 部署到和 HTTP 服务一样的端口上，一般是 80 或 443。</p>
+			<p>大部分网站会把 WebSocket 部署到和 HTTP 服务一样的端口上，一般是 80 或 443。</p>
 			
 				<p class="article-more-link">
 					<a href="/blog/2019/02/24/why-can-websocket-and-http-share-same-port/#more">Read More</a>
@@ -121,21 +120,12 @@
 	</header>
 	<div class="entry-content">
 		
-    	<p>设计 IM 系统可能会陷入一种偏执：消息的顺序是由时间确定的，它是绝对唯一的。</p>
-<p>我之前参与实现的客服 IM 在顺序控制上没有额外的设计，理论上可以出现这两种情况：</p>
-<ol>
-<li>先后发出的 msg1 msg2，接收方是按照 msg2 msg1 顺序接受，即单方消息收发顺序不一致；</li>
-<li>一方发出两个问题 q1 q2，然后收到回复 a1 a2，看似顺序是 q1 q2 a1 a2，然而对方实际是回答了 q1 再收到的 q2，实际的顺序是 q1 a1 q2 a2，即交叉消息收发顺序不一致。</li>
-</ol>
-<h1 id="可以忍受的乱序"><a href="#可以忍受的乱序" class="headerlink" title="可以忍受的乱序"></a>可以忍受的乱序</h1><p>与软件系统中的消息不同，IM 消息需要人来参与到生成和消费中。人的参与天然地起到了”节流“的作用，连续的消息间隔较长不易在传输过程中发生乱序。</p>
-<p>另外与机器相比，人有很强的纠错能力。乱序控制在一个较低水平下，不会对沟通造成很大障碍。从产品角度来说，相比于微信 QQ，类似客服 IM 这样消息发送频度较低的产品，可能是不需要特意处理消息乱序问题的。</p>
-<h1 id="单方发收顺序一致"><a href="#单方发收顺序一致" class="headerlink" title="单方发收顺序一致"></a>单方发收顺序一致</h1><p>最简单的方法是依赖可以保证顺序的信道，比如 TCP。客户端 A 通过 WebSockets 发送消息 msg1 msg2，底层的 TCP 会保证接收方按照 msg1 msg2 的顺序接受。如果只能采用不可靠的信道，可以在应用层上实现这个保证序列的机制，可以参考 QUIC 的实现（官方说它是传输层协议）。</p>
-<p>维持可靠信道会带来额外的服务器开销，该问题也可以仅从客户端考虑。如果允许“插队”，即 msg2 先收到先显示，接下来收到的 msg1 则插在 msg2 之前显示。如果不允许“插队”，客户端可以留出适当的收信缓冲区，用于存放并排序最近的消息。这两种方式都依赖消息有递增的序列号。</p>
-<h1 id="交叉消息顺序一致"><a href="#交叉消息顺序一致" class="headerlink" title="交叉消息顺序一致"></a>交叉消息顺序一致</h1><h2 id="统一时钟"><a href="#统一时钟" class="headerlink" title="统一时钟"></a>统一时钟</h2><p>若使用消息的发出时间来确定消息顺序，则要求客户端采用的同一个时间，或者知道它们本地时间差。</p>
-<p>让客户端使用时钟同步服往往不太现实，在 IM 软件层面上，服务器可以通过询问客户端时间结合 RRT 粗略地得到客户端与服务器的本地时间差。各个客户端收到服务器下发的时间差后，将 IM 软件的时钟做一个补偿，就能产生非常可靠的消息发出时间了。</p>
-<h2 id="序列-ID"><a href="#序列-ID" class="headerlink" title="序列 ID"></a>序列 ID</h2><p>于整个系统中存在一个能生成自增 ID 的服务，按照消息到达服务器的顺序，为消息赋予序列 ID。如此，消息无论对于哪个客户端，都有一个客观的“服务器端”顺序。</p>
-<h2 id="消息上文"><a href="#消息上文" class="headerlink" title="消息上文"></a>消息上文</h2><p>TBD.</p>
-
+			<p>设计 IM 系统可能会陷入一种偏执：消息的顺序是由时间确定的，它是绝对唯一的。</p>
+			
+				<p class="article-more-link">
+					<a href="/blog/2019/01/01/im-consistency-problem/#more">Read More</a>
+				</p>
+      
     
 	</div>
 	<footer class="entry-footer">

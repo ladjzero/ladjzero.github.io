@@ -4,12 +4,9 @@ date: 2019-2-24
 tags:
 ---
 
-{% asset_img ws.png 题图 %}
-
 大部分网站会把 WebSocket 部署到和 HTTP 服务一样的端口上，一般是 80 或 443。
 
 <!--more-->
-
 # WebSocket
 
 WebSocket 与 HTTP 都是计算机网络应用层协议，但与 HTTP 是完全不同的是，WebSocket 是建立在单个 TCP 连接上的全双工通信连接。
