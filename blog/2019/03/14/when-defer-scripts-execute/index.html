@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>defer 脚本的执行顺序 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="以下代码的输出顺序是什么？顺序是稳定的吗？ 123456&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;  &amp;lt;script defer async src=&quot;defer.js&quot;&amp;gt;&amp;lt;/script&amp;gt;  &amp;lt;script src=&quot;index.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt; 12// defer.jscon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="defer 脚本的执行顺序">
+<meta property="og:url" content="http://ladjzero.me/2019/03/14/when-defer-scripts-execute/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="以下代码的输出顺序是什么？顺序是稳定的吗？ 123456&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;  &amp;lt;script defer async src=&quot;defer.js&quot;&amp;gt;&amp;lt;/script&amp;gt;  &amp;lt;script src=&quot;index.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt; 12// defer.jscon">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ladjzero.me/blog/2019/03/14/when-defer-scripts-execute/deferasync.png">
+<meta property="og:updated_time" content="2019-03-14T02:24:46.175Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="defer 脚本的执行顺序">
+<meta name="twitter:description" content="以下代码的输出顺序是什么？顺序是稳定的吗？ 123456&amp;lt;html&amp;gt;&amp;lt;body&amp;gt;  &amp;lt;script defer async src=&quot;defer.js&quot;&amp;gt;&amp;lt;/script&amp;gt;  &amp;lt;script src=&quot;index.js&quot;&amp;gt;&amp;lt;/script&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt; 12// defer.jscon">
+<meta name="twitter:image" content="http://ladjzero.me/blog/2019/03/14/when-defer-scripts-execute/deferasync.png">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-when-defer-scripts-execute" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/03/14/when-defer-scripts-execute/" class="article-date">
+  <time datetime="2019-03-13T16:00:00.000Z" itemprop="datePublished">2019-03-14</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      defer 脚本的执行顺序
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<img src="/blog/2019/03/14/when-defer-scripts-execute/deferasync.png">
+<p>以下代码的输出顺序是什么？顺序是稳定的吗？</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span> <span class="attr">async</span> <span class="attr">src</span>=<span class="string">"defer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"index.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defer.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.readyState, <span class="string">'defer.js'</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.readyState, <span class="string">'index.js'</span>);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>这个问题来源于这样的场景：index.js 是主程序入口，defer.js 是扩展组件，index.js 需要通过观察 script 标签知晓可能加载的扩展组件会，但是不被扩展组件的加载阻塞。</p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>在 Firefox 或 Chrome 中不断的刷新页面，可能得到的输出结果为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">loading defer.js</span><br><span class="line">loading index.js</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">loading index.js</span><br><span class="line">interactive defer.js</span><br></pre></td></tr></table></figure>
+<h1 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h1><p><a href="https://www.w3.org/TR/html52/semantics-scripting.html#element-attrdef-script-defer" target="_blank" rel="noopener">HTML spec</a> 将有 defer 属性的脚本描述为 “be fetched in parallel and evaluated when the page has finished parsing”。</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script" target="_blank" rel="noopener">MDN</a> 中则描述为 “be executed after the document has been parsed, but before firing DOMContentLoaded.”</p>
+<p>可以肯定的是，defer 脚本会在文档解析完成后才会执行。由于同步脚本会阻塞文档解析，上例中 <code>&lt;script src=&quot;index.js&quot;&gt;&lt;/script&gt;</code> 执行完成后，<code>&lt;body&gt;</code> 元素才能闭合，整个文档才能解析完成。</p>
+<p>所以 <code>index.js</code> 应当比 <code>defer.js</code> 更先执行。</p>
+<h1 id="同时使用-async-和-defer"><a href="#同时使用-async-和-defer" class="headerlink" title="同时使用 async 和 defer"></a>同时使用 async 和 defer</h1><p>经过上面的分析，会发现第一种输出结果是不符合预期的。因为 <code>defer.js</code> 属性除了 defer 还有 async，是 async 影响了最终的执行顺序。</p>
+<p>async 和 defer 可以一起使用，这种用法也非常常见。这种写法可以在新旧浏览器上实现外部脚本的非阻塞下载。对于现代浏览器上，async 的优先级更高。对于老旧浏览器，由于无法识别 async，则会 fallback 到 defer。</p>
+<p>正是如此，在 Firefox 或 Chrome 中 <code>&lt;script defer async src=&quot;defer.js&quot;&gt;&lt;/script&gt;</code> 等价于 <code>&lt;script async src=&quot;defer.js&quot;&gt;&lt;/script&gt;</code>。将 async 去掉后，执行结果变为稳定的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">loading index.js</span><br><span class="line">interactive defer.js</span><br></pre></td></tr></table></figure>
+<p>由 <a href="https://stackoverflow.com/a/10731231/1413893" target="_blank" rel="noopener">Chris Moschini</a> 提供的信息显示，defer 的行为在不同的浏览器上也会有些许差异（这很有可能，但需要进一步详细地验证），最好利用 DOMContentLoaded 事件，而非利用 defer 特性，来控制脚本的执行时机。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>async defer 的解析文章网络已经有很多了，而且 async defer 一起使用也很常见。</p>
+<p>在我的固有印象中，defer 比 async 更“高级”，所以优先级更高。因为除了让脚本的加载不会阻塞页面解析，defer 还可以保证脚本在文档解析完成后，按照定义顺序依次执行。当发现效果不符合预期，难以直接从网络上的问答和文章中找到真相（因为更多是特性介绍），也难以否定固有印象，导致不能顺利地解决问题。</p>
+<p>事先摒除固有印象，并从一手资料寻找答案，问题则可以被更直接地解决。实际上在 <a href="https://www.w3.org/TR/html52/semantics-scripting.html#element-attrdef-script-defer" target="_blank" rel="noopener">HTML spec</a> 中有详细描述 async 和 defer 的关系</p>
+<blockquote>
+<p>For classic scripts, if the async attribute is present, then the classic script will be fetched in parallel to parsing and evaluated as soon as it is available (potentially before parsing completes). If the async attribute is not present but the defer attribute is present, then the classic script will be fetched in parallel and evaluated when the page has finished parsing. If neither attribute is present, then the script is fetched and evaluated immediately, blocking parsing until these are both complete.</p>
+</blockquote>
+<p>写作代码来看就是</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isAsync) &#123;</span><br><span class="line">  loadAsAsync();</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isDefer) &#123;</span><br><span class="line">  loadAsDefer();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  loadAsSync();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/02/24/why-can-websocket-and-http-share-same-port/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          为什么 WebSocket 和 HTTP 服务能部署到同一个端口
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
