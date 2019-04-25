@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>随笔：编程语言知识在 web 前端的应用 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="作为软件开发者，熟练地运用编程语言，可以实现各种软件来满足各样的需求。但是创造和扩展一种编程语言却不容易，因为这是计算机科学中很复杂的部分，这种复杂让人有望洋兴叹之感。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随笔：编程语言知识在 web 前端的应用">
+<meta property="og:url" content="http://ladjzero.me/2019/04/25/pl-for-web/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="作为软件开发者，熟练地运用编程语言，可以实现各种软件来满足各样的需求。但是创造和扩展一种编程语言却不容易，因为这是计算机科学中很复杂的部分，这种复杂让人有望洋兴叹之感。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-04-25T16:30:15.655Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="随笔：编程语言知识在 web 前端的应用">
+<meta name="twitter:description" content="作为软件开发者，熟练地运用编程语言，可以实现各种软件来满足各样的需求。但是创造和扩展一种编程语言却不容易，因为这是计算机科学中很复杂的部分，这种复杂让人有望洋兴叹之感。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-pl-for-web" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/04/25/pl-for-web/" class="article-date">
+  <time datetime="2019-04-24T16:00:00.000Z" itemprop="datePublished">2019-04-25</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      随笔：编程语言知识在 web 前端的应用
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>作为软件开发者，熟练地运用编程语言，可以实现各种软件来满足各样的需求。但是创造和扩展一种编程语言却不容易，因为这是计算机科学中很复杂的部分，这种复杂让人有望洋兴叹之感。</p>
+<a id="more"></a>
+<p>随着 Node.js 的诞生，web 前端开进了高速进化的车道。各种软件和各种设计模式，如文艺复兴一般，在前端领域重新走了一遭，从而产生“<a href="https://blog.codinghorror.com/the-principle-of-least-power/" target="_blank" rel="noopener">任何可以使用JavaScript来编写的应用，最终会由JavaScript编写</a>”的说法。</p>
+<p>不出所料，编程语言作为一种特殊的软件，竟然也在前端领域中被锻造了一次又一次。对此影响最大的可能是 Babel 和 Webpack 的诞生。</p>
+<p>Babel 和 Webpack 本身并不是新的编程语言，而是“编译器”和“打包器”。使用 Babel，你可以使用 JavaScript 最新的但未完全标准化的语言特性。通过 Babel 的转译，新语法会被翻译为旧语法，从而实现在较旧或标准平台上的运行。Webpack 作为“打包器”，更像 C/C++ 编译工具链中的链接器，但是它仍具有代码转换的作用。使用 Webpack Loader，可以让 Webpack 处理非 JavaScript 语言文件，甚至可与 Babel 配合将新 JavaScript 转译为旧 JavaScript；使用 Webpack Plugin，还可以进一步重新编排 JavaScript 模块的依赖关系，甚至调整源码 —— Webpack 底层依赖的 <a href="https://github.com/acornjs/acorn" target="_blank" rel="noopener">acorn</a> 扮演了至关重要的作用。</p>
+<p>高级编程语言是解决复杂问题的有利工具。利用 Babel，React 得以扩展 JavaScript 实现 jsx 语法，这也是促成 React 流行的原因之一。与 Babel 类似，tsc 是 TypeScript 编译到 JavaScript 的编译器。TypeScript 为 JavaScript 带来了静态类型，为大型项目的开发增添了一份可靠的保障。最新的 <a href="https://devblogs.microsoft.com/typescript/typescript-and-babel-7/" target="_blank" rel="noopener">Babel 7 甚至还支持了 TypeScript 的编译</a>。</p>
+<p>为了熟悉一些 Babel 的编译原理非常重要的概念 —— 抽象语法树 AST，我做了一个<a href="https://github.com/ladjzero/js-ast-interpreter" target="_blank" rel="noopener">用 JavaScript 来实现 JavaScript</a> 的练习。采用 acorn 来进行源代码到 AST 的转换，然后用 JavaScript 编写程序来解释 AST，从而实现源代码的执行。</p>
+<p>稍微熟悉 AST 之后，我尝试写一些 Babel 或 Webpack 插件，用于解决工作中一些问题，例如抽取代码中需国际化的文本为语言包文件。这大大扩展了我的工作边界，从日业务代码的开发扩展到了开发工具链的开发和优化。</p>
+<p>因为有了一点点编程语言的知识，在团队引入 GraphQL 时我更加关注其语言本身的部分，而不是其服务器和客户端的实现。目前 GraphQL 语言本身只有一个官方实现，是 JavaScript 编写的。语言特性还比较基础，如果语言特性不够用时，可以通过编写指令来扩展语言功能。利用一些之前习得的知识，我编写了一些指令来增强 GraphQL，避免了编写迂回的、复杂的查询语句。</p>
+<p>前不久在 LeetCode 上刷到一个 <a href="https://leetcode-cn.com/problems/parse-lisp-expression/" target="_blank" rel="noopener">Lisp 语法解析</a>的题，高难度。本以为沿用三脚猫的功夫可以搞定，没想到最后吃瘪了。花了很多天，断断续续地解，虽然最终解决了，但也意识到编程语言真是一个复杂但系统的学问。</p>
+<p>计算机领域的很多子领域，都可以让人穷尽毕生精力研究，每当我认为在日常工作比较无聊没有难度的时候，我会试着学习编程语言，毕竟它不是没用的技能。有了它，我可以更多地感受 web 前端进化狂热的浪潮，更多地做“不可思议”的解决方案。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/03/14/when-defer-scripts-execute/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          defer 脚本的执行顺序
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
