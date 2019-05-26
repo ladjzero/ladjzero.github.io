@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>从 REST 到 GraphQL：ID 设计 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="现在 GraphQL 非常流行，不过要将运行在 REST 上的产品迁移到 GraphQL 并不太容易。不用 GraphQL 重写，而是在现有的 REST 上加一层 GraphQL 是比较科学的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 REST 到 GraphQL：ID 设计">
+<meta property="og:url" content="http://ladjzero.me/2019/05/26/rest-to-graphql-id-design/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="现在 GraphQL 非常流行，不过要将运行在 REST 上的产品迁移到 GraphQL 并不太容易。不用 GraphQL 重写，而是在现有的 REST 上加一层 GraphQL 是比较科学的方法。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-05-26T15:32:34.328Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 REST 到 GraphQL：ID 设计">
+<meta name="twitter:description" content="现在 GraphQL 非常流行，不过要将运行在 REST 上的产品迁移到 GraphQL 并不太容易。不用 GraphQL 重写，而是在现有的 REST 上加一层 GraphQL 是比较科学的方法。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-rest-to-graphql-id-design" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/05/26/rest-to-graphql-id-design/" class="article-date">
+  <time datetime="2019-05-25T16:00:00.000Z" itemprop="datePublished">2019-05-26</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      从 REST 到 GraphQL：ID 设计
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>现在 GraphQL 非常流行，不过要将运行在 REST 上的产品迁移到 GraphQL 并不太容易。不用 GraphQL 重写，而是在现有的 REST 上加一层 GraphQL 是比较科学的方法。</p>
+<a id="more"></a>
+<p>REST 的每个 API Endpoint 看似独立，其实从宏观产品来看，REST 背后的“资源”都是互相关联的。比如 <code>/restaurants/:resId/rooms/:roomId</code> 中 <code>restaurants</code> 和 <code>rooms</code> 的层级关系；响应结果中的 <code>{room: { id: 1, owner: { userId: 123 }}}</code> <code>{user: { id: 123, rooms: [{ id: 1 }]}}</code> 这样的互相引用关系。也就是树或图的关系。</p>
+<p>实现树的关系非常重要，可以让 GraphQL 在资源关系抽象上可以完全继承 REST 的成果。</p>
+<p>一般来说，GraphQL 实现中会设计 <code>interface Node { id: ID! }</code> 这个类型，用于表达任何 GraphQL 数据节点。其中 <code>id</code> 在整系统中唯一的。相比而言，REST 中的 id 往往只是在类型中唯一的。所以 GraphQL id 至少要包含 REST 中的类型和 id 信息，比如 <code>Room:123</code>。</p>
+<p>GraphQL 的解析响应数据的过程是个设计非常精妙的递归过程。开发者只需要定义类型的各个 field 的 resolver，如果 field 不是 scalar 类型，则再定义 field 的 field 的 resolver。由于整个 resolve 过程是自顶而下连续的过程，所以无法将数据顶层的信息传递给底层的 resolver。</p>
+<p>这个问题使得 resolve 到底层时，会丢失 REST 的 Endpoint 中较靠前的 id 信息。举个栗子， <code>/restaurants/:resId/rooms/:roomId</code> 对应 schema</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">type Restaurant &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  rooms: [Room!]!</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type Room &#123;</span><br><span class="line">  id: ID!</span><br><span class="line">  rating: Rating</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>，若 Rating 需要 resId 来进行查询。在不利用 context 的情况下，Room 的 resolver 只能提供 Room 的 id 信息。也许 Room 可以额外加一个 resId field 来向下传递 resId。不过这不是个好办法，因为如果资源的查询深度很大，往查询路径中的类型都加上用于辅助 field 会显得很麻烦和笨拙。另外使用 context 来传递信息也不太明智，因为它太难以 debug 了，而且你需要明确选用的 graphql server 的 resolve 实现方式。</p>
+<p>仍然可以在 id 上想想办法 —— 将 REST Endpoint 中表达的资源关系也编码进 id 中，比如 <code>Room:123@Restaurant:abc</code>。</p>
+<p>按照这样设计 id，在继承 REST 的资源关系设计的同时，GraphQL 并没有损失它应有的灵活度。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/04/25/pl-for-web/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          随笔：编程语言知识在 web 前端的应用
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
