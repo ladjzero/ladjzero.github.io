@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>前端微服务化在才云的实践 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。 与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端微服务化在才云的实践">
+<meta property="og:url" content="http://ladjzero.me/2019/06/30/frontend-microservice/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。 与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-30T15:50:39.022Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端微服务化在才云的实践">
+<meta name="twitter:description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。 与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-frontend-microservice" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/06/30/frontend-microservice/" class="article-date">
+  <time datetime="2019-06-29T16:00:00.000Z" itemprop="datePublished">2019-06-30</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      前端微服务化在才云的实践
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。</p>
+<p>与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。</p>
+<a id="more"></a>
+<p>为了应对这种情况，也便于业务团队的管理，compass 前端对应后端微服务被进行了拆分。</p>
+<p>微前端的优势被 <a href="https://insights.thoughtworks.cn/micro-frontends-1/" target="_blank" rel="noopener">ThoughtWorks 详细地阐述过</a>，如何实现 ThoughtWorks 聊得较少，但也提出了一些重要原则，结合产品特点，我们抛弃了一些原则，也对一些原则作了点不一样的解释</p>
+<ul>
+<li>Be Technology Agnostic，单体应用基于 React 技术栈，微前端也同样如此。不过在 React 技术栈上，单个微前端可以有一些自己技术选择；</li>
+<li>Isolate Team Code，使用分离的代码仓库，但未隔离 runtime；</li>
+<li>Establish Team Prefixes，在需要区分前端模块的地方都可以使用 prefix；</li>
+<li>Favor Native Browser Features over Custom APIs，尽量使用原生实现和 React 生态圈的实现；</li>
+<li>Build a Resilient Site，暂不考虑。</li>
+</ul>
+<p>前两点主要基于架构迁移的风险和成本考虑，这是将正在运行的产品迁移到微前端架构的过程中所不得不考虑的问题。</p>
+<p>具体来讲，我们是如何做到的？</p>
+<h1 id="1-模块设计与原地裁切"><a href="#1-模块设计与原地裁切" class="headerlink" title="1. 模块设计与原地裁切"></a>1. 模块设计与原地裁切</h1><p>要实现微服务不可避免地要先实现代码按功能切分的模块化。这里我们实现了一个简单的模块系统，包含 ModuleRegistry 和 Module。Module 就是一个业务模块，是原有代码的一个薄封装，实现了 ModuleRegistry 定义的生命周期方法。ModuleRegistry 加载 Module 时，首先会实例化 Module，并将 redux store、导航菜单更新方法等作为 context 传递给 Module 的初始化方法。Module 则可以在初始化方法中完成导航菜单的注册、redux reducer 的注册、保存所需的 context 信息等操作。</p>
+<p>从这里可以看出，类似于 redux 这种应用于应用全局的技术，需要优先实现 reducer 动态加载等模块化特性。业务上的导航菜单，也需要支持动态加载菜单项。</p>
+<p>这些动态加载特性是在真正开始模块实现前需要做的，所以在实施微前端之前，就可以在原有代码仓库中进行模块的裁切了。</p>
+<h1 id="2-服务粘合"><a href="#2-服务粘合" class="headerlink" title="2. 服务粘合"></a>2. 服务粘合</h1><p>做完模块化之后，就可以将模块代码拆分到各自的代码仓库中去了，并且可以实现单独的构建和运行。但是如何将分散的前端重新粘合在一起呢？</p>
+<p>将 compass 前端按功能模块拆分出去之后，还剩下一些产品主体代码，包括导航菜单、页面框架等。这些公共的代码不属于业务，可以将它们打包为不含业务模块的运行框架。运行框架包含了 ModuleRegistry，和用于服务粘合的代理和服务注入功能。</p>
+<h2 id="2-1-代理"><a href="#2-1-代理" class="headerlink" title="2.1 代理"></a>2.1 代理</h2><p>无论部署多少个微前端实例，它们都须要汇聚为一个单一服务提供给用户使用。所以运行框架须要有代理各微服务的功能。</p>
+<h2 id="2-2-服务注入"><a href="#2-2-服务注入" class="headerlink" title="2.2 服务注入"></a>2.2 服务注入</h2><p>单个微前端实例，除了提供原本就提供的 js css 等静态资源、Node.js 服务之外，还需额外提供一个 <code>manifest.html</code> 文件，这是我们的微前端约定的一部分。</p>
+<p><code>manifest.html</code> 可以通过不同的技术来生成，可以是静态的，可以是动态变化。但它需要满足一个目的，运行框架产生的页面内联 <code>manifest.html</code> 后就可以完成业务模块的注册和使用。所以普通的的 <code>manifest.html</code> 实现就是 webpack-html-plugin 输出的文件。但不限于此。</p>
+<p>运行框架有两种加载 <code>manifest.html</code> 的方式，一是在输出首页的过程中获取各个微前端的 <code>manifest.html</code> 后内联如首页中，另一种是输出不含 <code>manifest.html</code> 的首页后，由浏览器拉取 <code>manifest.html</code> 并嵌入页面中。为了加快首屏速度，我们选择前者来加载 compass 的固有模块，选择后者来加载 addon（一些实验性质的功能，不一定会进入标准 compass 功能列表）。</p>
+<h1 id="3-TBD"><a href="#3-TBD" class="headerlink" title="3. TBD"></a>3. TBD</h1>
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/05/26/rest-to-graphql-id-design/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          从 REST 到 GraphQL：ID 设计
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
