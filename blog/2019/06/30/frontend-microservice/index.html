@@ -5,19 +5,20 @@
   
   <title>前端微服务化在才云的实践 | ladjzero&#39;s blog</title>
   <meta name="viewport" content="width=device-width">
-  <meta name="description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。 与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。">
+  <meta name="description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。微服务作为 compass 的服务目标之一，也是才云构建自身产品的一种“本能”的思考方式。随着产品功能的不断丰富，技术栈的不断扩充，compass 的前端 compass-web 面临着一个挑战：如何将越来越大的单体应用微服务化。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端微服务化在才云的实践">
 <meta property="og:url" content="http://ladjzero.me/2019/06/30/frontend-microservice/index.html">
 <meta property="og:site_name" content="ladjzero&#39;s blog">
-<meta property="og:description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。 与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。">
+<meta property="og:description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。微服务作为 compass 的服务目标之一，也是才云构建自身产品的一种“本能”的思考方式。随着产品功能的不断丰富，技术栈的不断扩充，compass 的前端 compass-web 面临着一个挑战：如何将越来越大的单体应用微服务化。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://ladjzero.me/blog/2019/06/30/frontend-microservice/service-compose.png">
-<meta property="og:updated_time" content="2019-07-02T15:23:16.760Z">
+<meta property="og:image" content="http://ladjzero.me/blog/2019/06/30/frontend-microservice/1.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2019/06/30/frontend-microservice/2.png">
+<meta property="og:updated_time" content="2019-07-21T14:53:15.345Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前端微服务化在才云的实践">
-<meta name="twitter:description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。 与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。">
-<meta name="twitter:image" content="http://ladjzero.me/blog/2019/06/30/frontend-microservice/service-compose.png">
+<meta name="twitter:description" content="compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。微服务作为 compass 的服务目标之一，也是才云构建自身产品的一种“本能”的思考方式。随着产品功能的不断丰富，技术栈的不断扩充，compass 的前端 compass-web 面临着一个挑战：如何将越来越大的单体应用微服务化。">
+<meta name="twitter:image" content="http://ladjzero.me/blog/2019/06/30/frontend-microservice/1.png">
   
     <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
   
@@ -73,40 +74,77 @@
 	</header>
 	<div class="entry-content">
 		
-    	<p>compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。更好的微服务运维作为 compass 的产品目标之一，也促使 compass 成为一个由多个微服务所构建成的产品。</p>
-<p>与微服务化的后端不同，compass 前端长期以来是一个单体应用。随着功能和开发人员的不断增多，前端的代码构建变得越来越慢，工作流变得越来越复杂。</p>
+    	<p>compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。微服务作为 compass 的服务目标之一，也是才云构建自身产品的一种“本能”的思考方式。随着产品功能的不断丰富，技术栈的不断扩充，compass 的前端 compass-web 面临着一个挑战：如何将越来越大的单体应用微服务化。</p>
 <a id="more"></a>
-<p>为了应对这种情况，也便于业务团队的管理，compass 前端对应后端微服务被进行了拆分。</p>
-<p>微前端的优势被 <a href="https://insights.thoughtworks.cn/micro-frontends-1/" target="_blank" rel="noopener">ThoughtWorks 详细地阐述过</a>，如何实现 ThoughtWorks 聊得较少，但也提出了一些重要原则，结合产品特点，我们抛弃了一些原则，也对一些原则作了点不一样的解释</p>
+<p>与微服务化的后端不同，compass-web 长期以来是一个单体应用。为了便于团队管理，compass-web 按照业务小组被划分为多个独立部署的模块。这种微服务式的前端组织方式，可以被称为“微前端”。</p>
+<p>微前端的优势被 <a href="https://insights.thoughtworks.cn/micro-frontends-1/" target="_blank" rel="noopener">ThoughtWorks 详细地阐述过</a>，其中提出了一些重要原则。结合自身产品特点，我们抛弃了一些原则，也对保留的一些原则作了新的解释：</p>
 <ul>
-<li>Be Technology Agnostic，单体应用基于 React 技术栈，微前端也同样如此。不过在 React 技术栈上，单个微前端可以有一些自己技术选择；</li>
-<li>Isolate Team Code，使用分离的代码仓库，但未隔离 runtime；</li>
-<li>Establish Team Prefixes，在需要区分前端模块的地方都可以使用 prefix；</li>
-<li>Favor Native Browser Features over Custom APIs，尽量使用原生实现和 React 生态圈的实现；</li>
-<li>Build a Resilient Site，暂不考虑。</li>
+<li><p>Be Technology Agnostic;</p>
+<p>对于从单体迁移到微前端架构的应用来说，一开始就支持异构的模块是不明智的。不考虑异构，反而将技术栈缩小为以 React 为中心。这是我们根据目前的产品规模和人员成本所做出的的决定；</p>
+</li>
+<li><p>Isolate Team Cod;</p>
+<p>为了更好地配合 CICD 和业务组的开发节奏，我们为每个模块使用了独立的代码仓库。但是我们仍允许模块在运行时进行有限的共享；</p>
+</li>
+<li><p>Establish Team Prefixes;</p>
+</li>
+<li><p>Favor Native Browser Features over Custom APIs;</p>
+</li>
+<li><p>Build a Resilient Site;</p>
+<p>原文中是指服务器渲染和渐进式增强，但这并不适用于我们的产品。</p>
+</li>
 </ul>
-<p>前两点主要基于架构迁移的风险和成本考虑，这是将正在运行的产品迁移到微前端架构的过程中所不得不考虑的问题。</p>
-<p>具体来讲，我们是如何做到的？</p>
-<h1 id="1-微服务协议"><a href="#1-微服务协议" class="headerlink" title="1. 微服务协议"></a>1. 微服务协议</h1><p>架构是产品冰山之下的部分，架构迁移需要保证不影响产品现有功能和体验。为了让拆分之后的微前端可以协同工作，需要设计一套协作的协议，它分为两个层次：服务聚合和服务协同。</p>
-<h1 id="2-服务聚合"><a href="#2-服务聚合" class="headerlink" title="2. 服务聚合"></a>2. 服务聚合</h1><p>服务粘合指的是将众多微前端粘合为一个单独的应用：即使不同功能来自于不同服务，但在用户体验上，仍是使用的同一个应用。</p>
-<p>在 compass 中，console-web 是整个前端服务。在实施微前端后，console-web 被分解为了”瘦身后的 console-web“ 和其他业务 xxx-web，以及一个用于服务聚合的网关 modularize gateway。聚合网关不动声色地代替了 console-web 的位置，前置的反向代理（这里是 nginx）甚至都无法察觉到这个改变。</p>
-<img src="/blog/2019/06/30/frontend-microservice/service-compose.png">
-<h2 id="2-1-模块设计"><a href="#2-1-模块设计" class="headerlink" title="2.1. 模块设计"></a>2.1. 模块设计</h2><p>要实现微服务不可避免地要先实现代码按业务划分的模块化。这里我们实现了一个简单的模块系统，包含 ModuleRegistry 和 Module。Module 就是一个业务模块，是原有代码的一个薄封装，实现了 ModuleRegistry 定义的生命周期方法。ModuleRegistry 加载 Module 时，首先会实例化 Module，并将 redux store、导航菜单更新方法等这些必要的息作为参数传递给 Module 的初始化方法。Module 则可以在初始化方法中完成导航菜单的注册、redux reducer 的注册、保存所需的上下文信息等操作。</p>
-<p>从这里可以看出，类似于 redux 这种应用于应用全局的技术，需要优先实现 reducer 动态加载等模块化特性。业务上的导航菜单，也需要支持动态加载菜单项。</p>
-<h2 id="2-2-服务裁切"><a href="#2-2-服务裁切" class="headerlink" title="2.2. 服务裁切"></a>2.2. 服务裁切</h2><p>这些动态加载特性实现完成后，可以在同一个代码仓库内做原地裁切，也可以按业务将代码迁移到不同的仓库中。在构建和运行机制上，拆分出来的微前端和之前的单体应用相差不大。</p>
-<h2 id="2-2-服务粘合"><a href="#2-2-服务粘合" class="headerlink" title="2.2. 服务粘合"></a>2.2. 服务粘合</h2><p>做完模块化之后，就可以将模块代码拆分到各自的代码仓库中去了，并且可以实现单独的构建和运行。但是如何将分散的前端重新粘合在一起呢？</p>
-<p>将 compass 前端按功能模块拆分出去之后，还剩下一些产品主体代码，包括导航菜单、页面框架等。这些公共的代码不属于业务，可以将它们打包为不含业务模块的运行框架。运行框架包含了 ModuleRegistry，和用于服务粘合的代理和服务注入功能。</p>
-<h3 id="2-2-1-代理"><a href="#2-2-1-代理" class="headerlink" title="2.2.1 代理"></a>2.2.1 代理</h3><p>无论部署多少个微前端实例，它们都须要汇聚为一个单一服务提供给用户使用。所以运行框架须要有代理各微服务的功能。</p>
-<h3 id="2-2-2-服务注入"><a href="#2-2-2-服务注入" class="headerlink" title="2.2.2 服务注入"></a>2.2.2 服务注入</h3><p>单个微前端实例，除了提供原本就提供的 js css 等静态资源、Node.js 服务之外，还需额外提供一个 <code>manifest.html</code> 文件，这是我们的微前端约定的一部分。</p>
-<p><code>manifest.html</code> 可以通过不同的技术来生成，可以是静态的，可以是动态变化。但它需要满足一个目的，运行框架产生的页面内联 <code>manifest.html</code> 后就可以完成业务模块的注册和使用。所以普通的的 <code>manifest.html</code> 实现就是 webpack-html-plugin 输出的文件。但不限于此。</p>
-<p>运行框架有两种加载 <code>manifest.html</code> 的方式，一是在输出首页的过程中获取各个微前端的 <code>manifest.html</code> 后内联如首页中，另一种是输出不含 <code>manifest.html</code> 的首页后，由浏览器拉取 <code>manifest.html</code> 并嵌入页面中。为了加快首屏速度，我们选择前者来加载 compass 的固有模块，选择后者来加载 addon（一些实验性质的功能，不一定会进入标准 compass 功能列表）。</p>
-<h1 id="3-服务协同"><a href="#3-服务协同" class="headerlink" title="3. 服务协同"></a>3. 服务协同</h1><p>服务聚合并不涉及到具体的前端技术栈，即使使用 Vue Angular，上面的内容仍然适用。但是服务协同需要根据所选技术栈来深度定制。</p>
-<h2 id="3-1-状态共享"><a href="#3-1-状态共享" class="headerlink" title="3.1 状态共享"></a>3.1 状态共享</h2><p>微前端应用常常需要从运行框架中获取一些状态信息，比如 session 信息。在 React 应用中，这可以利用 context 和全局状态管理器（比如 redux）来实现。</p>
-<p>微前端应用之间的状态共享是不推荐的。如果两个微前端需要共享后端数据，应当分别从后端获取；如果要共享前端状态数据，可以用”微前端A -&gt; 应用框架 -&gt; 微前端B“的方式来传递信息。或者使用”运行时共享代码“的方式。</p>
-<h2 id="3-2-运行时代码共享"><a href="#3-2-运行时代码共享" class="headerlink" title="3.2 运行时代码共享"></a>3.2 运行时代码共享</h2><p>共享特定的状态会引入很强的耦合性，也有些违背微服务实现的不可知性。如果共享是一个刚需，可以考虑更加抽象的共享方式。</p>
-<p>利用 ModuleRegistry，每个 Module 可以有节制地注册一些公共服务，让其他 Module 可以访问。例如服务 A 可以获取 id:1 资源并展示其详情，若服务 B 也希望展示 id:1 资源的详情，可以请求服务 A 的团队该详情作为组件注册到 ModuleRegistry，让服务 B 直接引用此组件来进行展示。</p>
-<p>需要注意的是，被共享的代码应当足够”大块“，最好能完成一个特定业务，避免注册过度细碎的代码，导致代码共享最终膨胀失控。作为微前端架构中今后最容易失控的部分，需要根据业务和产品特点，为共享代码定义一些约束。</p>
-<h2 id="3-3-接口共享-TBD"><a href="#3-3-接口共享-TBD" class="headerlink" title="3.3 接口共享 TBD"></a>3.3 接口共享 TBD</h2>
+<p>具体而言，我们是这么做的。</p>
+<h1 id="1-微前端协议"><a href="#1-微前端协议" class="headerlink" title="1 微前端协议"></a>1 微前端协议</h1><p>架构是产品冰山之下的部分。从单体迁移到微前端架构，需要确保产品现有功能和体验不受影响。为了让各模块能一如往常一样协同工作，需要为之设计一套协议，它分为两个层次：服务聚合和服务协同。</p>
+<h1 id="2-服务聚合"><a href="#2-服务聚合" class="headerlink" title="2 服务聚合"></a>2 服务聚合</h1><p>服务聚合指的是将众多微前端粘合为一个整体：即使不同功能来自于不同服务，但在用户体验上，仍是使用的同一个应用。</p>
+<p>在实施微前端后，compass-web 被分解为了”瘦身后的 compass-core-web“ 和业务相关 feature-web。其中 compass-core-web 除了提供 feature-web 的运行时框架外，还是一个用于服务聚合的网关。虽然 compass-core-web 接替了 compass-web 的位置，但是从外面看来，compass-web 似乎未曾改变过。</p>
+<img src="/blog/2019/06/30/frontend-microservice/1.png">
+<h2 id="2-1-模块设计"><a href="#2-1-模块设计" class="headerlink" title="2.1 模块设计"></a>2.1 模块设计</h2><p>微前端的一个前置条件是代码的模块化。我们为此实现了一个简单的模块系统，包含 ModuleRegistry 和 Module 这两个概念。</p>
+<p>compass-core-web 提供的运行时包含了 ModuleRegistry，feature-web 则包含 Module。通过服务聚合，compass-core-web 与 feature-web 的代码将一并送达客户端，Module 将被陆续地注册到 ModuleRegistry，业务功能也被陆续初始化。</p>
+<p>在原有应用中，框架指的是提供应用初始化、redux store、路由、导航菜单等全局性功能的代码。要让应用运行起来，框架需要直接从业务代码获得功能代码，包括 redux reducer、路由配置、导航菜单项等，要让应用可以按模块拆分，框架还需能动态加载它们。</p>
+<p>将可被动态加载的 redux reducer、路由配置、导航菜单和对应的 React 组件等代码，迁移到新的代码仓库，利用 Module 将这些代码进行汇总形成新的入口代码，即形成了 Module 的基本封装。细节上，Module 需实现了 ModuleRegistry 定义的 register 方法，在被 ModuleRegistry 加载时，Module 会被实例化，register 方法将被调用。redux reducer、路由配置、导航菜单等的更新方法会被作为 register 方法的参数，从 ModuleRegistry 传递给 Module，从而完成框架加载功能代码的过程。</p>
+<p>一个 Module 的实现代码大致如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> reducers <span class="keyword">from</span> <span class="string">'./reducers'</span>;</span><br><span class="line"><span class="keyword">import</span> routes <span class="keyword">from</span> <span class="string">'./routes'</span>;</span><br><span class="line"><span class="keyword">import</span> menus <span class="keyword">from</span> <span class="string">'./menus'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FeatureModule</span> <span class="keyword">extends</span> <span class="title">Module</span> </span>&#123;</span><br><span class="line">  register(&#123; store, patchReducer, patchRoute, patchMenu &#125;) &#123;</span><br><span class="line">    <span class="keyword">this</span>.store = store;</span><br><span class="line">    patchReducer(&#123; <span class="attr">feature</span>: reducers &#125;);</span><br><span class="line">    patchRoute(routes);</span><br><span class="line">    patchMenu(menus);</span><br><span class="line">    <span class="comment">// initialize feature-web ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-服务聚合"><a href="#2-2-服务聚合" class="headerlink" title="2.2 服务聚合"></a>2.2 服务聚合</h2><p>在完成模块化之后，原有应用的代码则被拆分为 feature-web 分散到多个代码仓库中去了。feature-web 可以实现单独的开发和构建，因为缺少 compass-core-web 提供的框架，它仍不能单独运行。所以在运行时，需要把 compass-core-web 和 feature-web 重新聚合在一起。</p>
+<h3 id="2-2-1-服务代理"><a href="#2-2-1-服务代理" class="headerlink" title="2.2.1 服务代理"></a>2.2.1 服务代理</h3><p>无论部署多少个 feature-web，compass-core-web 都是唯一的服务输出方。所以 compass-core-web 要有代理各 feature-web 服务的能力。</p>
+<p>代理可以分为一静一动。对于静态资源，feature-web 可以使用 webpack 来进行构建，统一为所有静态资源加上 feature 前缀。对于动态接口，比如 Node.js 实现的 RESTful 接口，feature-web 可以为 api 加上 featuer 前缀。通过 feature 前缀，compass-core-web 可以实现按 feature 进行代理。</p>
+<h3 id="2-2-2-服务注入"><a href="#2-2-2-服务注入" class="headerlink" title="2.2.2 服务注入"></a>2.2.2 服务注入</h3><p>feature-web 除了提供的 js css 等静态资源、Node.js 服务之外，还需额外提供一个 <code>manifest.html</code> 文件，这是“微前端协议”的一部分。</p>
+<p><code>manifest.html</code> 可以通过不同的技术来生成，可以是静态的，也可以是动态的。但它需要满足一个要求：仅需在页面中内联 feature-web 的 <code>manifest.html</code>，客户端就能获得所有 feature-web 的静态资源。</p>
+<p>compass-core-web 有两种加载 <code>manifest.html</code> 的方式，服务端加载和客户端加载。前者是在 compass-core-web 输出 html 前，在服务端获取各个 feature-web 的 <code>manifest.html</code> 并内联到 html 文档中；后者是浏览器加载无 <code>manifest.html</code> 的 html 文档后，再请求各个 feature-web 的 <code>manifest.html</code> 并嵌入页面中。在生产环境中，我们同时采用了两种方式。为了加快首屏速度，使用服务端加载来加载 compass 的固有模块，使用客户端加载来加载 plugin 模块（一些实验性质的功能，不一定会进入标准 compass 产品）。</p>
+<img src="/blog/2019/06/30/frontend-microservice/2.png">
+<p><small>内联到 html 文档中的 a-web manifest</small></p>
+<h1 id="3-服务协同"><a href="#3-服务协同" class="headerlink" title="3. 服务协同"></a>3. 服务协同</h1><p>服务聚合并不限制前端的技术选型，对于使用 Vue 或 Angular、甚至非 MVVM 架构的前端应用仍然适用。服务协同则需要根据所选技术栈来深度定制。</p>
+<h2 id="3-1-状态共享"><a href="#3-1-状态共享" class="headerlink" title="3.1 状态共享"></a>3.1 状态共享</h2><p>feature-web 常常需要从框架中获取一些状态信息，比如 session 信息。可以利用全局变量、React context 和 redux 等来实现。</p>
+<p>feature-web 之间的状态共享是需要尽量避免的。根据共享状态的来源不同，有不同的处理方式。若来自后端，各个 feature-web 应当分别从后端获取。若来自前端，可以利用 redux 或 ModuleRegistry 来进行通信。</p>
+<p>这里延伸一下 Module ModuleRegistry 机制的功能。除了代码注册之外，ModuleRegistry 还承担着 Module 之间的通信职责。利用 ModuleRegistry 提供的 ModuleProvider 组件和 withModules 高阶组件，每个 feature-web 都方便地访问其他 Module，从而获得其他 feature-web 对外提供的信息。</p>
+<h2 id="3-2-代码共享"><a href="#3-2-代码共享" class="headerlink" title="3.2 代码共享"></a>3.2 代码共享</h2><h3 id="3-2-1-vendor-代码共享"><a href="#3-2-1-vendor-代码共享" class="headerlink" title="3.2.1 vendor 代码共享"></a>3.2.1 vendor 代码共享</h3><p>为了优化 webpack 的构建过程，可以利用 DllPlugin 和 DllReferencePlugin 来实现两步构建。第一步将不易变的 vendor 代码构建为 dll bundle 和 dll manifest（相当于 C 语言的 header 文件），第二步将其余代码连同 dll manifest 构建为整个应用。如果 vendor 代码没变，只有业务代码发生了更变，整个构建过程就可以跳过第一步。</p>
+<p>在微前端架构下，dll 机制的好处非常明显。因为 compass-core-web 和 feature-web 都是基于同一套技术栈，所以 vendor 代码大量重合。利用 dll 机制，可以减小 feature-web 的构建时间和输出的 js 文件的尺寸。</p>
+<p>虽然 dll 机制适用于微前端，但 DllPlugin 和 DllReferencePlugin 却不一定。由于易受 vendor 代码和 webpack loader 的版本变化影响， DllPlugin 输出的 manifest 非常易变，难以在多个微前端构建中共享。所以我们简化了 dll 机制，第一步仅将 vendor 代码分别导出为全局变量，第二步通过 webpack 的 externals 机制来实现运行时链接（引用）。</p>
+<h3 id="3-2-2-共同库的单例问题"><a href="#3-2-2-共同库的单例问题" class="headerlink" title="3.2.2 共同库的单例问题"></a>3.2.2 共同库的单例问题</h3><p>针对同一类问题，我们往往能在业务中提炼出一些公共库。在微前端架构下，在实现公共库时需要特别考虑单例问题。</p>
+<p>例如在 a-web 中有代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Lib <span class="keyword">from</span> <span class="string">'lib'</span>;</span><br><span class="line"><span class="built_in">window</span>.a = <span class="keyword">new</span> Lib();</span><br></pre></td></tr></table></figure></p>
+<p>b-web 中获取到 <code>window.a</code> 后<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Lib <span class="keyword">from</span> <span class="string">'lib'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.a <span class="keyword">instanceof</span> Lib <span class="comment">/* 可能为假 */</span>) &#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>若对其进行类型判断 <code>window.a instanceof Lib</code>，这时该表达式可能为假。因为 a-web b-web 各自将 <code>lib</code> 构建到了自己的 bundle 中，导致两处的 <code>Lib</code> 值并不严格相等。</p>
+<h3 id="3-2-3-业务代码共享"><a href="#3-2-3-业务代码共享" class="headerlink" title="3.2.3 业务代码共享"></a>3.2.3 业务代码共享</h3><p>feature-web 之间可能存在业务依赖。对于相依赖的业务代码，如果不在各个 feature-web 中单独维护，就需要 feature-web 之间能够互相访问业务代码。有有两种方式来实现业务代码的共享，一冷一热，分别有以下优缺点：</p>
+<ol>
+<li><p>使用 npm 包的形式来管理依赖。优点是依赖关系静态化、离线化，开发时也仅需运行单个 feature-web 就行；缺点是若需升级 npm 包，依赖方需要重新构建和发布，并且在运行时被依赖的代码会存在多个副本。</p>
+</li>
+<li><p>在运行时依赖。优点是若被依赖的代码接口保持兼容，可以进行热更新，运维更加方便，也不会有业务代码的冗余；缺点是需要精心处理 feature-web 之间的依赖加载关系，而且由于依赖方式比较松散，一些本可以被静态检测工具发现的问题会被推迟到线上出现。</p>
+</li>
+</ol>
+<p>经过取舍，我们更加看重运维的便利性，所以采用了方案 2。利用 ModuleRegistry，每个 Module 可以有节制地注册一些公共服务，以便其他 Module 访问。在 React 技术栈下，这些被共享的服务往往都是 React Component。</p>
+<p>使用运行时依赖会有两个挑战：服务不易共享，被共享的服务规模易失控。被注册的服务，对于所在模块来说，有一定的“私有”特性，然而对外来说，服务的接口又必须有易用和稳定的特性，两种特性有一定的冲突。另外如何确定一个服务是否适宜被共享也是一个问题。长远来看，共享的服务的规模会一直膨胀甚至会失控。为解决这两个挑战，需要根据业务和产品特点，为其定义详细的约束，不过这是个循序渐进的过程，但绝不能忽视。</p>
+<h2 id="4-总结和展望"><a href="#4-总结和展望" class="headerlink" title="4 总结和展望"></a>4 总结和展望</h2><p>从我们实践的结果看来，在现有单体前端上实施该微前端的方案是非常平滑地，同时仍表现出一些亟需解决的问题：</p>
+<ol>
+<li>开发过程会更加复杂，至少需要同时运行 compass-core-web 和 feature-web；</li>
+<li>由于 compass-core-web 具有框架属性，它的版本升级可能逼迫 feature-web 进行同步升级；</li>
+<li>运行时 feature-web 之间代码依赖还缺少规范和约束。</li>
+</ol>
+<p>目前采取应对措施分别是：</p>
+<ol>
+<li>完善 cli 工具，尽量降低开发的复杂度；</li>
+<li>通过清扫技术债务、提取公共代码，为 compass-core-web 再“瘦身”，让其足够 mini，足够稳固；</li>
+<li>尽可能降低 feature-web 之间代码的依赖，尝试落地 graphql，将数据 api 层的代码（包含 redux 层和 Node.js api 层）依赖移除掉。</li>
+</ol>
+
     
 	</div>
 	<footer class="entry-footer">
