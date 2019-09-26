@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>为什么在 componentDidMount 里调用 this.setState 浏览器只会绘制一次 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="偶然注意到 React 文档中的一句话  You may call setState() immediately in componentDidMount(). It will trigger an extra rendering, but it will happen before the browser updates the screen. This guarantees that even">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么在 componentDidMount 里调用 this.setState 浏览器只会绘制一次">
+<meta property="og:url" content="http://ladjzero.me/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="偶然注意到 React 文档中的一句话  You may call setState() immediately in componentDidMount(). It will trigger an extra rendering, but it will happen before the browser updates the screen. This guarantees that even">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ladjzero.me/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/async-render.png">
+<meta property="og:updated_time" content="2019-09-26T15:54:41.648Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么在 componentDidMount 里调用 this.setState 浏览器只会绘制一次">
+<meta name="twitter:description" content="偶然注意到 React 文档中的一句话  You may call setState() immediately in componentDidMount(). It will trigger an extra rendering, but it will happen before the browser updates the screen. This guarantees that even">
+<meta name="twitter:image" content="http://ladjzero.me/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/async-render.png">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-why-setstate-in-componentdidmount-only-paint-once" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/" class="article-date">
+  <time datetime="2019-09-23T16:00:00.000Z" itemprop="datePublished">2019-09-24</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      为什么在 componentDidMount 里调用 this.setState 浏览器只会绘制一次
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>偶然注意到 React 文档中的一句话</p>
+<blockquote>
+<p>You <strong>may call setState() immediately</strong> in componentDidMount(). It will trigger an extra rendering, but it will happen before the browser updates the screen. This guarantees that even though the render() will be called twice in this case, the <strong>user won’t see the intermediate state</strong>.</p>
+</blockquote>
+<p>对 “user won’t see the intermediate state” 有些难以相信。可以确定的是，由于“额外的渲染”，dom 的确发生了变更。为何 dom 发生了变更，浏览器却只绘制了一次呢？</p>
+<a id="more"></a>
+<h1 id="是针对于屏幕刷新率的优化吗？"><a href="#是针对于屏幕刷新率的优化吗？" class="headerlink" title="是针对于屏幕刷新率的优化吗？"></a>是针对于屏幕刷新率的优化吗？</h1><p>如果屏幕刷新率是 60Hz，浏览器的最高绘制频率可以设定为 60fps，进一步提高 fps 对网页的流程程度几乎没有贡献。由于 setState 前后的两次 dom 变更时间间隔极短，浏览器不绘制前一个 dom 看起来是可以理解的。</p>
+<p>这段代码的表现也的确如此，无论如何刷新多少次，都不会出现从 hello 变为 hello world 的瞬间。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    const delay = 1;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">    window.onload = () =&gt; &#123;</span></span><br><span class="line"><span class="undefined">      const root = document.getElementById('root');</span></span><br><span class="line"><span class="undefined">      root.innerText = 'hello';</span></span><br><span class="line"><span class="undefined">      const now = Date.now();</span></span><br><span class="line"><span class="undefined">      while (Date.now() - now &lt; delay) &#123;&#125;</span></span><br><span class="line"><span class="undefined">      root.innerText = 'hello world';</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>将第二次 innerText 的设置放到 setTimeout 的回调函数中，情况却不总是这样 —— 多刷新几次页面，总能看到 hello 切换的 hello world 的过程。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    const delay = 1;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">    window.onload = () =&gt; &#123;</span></span><br><span class="line"><span class="undefined">      const root = document.getElementById('root');</span></span><br><span class="line"><span class="undefined">      root.innerText = 'hello';</span></span><br><span class="line"><span class="undefined">      setTimeout(() =&gt; &#123;</span></span><br><span class="line"><span class="undefined">        root.innerText = 'hello world';</span></span><br><span class="line"><span class="undefined">      &#125;, delay);</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>将 delay 调到 1s，上面两段代码对应的界面绘制次数也不会变化。所以，<strong>并不是针对于屏幕刷新率的优化</strong>。</p>
+<img src="/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/async-render.png">
+<figure>async 模式下 paint 了两次</figure>
+
+<h1 id="何时浏览器会进行-“rerender”？"><a href="#何时浏览器会进行-“rerender”？" class="headerlink" title="何时浏览器会进行 “rerender”？"></a>何时浏览器会进行 “rerender”？</h1><p><a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model" target="_blank" rel="noopener">浏览器的 event loop 规范</a>定义了每个事件循环需要执行的内容。如果把 event loop 需要处理的 task queue 比喻为管道，script（即 JavaScript 执行）和 render 则分别处在管道的前后端。即使在 script 中对 dom 进行了多次操作，render 也只会呈现最终的效果。</p>
+<p>上面 setTimeout 设置 innerText 的例子中，两次 innerText 设置是在不同 task queue 里完成的，浏览器则有机会进行两次 render。</p>
+<h1 id="DOM-测量与-“render”"><a href="#DOM-测量与-“render”" class="headerlink" title="DOM 测量与 “render”"></a>DOM 测量与 “render”</h1><p>render 是个复合且笼统的过程，可以简单理解为 layout 和 paint 两个过程。layout 是计算出 renderObject（浏览器中表示渲染元素的对象，大体上和 DOM 节点是对应的）的几何尺寸和位置；paint 则是将 renderObject 绘制为位图用于显示，这个过程一般需要 GPU 的参与。</p>
+<p>与 paint 在 task queue 中最多只发生一次不同，layout 可以能会发生很多次，这取决于 script 中是否对 DOM 进行了测量。</p>
+<p>在这段代码中，虽然浏览器只会绘制 hello world 的结果，但是输出的两次 offsetWidth 仍是不相等的。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    window.onload = () =&gt; &#123;</span></span><br><span class="line"><span class="undefined">      const root = document.getElementById('root');</span></span><br><span class="line"><span class="undefined">      root.innerText = 'hello';</span></span><br><span class="line"><span class="undefined">      console.log(root.offsetWidth); // 35</span></span><br><span class="line"><span class="undefined">      root.innerText = 'hello world';</span></span><br><span class="line"><span class="undefined">      console.log(root.offsetWidth); // 80</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="React-的-render"><a href="#React-的-render" class="headerlink" title="React 的 render"></a>React 的 render</h1><p>React 组件的生命周期以 render 为界，可以分为 pre-render 和 post-render 两类。pre-render 中的 setState 调用，都会被缓存起来，在 render 中进行批量处理，这时 setState 表现为异步的（因为 setState 并没有立即改变 state），post-render 中的 setState 调用，则会立即生效（立即改变 state）。所以在 componentDidMount 中调用 setState，的确会再次触发 React 的 render，然而 pre-render -&gt; render -&gt; post-render -&gt; setState -&gt; render 整个过程都是在同一个 script 执行过程完成的。尽管 React 组件的 render 方法被执行了两次，DOM 被更新了两次，浏览器却只能 paint 最后的 DOM 更变。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>浏览器会参考屏幕刷新率来设定 <a href="https://html.spec.whatwg.org/multipage/webappapis.html#rendering-opportunity" target="_blank" rel="noopener">render opportunity</a>，但不是本课题的答案。不像动画一样可以预测，浏览器无法预测 DOM 的修改，所以会尽早 render，哪怕两次 render 的间隔短到 1ms。</p>
+<p>event loop 明确了一个 task queue 只会有一次 paint，尽管在 script 中 DOM 被修改了多次。React 的同步渲染逻辑，确保了 componentDidMount 之前的 render 和其中触发的 render 在同一个 script 过程中，从而保证了只会有第二次 render 的结果会被浏览器绘制。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/08/29/rest-to-graphql-resolvers/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          从 REST 到 GraphQL：resolver 设计
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
