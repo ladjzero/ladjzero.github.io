@@ -87,7 +87,7 @@ render 是个复合且笼统的过程，可以简单理解为 layout 和 paint �
 
 # React 的 render
 
-React 组件的生命周期以 render 为界，可以分为 pre-render 和 post-render 两类。pre-render 中的 setState 调用，都会被缓存起来，在 render 中进行批量处理，这时 setState 表现为异步的（因为 setState 并没有立即改变 state），post-render 中的 setState 调用，则会立即生效（立即改变 state）。所以在 componentDidMount 中调用 setState，的确会再次触发 React 的 render，然而 pre-render -> render -> post-render -> setState -> render 整个过程都是在同一个 script 执行过程完成的。尽管 React 组件的 render 方法被执行了两次，DOM 被更新了两次，浏览器却只能 paint 最后的 DOM 更变。
+在 React 使用 fiber reconciler 之前，组件的更新在一个 script 任务中完成的，即同步的。尽管在生命周期函数里调用 setState 不会立即影响 state 的变化，但生命周期函数执行完，这些“partialState”都会被一并“结算”，即 batchUpdate，又会立即引起组件的再一次更新。 在 componentDidMount 使用使用 setState，组件的 render 方法会被执行两次，DOM 被更新两次，但由于整个过程在同一个 script 任务发生的，所以浏览器却只能 paint 最后的 DOM 更变。
 
 # 总结
 
