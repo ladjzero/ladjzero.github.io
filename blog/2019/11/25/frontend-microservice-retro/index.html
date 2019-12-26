@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>前端微服务化的反思 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="在才云我实践了前端微服务化，解决了部分问题，又引入了更多问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端微服务化的反思">
+<meta property="og:url" content="http://ladjzero.me/2019/11/25/frontend-microservice-retro/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="在才云我实践了前端微服务化，解决了部分问题，又引入了更多问题。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-27T02:15:26.126Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端微服务化的反思">
+<meta name="twitter:description" content="在才云我实践了前端微服务化，解决了部分问题，又引入了更多问题。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-frontend-microservice-retro" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/11/25/frontend-microservice-retro/" class="article-date">
+  <time datetime="2019-11-24T16:00:00.000Z" itemprop="datePublished">2019-11-25</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      前端微服务化的反思
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>在才云我实践了<a href="/2019/06/30/frontend-microservice/">前端微服务化</a>，解决了部分问题，又引入了更多问题。</p>
+<a id="more"></a>
+<h1 id="反思：为什么要微服务化"><a href="#反思：为什么要微服务化" class="headerlink" title="反思：为什么要微服务化"></a>反思：为什么要微服务化</h1><p>在才云的场景下，推行前端微服务化的原因有三点：可组装，模块化，独立的开发流程。</p>
+<p>可组装是指，产品功能模块可以随时增减，达到灵活交付的目的。模块化是开发者追求可长期维护的软件产品的目标之一。独立的开发流程是指一个功能模块可以单独地开发测试和部署，达到快速迭代的目的。</p>
+<p>微服务化是这三点诉求的充分条件，并不是必要条件。微服务化可能并不是唯一解，也不一定是最优解。</p>
+<h1 id="repo-管理问题"><a href="#repo-管理问题" class="headerlink" title="repo 管理问题"></a>repo 管理问题</h1><p>拆分太多前端 repo 后面临三大问题：</p>
+<h2 id="1-PR-提交多"><a href="#1-PR-提交多" class="headerlink" title="1. PR 提交多"></a>1. PR 提交多</h2><p>一个修改常常需要提交代码到多个 repo，这在模块边界还有些模块化的前期尤为明显。目前情况下，i18n 文件和 graphql schema 需要提交到“中心 repo”，业务代码提交到“业务 repo”。</p>
+<h2 id="2-oem-分支多"><a href="#2-oem-分支多" class="headerlink" title="2. oem 分支多"></a>2. oem 分支多</h2><p>多个 repo 会带来多个 oem 分支。对于二次开发来说，管理多个 repo 的分支就是一个很大的挑战，稍不注意就会出现 PR 漏提或错提的错误。</p>
+<h1 id="学习成本"><a href="#学习成本" class="headerlink" title="学习成本"></a>学习成本</h1><p>现在微服务化已成为产品开发的“必修课”。不学习则无从下手，理不清模块是如何加载的，api 是如何路由的。由于前端微服务并没有通用的方法，对现有产品实施微服务化也不太可能套用“通用方法”，导致“必修课”的知识的可迁移性较低。可能会让新同学提不起干劲学习，甚至被复杂的逻辑“劝退”。</p>
+<h1 id="开发复杂性"><a href="#开发复杂性" class="headerlink" title="开发复杂性"></a>开发复杂性</h1><p>初期模块解耦不彻底，开发一些模块可能需要启动相关联的模块，操作过程比较麻烦，占用资源也比较多。</p>
+<p>由于没有采用业界广泛提倡的“技术无关，框架无关”理念，我们针对产品特性实现了适用于 React 的微服务化方案，产生了“技术基座” —— 公共库依赖。基座包含的内容可以有微前端基础库、核心库版本（React 和 apollo-client 等）、状态管理方案等。每个模块的技术自由度非常有限，只能接收框架注入的公共库版本，不能随意选择。</p>
+<h1 id="总结和展望"><a href="#总结和展望" class="headerlink" title="总结和展望"></a>总结和展望</h1><ul>
+<li>repo 的管理方式可以优化，可以参考 monorepo；</li>
+<li>可以将方案往通用化上演进，优化学习成本；</li>
+<li>利用 graphql 作为统一 api 网关，降低模块之间的 api 依赖</li>
+<li>出于性能的考虑，技术基座会长期存在。</li>
+</ul>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/10/14/download-file-with-big-query/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          处理超大查询参数的文件下载
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
