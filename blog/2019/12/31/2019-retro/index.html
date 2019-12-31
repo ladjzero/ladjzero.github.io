@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>2019 回顾与 2020 展望 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="2019 年完全是在才云度过的，收获很多：  入门 k8s 和云原生概念，这会是职业生涯中一块非常重要的基石； 编写 webpack 插件的实践，例如用于统计模块使用次数的插件 import-stats-webpack-plugin，这是探索语言编译的一小步； 完成 LeetCode 的 lisp 语言解析题目，继 js-ast-interpreter 之后的又一步语言实现的进步； 设计并完成了才">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019 回顾与 2020 展望">
+<meta property="og:url" content="http://ladjzero.me/2019/12/31/2019-retro/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="2019 年完全是在才云度过的，收获很多：  入门 k8s 和云原生概念，这会是职业生涯中一块非常重要的基石； 编写 webpack 插件的实践，例如用于统计模块使用次数的插件 import-stats-webpack-plugin，这是探索语言编译的一小步； 完成 LeetCode 的 lisp 语言解析题目，继 js-ast-interpreter 之后的又一步语言实现的进步； 设计并完成了才">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-31T14:43:35.853Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2019 回顾与 2020 展望">
+<meta name="twitter:description" content="2019 年完全是在才云度过的，收获很多：  入门 k8s 和云原生概念，这会是职业生涯中一块非常重要的基石； 编写 webpack 插件的实践，例如用于统计模块使用次数的插件 import-stats-webpack-plugin，这是探索语言编译的一小步； 完成 LeetCode 的 lisp 语言解析题目，继 js-ast-interpreter 之后的又一步语言实现的进步； 设计并完成了才">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-2019-retro" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/12/31/2019-retro/" class="article-date">
+  <time datetime="2019-12-30T16:00:00.000Z" itemprop="datePublished">2019-12-31</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      2019 回顾与 2020 展望
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>2019 年完全是在才云度过的，收获很多：</p>
+<ol>
+<li>入门 k8s 和云原生概念，这会是职业生涯中一块非常重要的基石；</li>
+<li>编写 webpack 插件的实践，例如用于统计模块使用次数的插件 <a href="https://github.com/ladjzero/import-stats-webpack-plugin" target="_blank" rel="noopener">import-stats-webpack-plugin</a>，这是探索语言编译的一小步；</li>
+<li>完成 LeetCode 的 lisp 语言解析题目，继 <a href="https://github.com/ladjzero/js-ast-interpreter" target="_blank" rel="noopener">js-ast-interpreter</a> 之后的又一步语言实现的进步；</li>
+<li>设计并完成了才云的<a href="/2019/06/30/frontend-microservice/">前端微服务化</a>，架构复杂工程的一小步；</li>
+<li>重构和深入推广 graphql ，架构和编程语言上的又一进步！</li>
+<li>可量化地推进技术债务的清理，技术管理虽然不是我刻意发展的方向，但也很好地推进了技术的新陈代谢，属于“不留短板”的防御性进步；</li>
+<li>正在实现的 react 的 canvas 渲染器实现，为的是进一步了解 react 的底层原理、浏览器布局原理和 canvas 图形化知识；</li>
+<li>为 antd 提交了一个 <a href="https://github.com/ant-design/ant-design/pull/18937" target="_blank" rel="noopener">PR</a>；</li>
+<li>坚持了一年的博客；</li>
+<li>背完了 GRE 词汇。</li>
+</ol>
+<p>2020 展望：</p>
+<ol>
+<li>完成玩具质量的 react canvas 渲染器，深入掌握 react 底层，熟悉 canvas 2D；</li>
+<li>关注一个移动端开发方向，很可能是 flutter，再上架一个 app；</li>
+<li>更大规模的 typescript 实践，让 typescript 成为我得心应手的工具；</li>
+<li>保持与 react 社区前沿的同步，尽量通过 YouTube 的渠道，因为还可以学习英语；</li>
+<li>满意的涨薪。</li>
+<li>保持健康。</li>
+</ol>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2019/11/25/frontend-microservice-retro/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          前端微服务化的反思
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2019 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
