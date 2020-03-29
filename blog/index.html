@@ -45,6 +45,57 @@
     <div id="main">
       
   
+    <article id="post-download-upload" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2020/03/29/download-upload/" class="article-date">
+  <time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished">2020-03-29</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/blog/2020/03/29/download-upload/">前端需注意的文件下载的 8 个问题</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+			<p>在一般 webapp 中，文件的下载上传是使用频度相对较少的功能。一些常见的问题汇总如下。</p>
+			
+				<p class="article-more-link">
+					<a href="/blog/2020/03/29/download-upload/#more">Read More</a>
+				</p>
+      
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
     <article id="post-javascript-memes" class="post">
 	<footer class="entry-meta-header">
 		<span class="meta-elements date">
@@ -506,61 +557,6 @@
 			
 				<p class="article-more-link">
 					<a href="/blog/2019/04/25/pl-for-web/#more">Read More</a>
-				</p>
-      
-    
-	</div>
-	<footer class="entry-footer">
-		<div class="entry-meta-footer">
-			<span class="category">
-				
-			</span>
-			<span class="tags">
-				
-			</span>
-		</div>
-	</footer>
-	
-</article>
-
-
-	<hr class="article-devider">
-
-
-
-  
-    <article id="post-when-defer-scripts-execute" class="post">
-	<footer class="entry-meta-header">
-		<span class="meta-elements date">
-			<a href="/blog/2019/03/14/when-defer-scripts-execute/" class="article-date">
-  <time datetime="2019-03-13T16:00:00.000Z" itemprop="datePublished">2019-03-14</time>
-</a>
-		</span>
-		<span class="meta-elements author">ladjzero</span>
-		<div class="commentscount">
-			
-		</div>
-	</footer>
-	
-	<header class="entry-header">
-		
-  
-    <h1 itemprop="name" class="entry-title">
-      <a class="article-title" href="/blog/2019/03/14/when-defer-scripts-execute/">defer 脚本的执行顺序</a>
-    </h1>
-  
-
-	</header>
-	<div class="entry-content">
-		
-			<img src="/blog/2019/03/14/when-defer-scripts-execute/deferasync.png">
-<p>以下代码的输出顺序是什么？顺序是稳定的吗？</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span> <span class="attr">async</span> <span class="attr">src</span>=<span class="string">"defer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"index.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defer.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.readyState, <span class="string">'defer.js'</span>);</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.readyState, <span class="string">'index.js'</span>);</span><br></pre></td></tr></table></figure>
-			
-				<p class="article-more-link">
-					<a href="/blog/2019/03/14/when-defer-scripts-execute/#more">Read More</a>
 				</p>
       
     

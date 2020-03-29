@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>前端需注意的文件下载的 8 个问题 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="在一般 webapp 中，文件的下载上传是使用频度相对较少的功能。一些常见的问题汇总如下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端需注意的文件下载的 8 个问题">
+<meta property="og:url" content="http://ladjzero.me/2020/03/29/download-upload/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="在一般 webapp 中，文件的下载上传是使用频度相对较少的功能。一些常见的问题汇总如下。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-29T14:49:24.576Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端需注意的文件下载的 8 个问题">
+<meta name="twitter:description" content="在一般 webapp 中，文件的下载上传是使用频度相对较少的功能。一些常见的问题汇总如下。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-download-upload" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2020/03/29/download-upload/" class="article-date">
+  <time datetime="2020-03-28T16:00:00.000Z" itemprop="datePublished">2020-03-29</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      前端需注意的文件下载的 8 个问题
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>在一般 webapp 中，文件的下载上传是使用频度相对较少的功能。一些常见的问题汇总如下。</p>
+<a id="more"></a>
+<ol>
+<li>触发下载</li>
+</ol>
+<p>为了触发浏览器的下载行为，而非用其内置方式处理文件（例如打开 pdf 文件），可以为超链接加上 download 属性。例如</p>
+<p><code>&lt;a download href=&quot;test.pdf&quot;&gt;下载&lt;/a&gt;</code></p>
+<ol start="2">
+<li>客户端内容下载</li>
+</ol>
+<p>如果希望下载客户端数据（例如当前 canvas 图像），需要将数据编码为 <code>data:URL</code> 或 <code>blob:URL</code>，再由代码生成 <code>&lt;a download href=&quot;data:xxx&quot;&gt;&lt;/a&gt;</code> 并触发其点击事件，触发浏览器的下载行为。</p>
+<ol start="3">
+<li>传送大量参数进行下载</li>
+</ol>
+<p>下载请求往往是浏览器触发的 GET 请求，无法将大量参数编码为 body 进行传输。这时可以使用 POST 请求来传送参数进行下载。利用表单而非 <code>&lt;a&gt;</code> 可以将数据发送到服务器，服务器需响应 <code>Content-Disposition: attachment</code> header 来触发浏览器的下载行为。</p>
+<ol start="4">
+<li>反向代理的负载</li>
+</ol>
+<p>上传下载文件时，代理服务不能 down 掉或重启会导致上传下载失败。需要注意上传下载文件时代理服务的负载，避免因负载过高导致重启。</p>
+<ol start="5">
+<li>反向代理 nginx 的 proxy_max_temp_file_size</li>
+</ol>
+<p>在使用 nginx 作为代理服务器下载超过 1GiB 的文件，需要注意 <code>proxy_max_temp_file_size</code> 指令的配置（<a href="https://trac.nginx.org/nginx/ticket/1472" target="_blank" rel="noopener">参考</a>）。默认情况下 nginx 会使用文件缓冲，默认缓冲大小为 1GiB。使用文件缓冲时，nginx 会尽量快的向后端服务器请求数据。当缓冲写满时停止请求，直到所有缓冲数据都发送给客户端。由于 nginx 部署往往离后端服务器更近，数据传输速度也更快，离客户端远，传输速度慢，所以在这种模式下 nginx 与后端服务器之间会有一段时间无数据交换。如果连接没有保活机制，无数据交换的时间可能超过系统配置的 TCP Idle Timeout，这时 nginx 与后端服务器的连接将会断开，导致下载失败。</p>
+<ol start="6">
+<li>反向代理的流式处理</li>
+</ol>
+<p>代理服务器必须流式地处理文件请求，不能将响应数据大量积压在内存中，否则可能引起 OOM 导致下载上传失败，同时造成客户端下载触发推迟甚至超时。koa-proxy 作为 koa 的代理中间件，有个非常吸引人的特性：允许其他中间件对代理响应做修改。这导致 koa-proxy 需要将响应数据全部缓冲在内存中，最后由其他中间件处理后一并发送给客户端。这使得 koa-proxy 不适合用于文件下载的代理。</p>
+<ol start="7">
+<li>上传进度</li>
+</ol>
+<p>若需显示上传进度，目前应采用 xhr 而非 fetch 来实现上传。xhr 采用事件机制，其本质上是可以输出多次值的 observer，而 fetch 采用 Promise 风格，其本质上是只能输出一次值的 observer。所以 xhr 有能力也更适合用于上传进度的报告。理论上，可以在 fetch 之外实现进度监听，例如使用 stream api 来获取文件已传输的字节数。</p>
+<ol start="8">
+<li>分片上传</li>
+</ol>
+<p>在后端支持的情况下，使用分片上传可以提高上传的可靠性，也有并行上传提高上传性能的潜力。需要利用 <code>Content-Range</code> header 和 <code>Blob.slice</code> api。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2020/02/18/javascript-memes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          理解 JavaScript 中的梗
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2020 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
