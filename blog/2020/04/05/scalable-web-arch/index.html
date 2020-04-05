@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>随笔：可扩展的前端架构方式 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="随着时间的推移，软件产品的业务功能和增强体验的特性会越来越多。为了避免过度设计，软件架构一般只会满足产品未来几个月的需求。长远来看，软件架构也是需要不断调整的。在调整的过程中，如果架构资产不被推翻并且可以延续，可以节约非常大的成本，也保证了调整的平滑和质量的可靠。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随笔：可扩展的前端架构方式">
+<meta property="og:url" content="http://ladjzero.me/2020/04/05/scalable-web-arch/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="随着时间的推移，软件产品的业务功能和增强体验的特性会越来越多。为了避免过度设计，软件架构一般只会满足产品未来几个月的需求。长远来看，软件架构也是需要不断调整的。在调整的过程中，如果架构资产不被推翻并且可以延续，可以节约非常大的成本，也保证了调整的平滑和质量的可靠。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-05T13:54:26.547Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="随笔：可扩展的前端架构方式">
+<meta name="twitter:description" content="随着时间的推移，软件产品的业务功能和增强体验的特性会越来越多。为了避免过度设计，软件架构一般只会满足产品未来几个月的需求。长远来看，软件架构也是需要不断调整的。在调整的过程中，如果架构资产不被推翻并且可以延续，可以节约非常大的成本，也保证了调整的平滑和质量的可靠。">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-scalable-web-arch" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2020/04/05/scalable-web-arch/" class="article-date">
+  <time datetime="2020-04-04T16:00:00.000Z" itemprop="datePublished">2020-04-05</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      随笔：可扩展的前端架构方式
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>随着时间的推移，软件产品的业务功能和增强体验的特性会越来越多。为了避免过度设计，软件架构一般只会满足产品未来几个月的需求。长远来看，软件架构也是需要不断调整的。在调整的过程中，如果架构资产不被推翻并且可以延续，可以节约非常大的成本，也保证了调整的平滑和质量的可靠。</p>
+<a id="more"></a>
+<ol>
+<li>增量</li>
+</ol>
+<p>通过增量的方式应用架构变更是非常稳妥的。这需要之前架构有比较清晰的层级设计。<a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank" rel="noopener">clean architecture</a> 描述了一种简单的分层设计方法。</p>
+<p>从技术细节上讲，小到采用的网络请求库，大到 api gateway，都需要有”中间件“机制。例如 axios 有 interceptor 和 transformer 机制来检测和篡改请求和返回，express.js 有 middleware 机制来篡改任意请求和返回。</p>
+<p>我设计的前端微服务化方案主要采用的增量的方式。增加了一个微服务网关，它用于代理各个前端服务，并智能地将各个服务注入到 HMTL 文档中。最大限度地保留了原有的架构，将方案的设计和引入的风险集中在增量部分。</p>
+<ol start="2">
+<li>分治</li>
+</ol>
+<p>理论上，业务功能可以无上限地复杂。如果没有分治的架构，业务代码从简单清晰到复杂得不可维护只是时间的问题。表单是前端主要承载业务的地方，随着 edge case 不断增多、表单联动项不断增加、校验规则不断细化，表单往往为成为 bug 的重灾区。</p>
+<p>表单常见的问题就是”牵一发动全身“，修改了一个表单项，导致相关的联动和校验都出问题。我对 antd v4 的表单方案非常推崇，利用 <a href="https://ant.design/components/form-cn/#dependencies" target="_blank" rel="noopener">dependencies</a> 可以很清晰地表示表单项与表单上下文的依赖关系，使得表单项可以将依赖信息封装在自身的定义中，成为完全封闭的组件。表单项之间的依赖处理完全由表单实例来进行调度。这样就将表单的复杂逻辑分而治之了，从根本上解决了表单扩展性的问题。</p>
+<p>redux 是个分治的反例，尽管 store 可以通过命名空间来进行分割，但是开发者仍愿意随意访问 store 上的状态 —— 因为实在太方便了。redux 强调的时候状态的集中管理，view = f(state)。简单明了的原理在实际生产中却有些难以落地，原因在于 redux 不鼓励应用中存在多个 state store，所有模块都需要依赖同一个 store，并对外暴露 state 定义的细节。一旦模块之间开始依赖 redux 进行状态共享，就好比打开了潘多拉的魔盒，不同层次的、不同领域的模块将在 state store 上”粗糙地“交织在一起。</p>
+<p>在数据请求层面，<a href="https://github.com/heroku/react-refetch" target="_blank" rel="noopener">react-refetch</a> 是 redux 很好的替代品。私有的数据状态，是<br>“分治”必要的一步。</p>
+<ol start="3">
+<li>领域</li>
+</ol>
+<p>“分治”主要强调的是业务水平的分割，领域则更强调垂直的分割。</p>
+<p>需要时刻警惕”全能“的解决方案，什么都做往往代表什么都做不好。前端的通用解决方案从下往上可以分为</p>
+<ul>
+<li>模块方案</li>
+<li>视图方案</li>
+<li>状态方案</li>
+<li>数据请求方案</li>
+<li>BFF 方案</li>
+</ul>
+<p>在 GraphQL 的落地方案中，我将 BFF 方案细化为</p>
+<ul>
+<li>前端数据结构</li>
+<li>GraphQL Server</li>
+<li>后端数据结构</li>
+</ul>
+<p>后端采用的微服务架构，对前端暴露出非常多 endpoint，不同 endpoint 的 api 风格有一定差异。对前端最致命的是，后端有较多非结构化数据和“啰嗦的”数据结构定义。</p>
+<p>为此我定义了前端数据结构。它是后端数据”标准化“后的版本，同时增加了类型之间的关联，便于使用 GraphQL 进行关联查询。</p>
+<p>”标准化“常见的例子有</p>
+<ul>
+<li><code>object.metadata.annotations[&#39;abc.com/isHealty&#39;]</code> 简化为 <code>object.isHealty</code></li>
+<li><code>object.createdAt</code> <code>object.creationTime</code> 统一为 <code>object.createdAt</code></li>
+<li><code>object.status = { cpu: &#39;100%&#39;, memory: &#39;50%&#39; }</code> 简化为 <code>object.cpuStatus</code> <code>object.memoryStatus</code></li>
+</ul>
+<p>这样做的好处有</p>
+<ul>
+<li>抵御后端的变化</li>
+<li>方便前端进行数据处理，例如 <code>_.find(objects, { isHealty: true })</code> 比 <code>_.find(objects, o =&gt; _.get(o, &quot;metadata.annotations[&#39;abc.com/isHealty&#39;]&quot;))</code> 简单得多</li>
+</ul>
+<ol start="4">
+<li>向内回溯</li>
+</ol>
+<p>垂直方向良好分割的前端应用，可以将很多通信和数据共享”回溯“到内部的层次。redux 之于 react 就是一层状态管理层，利用 redux 来实现 react 组件间通信则是”向内回溯“的应用。</p>
+<p>这里我举另外一个获取数据的例子，若组件 A 和 B 都需要获取 user-data，组件层面的实现可能是分别请求两次 user-data，或者组件互相优先获取对方已取得的 user-data。前者会有额外的请求开销，后者过于复杂。若有数据获取层，A B 组件可以分别请求 user-data，数据获取层可以提供缓存功能，将一个请求发送出去，另一个请求直接返回上一个请求的缓存。即便取消数据获取层，或者关闭其缓存功能，应用仍能回退到发出多个请求的”低性能模式“继续工作。</p>
+<p>实际上 apollo-client 正在推进这种数据共享模式。利用可配置生命时长的缓存，组件可尽情做查询，而不必担心产生过多请求的问题。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2020/03/29/download-upload/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          前端需注意的文件下载上传的 8 个问题
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2020 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
