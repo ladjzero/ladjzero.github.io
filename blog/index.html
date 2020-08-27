@@ -45,6 +45,159 @@
     <div id="main">
       
   
+    <article id="post-if-observable-is-state" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2020/08/21/if-observable-is-state/" class="article-date">
+  <time datetime="2020-08-20T16:00:00.000Z" itemprop="datePublished">2020-08-21</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/blog/2020/08/21/if-observable-is-state/">如果 Observable 本身就是 UI state</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<h1 id="什么是-Observable"><a href="#什么是-Observable" class="headerlink" title="什么是 Observable"></a>什么是 Observable</h1><p>目前 JavaScript 中还没有内置 Observable，RxJS 是常用的 Observable 的实现。从 RxJS 的定义中，我们可以初步了解 Observable</p>
+  <img src="/blog/2020/08/21/if-observable-is-state/1.png">
+<p>RxJS 定义了 value（值）的产生的个数：single &amp; multiple；value 的传递方式：pull &amp; push。Observable 补齐了其中的 multiple x push 象限。</p>
+<p><a href="https://github.com/kriskowal/gtor" target="_blank" rel="noopener">A General Theory of Reactivity</a> 对 Observable 的定义有些不同：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Singular</th>
+<th>Plural</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spatial</td>
+<td>Value</td>
+<td>Iterable<value></value></td>
+</tr>
+<tr>
+<td>Temporal</td>
+<td>Promise<value></value></td>
+<td>Observable<value></value></td>
+</tr>
+</tbody>
+</table>
+<p>不是从 value 的传递方式来区分，而是从“时空”上来区分，这与开发者常接触的“同步和异步”概念更加贴近。Observable 补齐了其中的“复数值 x 时间”象限。</p>
+<h2 id="Promise-是-Observable-的特例"><a href="#Promise-是-Observable-的特例" class="headerlink" title="Promise 是 Observable 的特例"></a>Promise 是 Observable 的特例</h2><p>从以上两种定义看来，Promise 是 Observable 的单值特例。<br>  <img src="/blog/2020/08/21/if-observable-is-state/2.svg"></p>
+<h1 id="一切都是-Value"><a href="#一切都是-Value" class="headerlink" title="一切都是 Value"></a>一切都是 Value</h1><p>如果我们把 Iterator Promise Observable 都看作 value 会怎样呢？ </p>
+<p>这听起来有些奇怪，因为通常我们需要用 .next 或 .then 方法来能获取到 value，Iterator Promise Observable 更像是 value wrapper（值的包装器）。</p>
+<p>在如今的 JavaScript 中，我们可以通过以下的方式来访问 value wrapper 中的 value：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>传统的取值</th>
+<th>现代的取值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Array &amp; Iterator</td>
+<td>for (const index in array) console.log(array[index])</td>
+<td>for (const item of iterator) console.log(item);</td>
+</tr>
+<tr>
+<td>Value &amp; Promise</td>
+<td>const item = value;</td>
+<td>const item = await promise;</td>
+</tr>
+<tr>
+<td>Array &amp; Observable</td>
+<td>for (const index in array) console.log(array[index])</td>
+<td>for await (const item of observable) console.log(item);</td>
+</tr>
+</tbody>
+</table>
+<p>现代 JavaScript 的迭代 &amp; 异步原语，让访问 Iterator Promise Observable 内部的 value 和直接访问 value 一样简单。这使得 value wrapper 和 value 的边界变得模糊，激进地，我们可以认为 value wrapper 和 value 等价。</p>
+<h2 id="渲染-Promise-amp-Observable"><a href="#渲染-Promise-amp-Observable" class="headerlink" title="渲染 Promise &amp; Observable"></a>渲染 Promise &amp; Observable</h2><p>如果按照“时空”来划分 value，UI 库则可以直接渲染其中的 spatial value（空间值），例如 React 可以直接渲染 string、array、object 等。通常不能直接渲染 temporal value（时间值 Promise &amp; Observable）原因是 pending 状态的渲染需要由业务来决定。当为 UI 库增加业务上的 temporal value 适配层后，在业务上就可以进行 temporal value 的渲染了。</p>
+<p>若将视图代码分为 biz、biz UI components、pure UI components 三层，biz UI components 将会承接较多业务，会接收 temporal value 属性，例如 axios 的响应、search 条件的实时变化事件。pure UI components 与业务无关，几乎只接受 spatial value 属性。</p>
+  <img src="/blog/2020/08/21/if-observable-is-state/3.svg">
+<p>其中 Promise &amp; Observable 适配器典型的实现有：</p>
+<ul>
+<li>vue-async-computed</li>
+<li>vue-promised</li>
+<li>react suspense</li>
+<li>react-refetch</li>
+<li>react-use-promise</li>
+<li>vue-rx</li>
+<li>rx-react</li>
+</ul>
+<h2 id="用-Promise-amp-Observable-来描述业务"><a href="#用-Promise-amp-Observable-来描述业务" class="headerlink" title="用 Promise &amp; Observable 来描述业务"></a>用 Promise &amp; Observable 来描述业务</h2><p>Promise 可以很好地描述一个调用过程：</p>
+<ol>
+<li>不确定的返回时间（value 通过 pull 机制传递）</li>
+<li>可能成功</li>
+<li>可能失败</li>
+<li>可能被取消；这部分的<a href="https://github.com/tc39/proposal-cancellation" target="_blank" rel="noopener">标准还在制定中</a>，blurbird 已有相应的<a href="http://bluebirdjs.com/docs/api/cancellation.html" target="_blank" rel="noopener">实现</a></li>
+<li>调用可组合：多个 Promise 可以使用 all race 等方法进行组合，Promise 内部也可以调用其他 Promise</li>
+</ol>
+<p>Observable 可以描述一个业务过程：</p>
+<ol>
+<li>不确定的结束时间（value 通过 pull 机制传递）</li>
+<li>可能成功</li>
+<li>可能失败</li>
+<li>可能被取消</li>
+<li>期间会产生很多事件和值</li>
+<li>业务可以组合：多个 Observable 可以用 Observable 操作符灵活地组合</li>
+</ol>
+<p>将业务抽象为 Promise &amp; Observable，可以很容易的对业务进行测试和埋点。</p>
+<p>对 Observable 的测试主要是测试其 pushed value 和 pulled value 的映射关系。脱离实际的渲染和交互逻辑后，我们可以方便地模拟 push value 的过程，也能对 pulled value 完成断言。</p>
+  <img src="/blog/2020/08/21/if-observable-is-state/4.svg">
+<p>对 Observable 的埋点可以简化为以下流程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">observable = createObservable(); /* 业务开始，通常与 UI 初始化事件绑定 */</span><br><span class="line">//...</span><br><span class="line">subscription = observable.subscribe(&#123;</span><br><span class="line">  next(x) &#123; /* 事件埋点 */ &#125;,</span><br><span class="line">  error(err) &#123; /* 业务失败 */ &#125;,</span><br><span class="line">  complete() &#123; /* 业务完成 */ &#125;</span><br><span class="line">&#125;);</span><br><span class="line">//...</span><br><span class="line">subscritption.unsubscribe(); /* 业务取消，通常与 UI 销毁事件绑定 */</span><br></pre></td></tr></table></figure>
+<h1 id="响应式-UI-的真相-从-UI-f-state-到-App-f-Observable"><a href="#响应式-UI-的真相-从-UI-f-state-到-App-f-Observable" class="headerlink" title="响应式 UI 的真相: 从 UI = f(state) 到 App = f(Observable)"></a>响应式 UI 的真相: 从 UI = f(state) 到 App = f(Observable<state>)</state></h1><p>React 对前端普及了 UI = f(state) 的理念。让我们从编写 UI 控制器“进化”到编写 state（view model）和 render function。</p>
+<p>要成为 App，就要让 UI 动起来，也就是要 state 变化起来。利用“单向数据流”机制，state 的单次更改变得容易追踪。</p>
+  <img src="/blog/2020/08/21/if-observable-is-state/5.svg">
+<p>但是在现实世界中，state 会因为各种事件被无数次更改，事件之间的关系管理成为了新的问题：</p>
+<ul>
+<li>事件之间的依赖较难处理，通常需要额外的“锁”状态</li>
+<li><p>事件发生与结果难以保证顺序一致，需要较复杂的额外机制来保证</p>
+<img src="/blog/2020/08/21/if-observable-is-state/6.svg">
+</li>
+</ul>
+<p>如何管理复杂的事件流程，React 等 UI 库并没有给出答案。</p>
+<p>若将 state 扩展为“随时间一直产生 state 的 Observable”，UI = f(state) 则“进化”为可以动起来的 App：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">App = f(observable: Observable&lt;state&gt;) &#123;</span><br><span class="line">  for await (const state of observable) &#123;</span><br><span class="line">    UI = f(state)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  <img src="/blog/2020/08/21/if-observable-is-state/7.svg">
+<h1 id="如果-Observable-成为语言标准"><a href="#如果-Observable-成为语言标准" class="headerlink" title="如果 Observable 成为语言标准"></a>如果 Observable 成为语言标准</h1><p><a href="https://github.com/tc39/proposal-observable" target="_blank" rel="noopener">Observable 提案</a>的目前状态为 stage 1。当初 ES2015 的 Promise 解决了“异步回调地狱”的问题，结合 ES2017 的 async/await 彻底“杀死”了异步回调。假若 Observable 进入标准，结合 ES2018 的 asynchronous iteration 必将彻底重构事件的处理方式：大部分事件都将抽象为 Observable，与普通 Iterator 一样被处理。有语言标准的背书，Observable 的生态也将更加繁荣，长期来看会比其他事件处理方案会更有优势。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
     <article id="post-use-vue-router-as-state-manager" class="post">
 	<footer class="entry-meta-header">
 		<span class="meta-elements date">
@@ -513,57 +666,6 @@
 			
 				<p class="article-more-link">
 					<a href="/blog/2019/08/29/rest-to-graphql-resolvers/#more">Read More</a>
-				</p>
-      
-    
-	</div>
-	<footer class="entry-footer">
-		<div class="entry-meta-footer">
-			<span class="category">
-				
-			</span>
-			<span class="tags">
-				
-			</span>
-		</div>
-	</footer>
-	
-</article>
-
-
-	<hr class="article-devider">
-
-
-
-  
-    <article id="post-frontend-microservice" class="post">
-	<footer class="entry-meta-header">
-		<span class="meta-elements date">
-			<a href="/blog/2019/06/30/frontend-microservice/" class="article-date">
-  <time datetime="2019-06-29T16:00:00.000Z" itemprop="datePublished">2019-06-30</time>
-</a>
-		</span>
-		<span class="meta-elements author">ladjzero</span>
-		<div class="commentscount">
-			
-		</div>
-	</footer>
-	
-	<header class="entry-header">
-		
-  
-    <h1 itemprop="name" class="entry-title">
-      <a class="article-title" href="/blog/2019/06/30/frontend-microservice/">前端微服务化在才云的实践</a>
-    </h1>
-  
-
-	</header>
-	<div class="entry-content">
-		
-			<p>compass 是才云的核心产品，包含了集群资源管理、应用管理、运维管理和告警等一系列功能。微服务作为 compass 的服务目标之一，也是才云构建自身产品的一种“本能”的思考方式。随着产品功能的不断丰富，技术栈的不断扩充，compass 的前端 compass-web 面临着一个挑战：如何将越来越大的单体应用微服务化。</p>
-			
-				<p class="article-more-link">
-					<a href="/blog/2019/06/30/frontend-microservice/#more">Read More</a>
 				</p>
       
     
