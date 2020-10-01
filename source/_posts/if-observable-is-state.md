@@ -19,6 +19,8 @@ RxJS 定义了 value（值）的产生的个数：single & multiple；value 的�
 
 不是从 value 的传递方式来区分，而是从“时空”上来区分，这与开发者常接触的“同步和异步”概念更加贴近。Observable 补齐了其中的“复数值 x 时间”象限。
 
+<!--more-->
+
 ## Promise 是 Observable 的特例
 从以上两种定义看来，Promise 是 Observable 的单值特例。
   {% asset_img 2.svg %}

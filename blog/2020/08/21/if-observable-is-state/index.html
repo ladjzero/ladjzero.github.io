@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://ladjzero.me/blog/2020/08/21/if-observable-is-state/5.svg">
 <meta property="og:image" content="http://ladjzero.me/blog/2020/08/21/if-observable-is-state/6.svg">
 <meta property="og:image" content="http://ladjzero.me/blog/2020/08/21/if-observable-is-state/7.svg">
-<meta property="og:updated_time" content="2020-08-27T16:17:57.364Z">
+<meta property="og:updated_time" content="2020-10-01T14:31:58.745Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如果 Observable 本身就是 UI state">
 <meta name="twitter:description" content="什么是 Observable目前 JavaScript 中还没有内置 Observable，RxJS 是常用的 Observable 的实现。从 RxJS 的定义中，我们可以初步了解 Observable    RxJS 定义了 value（值）的产生的个数：single &amp;amp; multiple；value 的传递方式：pull &amp;amp; push。Observable 补齐了其中的 mu">
@@ -105,6 +105,7 @@
 </tbody>
 </table>
 <p>不是从 value 的传递方式来区分，而是从“时空”上来区分，这与开发者常接触的“同步和异步”概念更加贴近。Observable 补齐了其中的“复数值 x 时间”象限。</p>
+<a id="more"></a>
 <h2 id="Promise-是-Observable-的特例"><a href="#Promise-是-Observable-的特例" class="headerlink" title="Promise 是 Observable 的特例"></a>Promise 是 Observable 的特例</h2><p>从以上两种定义看来，Promise 是 Observable 的单值特例。<br>  <img src="/blog/2020/08/21/if-observable-is-state/2.svg"></p>
 <h1 id="一切都是-Value"><a href="#一切都是-Value" class="headerlink" title="一切都是 Value"></a>一切都是 Value</h1><p>如果我们把 Iterator Promise Observable 都看作 value 会怎样呢？ </p>
 <p>这听起来有些奇怪，因为通常我们需要用 .next 或 .then 方法来能获取到 value，Iterator Promise Observable 更像是 value wrapper（值的包装器）。</p>
@@ -202,6 +203,15 @@
 	
     
 <nav id="article-nav">
+  
+    <a href="/blog/2020/09/30/evil-event-callback/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          事件回调函数，破坏前端业务组织的万恶之源
+        
+      </div>
+    </a>
   
   
     <a href="/blog/2020/07/01/use-vue-router-as-state-manager/" id="article-nav-older" class="article-nav-link-wrap">

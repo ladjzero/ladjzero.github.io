@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>事件回调函数，破坏前端业务组织的万恶之源 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="前端的业务前后端分离的开发模式下，前端本质上业务系统剥离出来的视图系统，主要处理用户参与的部分业务，即 UI 业务。 非常典型的前端应用是 webapp，在 UI 复杂度和业务复杂度的四象限中，webapp 的业务复杂度低，但 UI 复杂度高。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件回调函数，破坏前端业务组织的万恶之源">
+<meta property="og:url" content="http://ladjzero.me/2020/09/30/evil-event-callback/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="前端的业务前后端分离的开发模式下，前端本质上业务系统剥离出来的视图系统，主要处理用户参与的部分业务，即 UI 业务。 非常典型的前端应用是 webapp，在 UI 复杂度和业务复杂度的四象限中，webapp 的业务复杂度低，但 UI 复杂度高。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ladjzero.me/blog/2020/09/30/evil-event-callback/0.svg">
+<meta property="og:image" content="http://ladjzero.me/blog/2020/09/30/evil-event-callback/1.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2020/09/30/evil-event-callback/2.svg">
+<meta property="og:image" content="http://ladjzero.me/blog/2020/09/30/evil-event-callback/3.png">
+<meta property="og:updated_time" content="2020-10-01T15:22:13.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="事件回调函数，破坏前端业务组织的万恶之源">
+<meta name="twitter:description" content="前端的业务前后端分离的开发模式下，前端本质上业务系统剥离出来的视图系统，主要处理用户参与的部分业务，即 UI 业务。 非常典型的前端应用是 webapp，在 UI 复杂度和业务复杂度的四象限中，webapp 的业务复杂度低，但 UI 复杂度高。">
+<meta name="twitter:image" content="http://ladjzero.me/blog/2020/09/30/evil-event-callback/0.svg">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-evil-event-callback" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2020/09/30/evil-event-callback/" class="article-date">
+  <time datetime="2020-09-29T16:00:00.000Z" itemprop="datePublished">2020-09-30</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      事件回调函数，破坏前端业务组织的万恶之源
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<h1 id="前端的业务"><a href="#前端的业务" class="headerlink" title="前端的业务"></a>前端的业务</h1><p>前后端分离的开发模式下，前端本质上业务系统剥离出来的视图系统，主要处理用户参与的部分业务，即 UI 业务。</p>
+<p>非常典型的前端应用是 webapp，在 UI 复杂度和业务复杂度的四象限中，webapp 的业务复杂度低，但 UI 复杂度高。</p>
+<img src="/blog/2020/09/30/evil-event-callback/0.svg">
+<a id="more"></a>
+<h2 id="弱业务的属性"><a href="#弱业务的属性" class="headerlink" title="弱业务的属性"></a>弱业务的属性</h2><p>对于前端，无论是采用何种 MV* 范式，其中 Model 往往都不是指业务领域的 Model。因为前端所谓的 Model，绝大部分情况下是后端的 View Model。业务领域的 Model 和相关的业务流程绝大部分情况对前端来说是黑盒，这是前后端分离架构所决定的。</p>
+<p>进一步地，前端甚至可抛弃掉与后端 View Model 映射的 Model 层，原因在于：</p>
+<ol>
+<li><p>增加了前后端的对齐成本</p>
+</li>
+<li><p>与 API service 函数相比，受益不明显</p>
+</li>
+<li><p>在有良好 API 规范的情况下，例如 RESTful 或 GraphQL，API service 函数也显得多余</p>
+</li>
+</ol>
+<h2 id="强业务的现实"><a href="#强业务的现实" class="headerlink" title="强业务的现实"></a>强业务的现实</h2><p>由于 Model 的弱化，前端对业务的处理往往在 View 中一并完成了。</p>
+<p>随着业务的复杂性增高，渗透到前端的业务也可能变得更复杂。试图在 View 中同时解决 UI 复杂度和业务复杂度，很可能因 UI 交互和业务流程互相交叉，代码结构变得混乱，导致两个问题都解决不好。</p>
+<p>在此情况下，必须优先降低其中一个复杂度：</p>
+<ol>
+<li><p>降低业务复杂度，避免后端的业务流程渗透到前端</p>
+</li>
+<li><p>降低 UI 实现的复杂度，使用足以面对复杂场景的新范式</p>
+</li>
+</ol>
+<p>在快速的市场变化中，为了满足产品的快速交付，部分后端业务可能会“临时”放到前端。这从项目整体的效果来看有可以是更优的。不过临时方案一旦上线，就成了固定方案了，使得前端不断积累业务逻辑。推进“临时方案”的重构可能因为团队组织结构的问题会不太容易实施，所以“降低 UI 实现的复杂度”可能是更“现实”的方案。</p>
+<h1 id="前端业务组织的关键"><a href="#前端业务组织的关键" class="headerlink" title="前端业务组织的关键"></a>前端业务组织的关键</h1><p>流程图是一种实用的流程设计工具。它非常容易被理解，同时也很容易转换为代码。但是在前端开发中，编写出可以与流程图对应的代码却十分不易，其主要的原因就是事件回调函数。因为它们由 UI 框架来调度，</p>
+<ol>
+<li><p>使得业务代码无法利用 for break goto 等编程语句来描述业务流程</p>
+</li>
+<li><p>回调函数之间没有明确的因果关系</p>
+</li>
+<li><p>回调函数之间无法直接传递数据，需要利用作用域很大的共享状态来局部的信息传递</p>
+</li>
+</ol>
+<img src="/blog/2020/09/30/evil-event-callback/1.png">
+<h2 id="立即模式"><a href="#立即模式" class="headerlink" title="立即模式"></a>立即模式</h2><p>绝大部分情况下，webapp 用于绘制 UI 的接口是 DOM，它是“保留模式（retained mode）”的 GUI 接口。这种模式的优势有：</p>
+<ol>
+<li><p>使用 widget tree 来编排 UI，对布局友好</p>
+</li>
+<li><p>widget 有自己的内部状态，简化用户代码的状态维护</p>
+</li>
+<li><p>用户交互事件需要使用回调函数来处理，简化了事件目标的检测</p>
+</li>
+</ol>
+<p>随着 UI 复杂度的上升，“保留模式”提供的优势将逐渐不能覆盖其劣势。“立即模式（immediate mode）”则是不错的替代方案，这种模式的特点是：</p>
+<ol>
+<li><p>没有 widget 来映射 UI，内存占用不随 UI 复杂性显著上升</p>
+</li>
+<li><p>绝大部分状态都需要用户代码来维护，渲染函数几乎都是无状态的</p>
+</li>
+<li><p>需要在用户代码中实现 Event Loop，不需要回调函数来处理各种事件</p>
+</li>
+</ol>
+<blockquote>
+<p>立即模式的代码示例<br><a href="https://eliasnaur.com/blog/immediate-mode-gui-programming" target="_blank" rel="noopener">https://eliasnaur.com/blog/immediate-mode-gui-programming</a><br><a href="https://github.com/ocornut/imgui" target="_blank" rel="noopener">https://github.com/ocornut/imgui</a></p>
+</blockquote>
+<h2 id="受控组件和无状态组件"><a href="#受控组件和无状态组件" class="headerlink" title="受控组件和无状态组件"></a>受控组件和无状态组件</h2><p>事件回调函数的主要作用是将组件内部的信息同步到外部。若去掉事件回调函数，组件内部的状态必须外移，或者完全受外部控制。</p>
+<p>React 试图在 DOM 上实现大部分立即模式的编程体验，其核心理念是 view = render(state)。受控组件和无状态组件作为在 React 中提倡的实现方式，可以大大提升业务的可维护性。</p>
+<h2 id="事件即数据"><a href="#事件即数据" class="headerlink" title="事件即数据"></a>事件即数据</h2><p>Saga 和 Rxjs 都非常成熟的事件处理方案，前者的核心理念是 effects as data，后者是 events as data。在实际使用上，都可以使用各自的流程操作符处理事件流，区别在于 Saga 引入的是命令式处理风格，Rxjs 则是申明式风格。</p>
+<p>这类“方案”的理念将事件回调函数退化为一个无任何业务逻辑的函数，令其作用仅仅是将 View 中发生的事件带入到“方案”的流程中，从而实现业务流程的“去事件回调函数化”。理论上也实现了立即模式中的“用户态” Event Loop。</p>
+<h2 id="MVP-模式"><a href="#MVP-模式" class="headerlink" title="MVP 模式"></a>MVP 模式</h2><p>MVP 是广泛应用在 Android 开发中的 MV* 模式，它将几乎将所有 View 的事件都代理到了 Presenter。在此模式下，业务流程可以完全集中在 Presenter 中编排。</p>
+<img src="/blog/2020/09/30/evil-event-callback/2.svg">
+<h1 id="现实中的案例"><a href="#现实中的案例" class="headerlink" title="现实中的案例"></a>现实中的案例</h1><h2 id="Window-confirm"><a href="#Window-confirm" class="headerlink" title="Window.confirm"></a>Window.confirm</h2><img src="/blog/2020/09/30/evil-event-callback/3.png">
+<p>若要使用 Vue 实现 confirm 效果，有两种方式：在模板中使用 confirm 组件，以及直接在流程代码中使用 confirm 函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;confirm :visible=&quot;visible&quot; @ok=&quot;open(&apos;exit.html&apos;)&quot;&gt;</span><br><span class="line">  Do you really want to leave?</span><br><span class="line">&lt;/confirm&gt;</span><br><span class="line"></span><br><span class="line">if (await confirm(&quot;Do you really want to leave?&quot;)) &#123;</span><br><span class="line">	window.open(&quot;exit.html&quot;, &quot;Thanks for Visiting!&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二种方式的好处是减少了 visible 状态的维护。</p>
+<h2 id="表单提交"><a href="#表单提交" class="headerlink" title="表单提交"></a>表单提交</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;div&gt;</span><br><span class="line">    &lt;form @sumit=&quot;submit&quot;&gt;</span><br><span class="line">      &lt;button type=&quot;submit&quot; :disabled=&quot;disabled&quot;&gt;提交&lt;/button&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">    &lt;dialog :visible=&quot;id&quot; @ok=&quot;ok&quot; okText=&quot;查看&quot;&gt;</span><br><span class="line">    	创建成功</span><br><span class="line">    &lt;/dialog&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">	data: &#123;</span><br><span class="line">  	disabled: false,</span><br><span class="line">    formData: &#123;&#125;,</span><br><span class="line">    id: null,</span><br><span class="line">  &#125;,</span><br><span class="line">	methods: &#123;</span><br><span class="line">  	formValidate() &#123; ... &#125;,                                      // formValidate 验证 view model 上的数据</span><br><span class="line">    ok() &#123;</span><br><span class="line">    	router.push(&apos;/detail/&apos; + this.id);</span><br><span class="line">    &#125;,</span><br><span class="line">    submit() &#123;</span><br><span class="line">    	if (this.disabled) return;</span><br><span class="line">    </span><br><span class="line">    	this.disabled = true;</span><br><span class="line">      </span><br><span class="line">      this.formValidate((err) =&gt; &#123;</span><br><span class="line">      	if (!err) &#123;</span><br><span class="line">        	fetch(&apos;/save&apos;, this.formData)</span><br><span class="line">          	.then(resp =&gt; &#123;</span><br><span class="line">            	if (resp &amp;&amp; resp.id) &#123;</span><br><span class="line">              	this.id = resp.id;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">          	.catch(() =&gt; &#123;</span><br><span class="line">            	this.disabled = false;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">for await (const evt of this.submit$) &#123;                              // submit$ 是提交按钮提交的事件流</span><br><span class="line">  if (!await this.formValidate()) continue;                          // formValidate 验证 view model 上的数据</span><br><span class="line"></span><br><span class="line">  const resp = await fetch(&apos;/save&apos;, this.formData).catch(() =&gt; null);</span><br><span class="line"></span><br><span class="line">  if (resp &amp;&amp; resp.id &amp;&amp; await confirm(&apos;创建成功&apos;, &#123; okText: &apos;查看&apos;&#125;)) &#123;</span><br><span class="line">    router.push(&apos;/detail/&apos; + resp.id);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二种方式天然地免除了 disabled 状态的维护（仅做到方式重复提交），还简化了 id 的传递，避免维护“回调下上文状态”。因为 fetch 和 router.push 在同一个函数上下文中，利用作用域即可实现状态的共享。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>事件回调函数使前端的 UI 复杂度增高，立即模式是一种无事件回调函数的 GUI 接口模式。在保持模式的 DOM 上层，可以利用 React 之类的 UI 库和 Rxjs 之类的事件处理库，获得立即模式无事件回调函数的编程体验。利用 MVP 等范式，可以将所有业务都收拢于一处，利用编程语言的 if for goto 等控制语句，如同描述流程图一般地对其进行有效组织。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://eliasnaur.com/blog/immediate-mode-gui-programming" target="_blank" rel="noopener">Immediate Mode GUI Programming</a><br><a href="https://hackmd.io/@2qVnJRlJRHCk20dvVxsySA/H1xLHUQ8e" target="_blank" rel="noopener">Redux-Saga V.S. Redux-Observable</a><br><a href="https://gioui.org/" target="_blank" rel="noopener">Gio</a><br><a href="https://news.ycombinator.com/item?id=19744513" target="_blank" rel="noopener">Hacker News: Immediate Mode GUI</a></p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2020/08/21/if-observable-is-state/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          如果 Observable 本身就是 UI state
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2020 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
