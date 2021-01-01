@@ -45,6 +45,61 @@
     <div id="main">
       
   
+    <article id="post-why-setstate-in-componentdidmount-only-paint-once" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/" class="article-date">
+  <time datetime="2019-09-23T16:00:00.000Z" itemprop="datePublished">2019-09-24</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/">为什么在 componentDidMount 里调用 this.setState 浏览器只会绘制一次</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+			<p>偶然注意到 React 文档中的一句话</p>
+<blockquote>
+<p>You <strong>may call setState() immediately</strong> in componentDidMount(). It will trigger an extra rendering, but it will happen before the browser updates the screen. This guarantees that even though the render() will be called twice in this case, the <strong>user won’t see the intermediate state</strong>.</p>
+</blockquote>
+<p>对 “user won’t see the intermediate state” 有些难以相信。可以确定的是，由于“额外的渲染”，dom 的确发生了变更。为何 dom 发生了变更，浏览器却只绘制了一次呢？</p>
+			
+				<p class="article-more-link">
+					<a href="/blog/2019/09/24/why-setstate-in-componentdidmount-only-paint-once/#more">Read More</a>
+				</p>
+      
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
     <article id="post-rest-to-graphql-resolvers" class="post">
 	<footer class="entry-meta-header">
 		<span class="meta-elements date">
@@ -511,59 +566,6 @@
 
 
   
-    <article id="post-progress-performance-improvement" class="post">
-	<footer class="entry-meta-header">
-		<span class="meta-elements date">
-			<a href="/blog/2018/08/09/progress-performance-improvement/" class="article-date">
-  <time datetime="2018-08-08T16:00:00.000Z" itemprop="datePublished">2018-08-09</time>
-</a>
-		</span>
-		<span class="meta-elements author">ladjzero</span>
-		<div class="commentscount">
-			
-		</div>
-	</footer>
-	
-	<header class="entry-header">
-		
-  
-    <h1 itemprop="name" class="entry-title">
-      <a class="article-title" href="/blog/2018/08/09/progress-performance-improvement/">渐进式的首屏优化方案之概述</a>
-    </h1>
-  
-
-	</header>
-	<div class="entry-content">
-		
-			<p>首屏载入速度是 web 应用的是个重要性能指标。页面的载入阶段分为 1.白屏 2.首次渲染 3.首次有意义的/可交互的渲染，首屏优化则是减小 1 和 2 所占的时间，让用户更早的可以看到内容并能与之交互。本文主要讨论无缓存情况下的白屏时间优化。</p>
-			
-				<p class="article-more-link">
-					<a href="/blog/2018/08/09/progress-performance-improvement/#more">Read More</a>
-				</p>
-      
-    
-	</div>
-	<footer class="entry-footer">
-		<div class="entry-meta-footer">
-			<span class="category">
-				
-			</span>
-			<span class="tags">
-				
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/react/">react</a></li></ul>
-
-			</span>
-		</div>
-	</footer>
-	
-</article>
-
-
-	<hr class="article-devider">
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/blog/">&laquo; Prev</a><a class="page-number" href="/blog/">1</a><span class="page-number current">2</span><a class="page-number" href="/blog/page/3/">3</a><a class="extend next" rel="next" href="/blog/page/3/">Next &raquo;</a>
@@ -582,7 +584,7 @@
 		<a href="/blog/">ladjzero&#39;s blog</a>
 	</h1>
 	<span class="copyright">
-		&copy; 2020 ladjzero<br>
+		&copy; 2021 ladjzero<br>
 		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
 		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
 	</span>
