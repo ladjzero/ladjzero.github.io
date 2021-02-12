@@ -20,6 +20,9 @@ export default function subscribe(o: Observer) {
     }
   })
 
+  // prevent page scrolling
+  document.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+
   document.addEventListener('touchend', e => {
     const touch = e.changedTouches[0]
 
