@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "test": "jest",
-    "build": "vite build --base=/2048/",
+    "build": "vite build --base=/2048/dist/",
     "serve": "vite preview"
   },
   "devDependencies": {
