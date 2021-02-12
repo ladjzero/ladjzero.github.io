@@ -1,0 +1,15 @@
+{
+  "name": "2048",
+  "short_name": "2048",
+  "display": "standalone",
+  "start_url": "index.html",
+  "theme_color": "#F1E7DF",
+  "background_color": "#F1E7DF",
+  "icons": [
+    {
+      "src": "/2048/assets/icon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

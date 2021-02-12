@@ -1,0 +1,18 @@
+{
+  "gridBackground": "#A59482",
+  "brickBackground": "#BFAE9E",
+  "brick": {
+    "2": ["#F1E7DF", "#736C5F"],
+    "4": ["#F1E7DF", "#736C5F"],
+    "8": ["#F1B17E", "#FFFFFF"],
+    "16": ["#F7966A", "#FFFFFF"],
+    "32": ["#F47F67", "#FFFFFF"],
+    "64": ["#F75F4F", "#FFFFFF"],
+    "128": ["#EFD697", "#FFFFFF"],
+    "256": ["#F2CC67", "#FFFFFF"],
+    "512": ["#EBC56F", "#FFFFFF"],
+    "1024": ["#EEC351", "#FFFFFF"],
+    "2048": ["#EEC241", "#FFFFFF"],
+    "4096": ["#EEC241", "#FFFFFF"]
+  }
+}
