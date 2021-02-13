@@ -6,6 +6,7 @@ interface CanvasRenderingContext2D {
   brickMargin: number
   x: number
   y: number
+  transitionProgress: number
   theme: {
     gridBackground: string
     brickBackground: string
@@ -17,3 +18,5 @@ declare module '*.mov?url' {
   const url: string
   export default url
 }
+
+type Optional<T> = T | null

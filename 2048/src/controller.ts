@@ -1,13 +1,22 @@
-export type Action = 'up' | 'right' | 'down' | 'left'
+export type Action = 'up' | 'right' | 'down' | 'left' | 'none'
 
 type Observer = {
-  next: (action: Action) => void
+  next: (action: Action, time: number) => void
 }
 
 export default function subscribe(o: Observer) {
   let touchX = 0
   let touchY = 0
   let touchEndable = false
+  let action: Action = 'none'
+
+  const loop = (time: number) => {
+    o.next(action, time)
+    action = 'none'
+    requestAnimationFrame(loop)
+  }
+
+  loop(Date.now())
 
   document.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
@@ -31,9 +40,9 @@ export default function subscribe(o: Observer) {
       const deltaY = touch.clientY - touchY
 
       if (Math.abs(deltaX) > 10 && Math.abs(deltaX) > Math.abs(deltaY)) {
-        o.next(deltaX > 0 ? 'right' : 'left')
+        action = deltaX > 0 ? 'right' : 'left'
       } else if (Math.abs(deltaY) > 10 && Math.abs(deltaX) < Math.abs(deltaY)) {
-        o.next(deltaY > 0 ? 'down' : 'up')
+        action = deltaY > 0 ? 'down' : 'up'
       }
     }
   })
@@ -41,16 +50,16 @@ export default function subscribe(o: Observer) {
   document.addEventListener('keyup', e => {
     switch(e.code) {
       case 'ArrowUp':
-        o.next('up')
+        action = 'up'
         break
       case 'ArrowRight':
-        o.next("right")
+        action = "right"
         break
       case 'ArrowDown':
-        o.next('down')
+        action = 'down'
         break
       case 'ArrowLeft':
-        o.next('left')
+        action = 'left'
         break
       default:
     }

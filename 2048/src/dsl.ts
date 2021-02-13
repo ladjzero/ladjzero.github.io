@@ -1,5 +1,4 @@
-import Grid from "./grid";
-export function parse(exp: string): number[][] {
+export function parse(exp: string): Optional<number>[][] {
   return exp
     .split(/[\n\r|]/)
     .map(line => {

@@ -1,22 +1,24 @@
+import { Position } from "./grid"
+import Renderable from "./renderable"
 import { rect } from "./utils"
+class Brick extends Renderable<Position & { sum: number }> {
+  isEqual(to: Brick) {
+    return this.state.sum === to.state.sum
+  }
 
-type Sum = 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 512 | 1024 | 2048 | 4096 | 8192
-
-class Brick {
-  constructor(
-    public ctx: CanvasRenderingContext2D,
-    public sum: number,
-  ) {}
+  toString() {
+    return String(this.state)
+  }
 
   render() {
     const ctx = this.ctx
-    ctx.fillStyle = ctx.theme.brick[this.sum][0]
+    ctx.fillStyle = ctx.theme.brick[this.state.sum][0]
     rect(ctx, ctx.brickWidth)
-    ctx.fillStyle = ctx.theme.brick[this.sum][1]
+    ctx.fillStyle = ctx.theme.brick[this.state.sum][1]
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.font = `${ctx.brickWidth / 2}px sans-serif`
-    ctx.fillText(String(this.sum), ctx.x + ctx.brickWidth / 2, ctx.y + ctx.brickWidth / 2)
+    ctx.fillText(String(this.state.sum), ctx.x + ctx.brickWidth / 2, ctx.y + ctx.brickWidth / 2)
   }
 }
 
