@@ -9,6 +9,7 @@ export default function subscribe(o: Observer) {
   let touchY = 0
   let touchEndable = false
   let action: Action = 'none'
+  const canvasEl = document.getElementById('app') as HTMLCanvasElement
 
   const loop = (time: number) => {
     o.next(action, time)
@@ -18,7 +19,7 @@ export default function subscribe(o: Observer) {
 
   loop(Date.now())
 
-  document.addEventListener('touchstart', e => {
+  canvasEl.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
       touchEndable = true
       const touch = e.touches[0]
@@ -30,9 +31,9 @@ export default function subscribe(o: Observer) {
   })
 
   // prevent page scrolling
-  document.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+  canvasEl.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
 
-  document.addEventListener('touchend', e => {
+  canvasEl.addEventListener('touchend', e => {
     const touch = e.changedTouches[0]
 
     if (touch && touchEndable) {

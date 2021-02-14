@@ -6,6 +6,8 @@ interface CanvasRenderingContext2D {
   brickMargin: number
   x: number
   y: number
+  w: number
+  h: number
   transitionProgress: number
   theme: {
     gridBackground: string

@@ -7,6 +7,6 @@ export function parse(exp: string): Optional<number>[][] {
     })
 }
 
-export function toString(arr: number[][]): string {
+export function toString(arr: Optional<number>[][]): string {
   return arr.map(line => line.map(num => num ? num : '.').join('')).join('|')
 }

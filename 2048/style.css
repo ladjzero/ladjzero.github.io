@@ -9,3 +9,10 @@ html, body {
   width: 100vw;
   height: 100vh;
 }
+
+#size {
+  position: fixed;
+  width: 80%;
+  top: 10px;
+  left: 10%;
+}
