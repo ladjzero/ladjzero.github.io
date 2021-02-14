@@ -15,7 +15,7 @@ const audioEl = new Audio(audioBubble)
 const canvasEl = document.getElementById('app') as HTMLCanvasElement
 const ctx = canvasEl.getContext('2d') as CanvasRenderingContext2D
 const renderer = new CanvasRenderer(ctx)
-let grid: Grid
+let grid = new Grid(ctx, SIZE)
 // console.log(grid)
 // grid = Grid.from('2...|.2..|.2..|2...', ctx)
 // console.log(grid)
@@ -73,8 +73,6 @@ controller({
 })
 
 const main = () => {
-  grid = new Grid(ctx, SIZE)
-
   const { width, height } = canvasEl.getBoundingClientRect()
   ctx.theme = theme as any
   ctx.x = 0
@@ -93,6 +91,7 @@ const main = () => {
 
 (document.getElementById('size') as HTMLInputElement).addEventListener('change', (e: InputEvent) => {
   SIZE = Number((e.target as HTMLInputElement).value) || 4
+  grid = new Grid(ctx, SIZE)
   main()
 })
 window.addEventListener('load', main)
