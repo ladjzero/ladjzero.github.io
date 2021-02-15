@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/2048/dist/assets/favicon.17e50649.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-    <link rel="manifest" href="/2048/manifest.json" />
     <title>2048</title>
   <script type="module" crossorigin src="/2048/dist/assets/index.fceef41f.js"></script>
   <link rel="modulepreload" href="/2048/dist/assets/vendor.58d9e7e0.js">
   <link rel="stylesheet" href="/2048/dist/assets/index.563d3587.css">
+<link rel="manifest" href="/2048/dist/manifest.webmanifest">
+<script>if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/2048/dist/sw.js', { scope: '/2048/dist/' })})}</script>
 </head>
   <body>
     <canvas id="app"></canvas>
