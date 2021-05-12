@@ -19,6 +19,6 @@
     "vite-plugin-pwa": "^0.4.6"
   },
   "dependencies": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   }
 }
