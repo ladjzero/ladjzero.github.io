@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一种代码模板与可视化编辑器混合的前端开发方式 | ladjzero&#39;s blog</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="“貌似一提到 lowcode，就很容易让人想起可视化编辑。哎~”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一种代码模板与可视化编辑器混合的前端开发方式">
+<meta property="og:url" content="http://ladjzero.me/2021/06/15/think-lowcode/index.html">
+<meta property="og:site_name" content="ladjzero&#39;s blog">
+<meta property="og:description" content="“貌似一提到 lowcode，就很容易让人想起可视化编辑。哎~”">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ladjzero.me/blog/2021/06/15/think-lowcode/889298620.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2021/06/15/think-lowcode/889298620.png">
+<meta property="og:image" content="http://ladjzero.me/blog/2021/06/15/think-lowcode/889527031.svg">
+<meta property="og:updated_time" content="2021-06-14T16:16:33.092Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一种代码模板与可视化编辑器混合的前端开发方式">
+<meta name="twitter:description" content="“貌似一提到 lowcode，就很容易让人想起可视化编辑。哎~”">
+<meta name="twitter:image" content="http://ladjzero.me/blog/2021/06/15/think-lowcode/889298620.png">
+  
+    <link rel="alternative" href="/atom.xml" title="ladjzero&#39;s blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/blog">Home</a></li><li><a href="/blog/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://ladjzero.me"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-think-lowcode" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/blog/2021/06/15/think-lowcode/" class="article-date">
+  <time datetime="2021-06-14T16:00:00.000Z" itemprop="datePublished">2021-06-15</time>
+</a>
+		</span>
+		<span class="meta-elements author">ladjzero</span>
+		<div class="commentscount">
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      一种代码模板与可视化编辑器混合的前端开发方式
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>“貌似一提到 lowcode，就很容易让人想起可视化编辑。哎~”</p>
+<a id="more"></a>
+<h1 id="什么是代码模板与可视化编辑器"><a href="#什么是代码模板与可视化编辑器" class="headerlink" title="什么是代码模板与可视化编辑器"></a>什么是代码模板与可视化编辑器</h1><h2 id="代码模板"><a href="#代码模板" class="headerlink" title="代码模板"></a>代码模板</h2><p>代码模板本质上是业务开发者将续写的代码。使用「Copy &amp; Paste」和类似「create from template」的命令，可以实现模板的复用。</p>
+<h2 id="可视化编辑器"><a href="#可视化编辑器" class="headerlink" title="可视化编辑器"></a>可视化编辑器</h2><p>代码中可以可视化的部分，可以由可视化编辑器来编辑 。借助于 WYSIWYG （所见即所得）的特性，这部分代码可以被快速编写和调试，例如设计布局、调整外观。例如浏览器的 devtool 提供了 flex 布局和 transition 编辑器。</p>
+<blockquote>
+<img src="/blog/2021/06/15/think-lowcode/889298620.png">
+<p>flex 布局编辑器</p>
+</blockquote>
+<blockquote>
+<img src="/blog/2021/06/15/think-lowcode/889298620.png">
+<p>transition 编辑器</p>
+</blockquote>
+<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>通用 General Purpose。适用于各类前端开发技术和各类需求，但不意味着在任何场景下都能取得正向收益。</p>
+<p>互操作性 Interoperability。可视化编辑器输入和输出的语言与代码模板中的语言一致。由于两者作用于同一语言上，所以在重叠的部分。</p>
+<h2 id="为什么要通用"><a href="#为什么要通用" class="headerlink" title="为什么要通用"></a>为什么要通用</h2><p>行业中几乎没有通用的方案，仅在各个企业内部有集成了各类服务的可视化编辑方案，例如云凤蝶。</p>
+<p>这类方案提效的方式并不是优化开发的工具链，而是「集成各类服务」。这就造成这个方案限定了非常具体的「开发上下文」，造成两个后果：</p>
+<ol>
+<li><p>兼容性不高，难以与其他技术混合使用，有明显的「排他性」</p>
+</li>
+<li><p>扩展性不足，若为了满足扩展性又会发展出另一门「语言」，进一步加深兼容性问题</p>
+</li>
+</ol>
+<blockquote>
+<p>这些工具的特点就是可以用 1% 的时间完成 80% 的功能，刚开始用的时候都直呼这就是未来。然而 Neal Ford 发现了“#last10%rule”，就是最后的 10% 会付出非常大的代价，而用户总是需要 100% 的功能。<br><a href="https://zhuanlan.zhihu.com/p/357411780" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/357411780</a></p>
+</blockquote>
+<p>创建另一种仅能在内部使用的可视化编辑方案是无趣的、没有希望的。</p>
+<h2 id="为什么要互操作性"><a href="#为什么要互操作性" class="headerlink" title="为什么要互操作性"></a>为什么要互操作性</h2><p>互操作性保证开发者可以完全控制代码，例如为可视化编辑器输出的代码编写业务逻辑。</p>
+<blockquote>
+<p>案例分析<br><a href="https://github.com/jaweii/Vue-Layout" target="_blank" rel="noopener">https://github.com/jaweii/Vue-Layout</a> 是一个通过拖拽操作来生成布局的应用。它的功能非常单一，仅能将组件排布到页面上，看似「毫无用处」。但它可以输出 vue 代码，这是可以供开发者续写的代码，并非 Dreamweaver 等软件生成的「面条代码」。</p>
+</blockquote>
+<blockquote>
+<p>It’s true that in the past Dreamweaver generated superfluous, even bad, spaghetti-like HTML. But that was mainly the fault of Dreamweaver’s Layout Mode, which was rooted in the days of table layout.<br><a href="https://www.quora.com/Do-professional-web-development-companies-use-Adobe-Dreamweaver-today" target="_blank" rel="noopener">https://www.quora.com/Do-professional-web-development-companies-use-Adobe-Dreamweaver-today</a></p>
+</blockquote>
+<h1 id="实现一个功能子集"><a href="#实现一个功能子集" class="headerlink" title="实现一个功能子集"></a>实现一个功能子集</h1><h2 id="语言范围"><a href="#语言范围" class="headerlink" title="语言范围"></a>语言范围</h2><p>我们可以先仅针对 Typescript（包含 JSX 特性）语言进行实现，同时针对使用 antd 的 JSX 代码部分进行可视化编辑。</p>
+<blockquote>
+<p>antd 相当于是就是构建了基于 JSX 的 DSL ，在中后台前端开发领域，通过抽象基础的交互展示逻辑，牺牲了极少的的可扩展性，通用性和灵活性都达到了一定程度。<br><a href="https://zhuanlan.zhihu.com/p/179488071" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/179488071</a></p>
+</blockquote>
+<p>例如利用 Row Col 两个组件来实现网格布局，通过可视化编辑器，可以直接修改 Row Col 组件的属性，调整 Row Col 组件的个数，并将改动同步到源代码中。利用构建系统的 HMR（hot module replacement）技术，源代码中的改动又能实时地反应到界面上。</p>
+<blockquote>
+<img src="/blog/2021/06/15/think-lowcode/889527031.svg">
+</blockquote>
+<h2 id="可视化编辑范围"><a href="#可视化编辑范围" class="headerlink" title="可视化编辑范围"></a>可视化编辑范围</h2><p>可视化编辑范围的实现分为两个阶段：</p>
+<ol>
+<li><p>antd + JSX 编辑器。仅支持 antd 组件的属性编辑、组件的添加与删除。其中属性仅支持数据数据类型及其集合，例如 number 和 Array<number></number></p>
+</li>
+<li><p>模板自定义编辑器。支持模板中申明可以进行可视化编辑的代码范围，模板可能需要提供编辑器实现，例如 RxJS pipeline</p>
+</li>
+</ol>
+<h2 id="自定义可视化编辑器"><a href="#自定义可视化编辑器" class="headerlink" title="自定义可视化编辑器"></a>自定义可视化编辑器</h2><p>TBD.</p>
+<h2 id="如何服务化"><a href="#如何服务化" class="headerlink" title="如何服务化"></a>如何服务化</h2><p>参考 <a href="https://github.com/conwnet/github1s" target="_blank" rel="noopener">https://github.com/conwnet/github1s</a> 项目。</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2021/01/01/2020-retro/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          2020 回顾与 2021 展望
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:ladjzero.me">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/blog/">ladjzero&#39;s blog</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2021 ladjzero<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/blog/js/script.js"></script>
+  </div>
+</body>
+</html>
